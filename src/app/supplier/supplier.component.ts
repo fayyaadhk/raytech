@@ -7,9 +7,9 @@ import {debounceTime, map, merge, Observable, Subject, Subscription, switchMap, 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import {SupplierService} from './supplier.service';
-import {Supplier} from './supplier.model';
+import {Supplier} from '../api/models/supplier';
 import { Router } from '@angular/router';
-import {ClientService} from "../client/client.service";
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-supplier',
@@ -42,6 +42,8 @@ export class SupplierComponent implements OnInit{
     suppliers = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
+    dataSource: MatTableDataSource<Supplier>;
+    displayedColumns = ['id', 'name', 'contactPerson', 'editDelete'];
 
     constructor(private supplierService: SupplierService,
                 private router: Router,) {
@@ -68,12 +70,19 @@ export class SupplierComponent implements OnInit{
         });
     }
 
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
+
     private _getSuppliers(){
         this.supplierService
             .getSuppliers()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((suppliers) => {
                 this.suppliers = suppliers;
+                this.dataSource = new MatTableDataSource(this.suppliers);
                 this.isLoading = false;
                 console.log(this.suppliers);
             });

@@ -14,6 +14,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
 
 
@@ -48,6 +49,7 @@ const rfqRoutes: Route[] = [
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
+        MatTableModule,
         SharedModule
     ]
 })

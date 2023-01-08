@@ -22,6 +22,13 @@ import {CategoryModule} from './category/category.module';
 import {ItemModule} from './item/item.module';
 import {AddRfqModule} from './rfq/add-rfq/add-rfq.module';
 import {AddCategoryModule} from './category/add-category/add-category.module';
+import { RfqItemComponent } from './rfq-item/rfq-item.component';
+import {AddItemModule} from "./item/add-item/add-item.module";
+import { CommodityComponent } from './commodity/commodity.component';
+import { AddCommodityComponent } from './commodity/add-commodity/add-commodity.component';
+import { RfqDetailsComponent } from './rfq/rfq-details/rfq-details.component';
+import {RfqDetailsModule} from "./rfq/rfq-details/rfq-details,module";
+import {HashLocationStrategy, LocationStrategy, PathLocationStrategy} from "@angular/common";
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -30,7 +37,10 @@ const routerConfig: ExtraOptions = {
 
 @NgModule({
     declarations: [
-        AppComponent,
+        AppComponent
+    ],
+    providers:[
+        {provide: LocationStrategy, useClass: PathLocationStrategy}
     ],
     imports     : [
         BrowserModule,
@@ -60,6 +70,8 @@ const routerConfig: ExtraOptions = {
         ItemModule,
         CategoryModule,
         AddCategoryModule,
+        AddItemModule,
+        RfqDetailsModule,
     ],
     bootstrap   : [
         AppComponent

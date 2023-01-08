@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Commodity } from './commodity';
-export interface Category {
+export class Category {
   commodity?: Commodity;
   id?: number;
   name?: null | string;

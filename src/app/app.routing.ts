@@ -139,6 +139,7 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'clients/form', loadChildren: () => import('app/client/add-client/add-client.module').then(m => m.AddClientModule)},
+            {path: 'contact-information', loadChildren: () => import('app/client/add-client/add-client.module').then(m => m.AddClientModule)}
         ]
     },
     {
@@ -186,6 +187,30 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
+            {path: 'rfqs/details/:id', loadChildren: () => import('app/rfq/rfq-details/rfq-details,module').then(m => m.RfqDetailsModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'rfqs/form/:id', loadChildren: () => import('app/rfq/add-rfq/add-rfq.module').then(m => m.AddRfqModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
             {path: 'categories', loadChildren: () => import('app/category/category.module').then(m => m.CategoryModule)},
         ]
     },
@@ -199,6 +224,78 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'categories/form', loadChildren: () => import('app/category/add-category/add-category.module').then(m => m.AddCategoryModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'commodities', loadChildren: () => import('app/commodity/commodity.module').then(m => m.CommodityModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'commodities/form', loadChildren: () => import('app/commodity/add-commodity/add-commodity.module').then(m => m.AddCommodityModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'commodities/form/:id', loadChildren: () => import('app/commodity/add-commodity/add-commodity.module').then(m => m.AddCommodityModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'items', loadChildren: () => import('app/item/item.module').then(m => m.ItemModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'items/form', loadChildren: () => import('app/item/add-item/add-item.module').then(m => m.AddItemModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
+            {path: 'items/form/:id', loadChildren: () => import('app/item/add-item/add-item.module').then(m => m.AddItemModule)},
         ]
     },
 ];

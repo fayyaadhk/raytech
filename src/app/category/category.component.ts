@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
 import {CategoryService} from './category.service';
+import {MatTableDataSource} from "@angular/material/table";
+import {Category} from "../api/models/category";
 
 @Component({
   selector: 'app-category',
@@ -30,6 +32,8 @@ export class CategoryComponent implements OnInit {
     categories: any = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
+    dataSource: MatTableDataSource<Category>;
+    displayedColumns = ['name'];
 
     constructor(private cateogryService: CategoryService,
                 private router: Router,) {
@@ -55,12 +59,19 @@ export class CategoryComponent implements OnInit {
         });
     }
 
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
+
     private _getCategories(){
         this.cateogryService
             .getCategories()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((categories) => {
                 this.categories = categories;
+                this.dataSource = new MatTableDataSource(this.categories);
                 this.isLoading = false;
             });
     }

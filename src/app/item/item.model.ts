@@ -1,4 +1,4 @@
-export interface Item {
+export class ItemClass {
     id?: string;
     name?: string;
     thumbnail?: string;
@@ -6,6 +6,6 @@ export interface Item {
     shortDescription?: string;
     sku?: string;
     rrsp?: string;
-    category?: string;
-    brand?: string;
+    categoryId?: number;
+    brandId?: number;
 }

@@ -16,8 +16,15 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatNativeDateModule } from '@angular/material/core';
 import {SharedModule} from '../../shared/shared.module';
 import {AddRfqComponent} from './add-rfq.component';
+import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatTableModule} from '@angular/material/table';
 
 const addRfqRoutes: Route[] = [
     {
@@ -28,9 +35,10 @@ const addRfqRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        AddRfqComponent
+        AddRfqComponent,
+        RfqItemComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(addRfqRoutes),
         MatButtonModule,
         MatCheckboxModule,
@@ -46,8 +54,14 @@ const addRfqRoutes: Route[] = [
         MatSlideToggleModule,
         MatTooltipModule,
         MatProgressSpinnerModule,
+        MatStepperModule,
         MatExpansionModule,
-        SharedModule
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatRadioModule,
+        SharedModule,
+        MatDialogModule,
+        MatTableModule
     ]
 })
 export class AddRfqModule

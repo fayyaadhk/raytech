@@ -5,9 +5,10 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import {Client} from './client.model';
+import { CreateClientRequest } from '../api/models/create-client-request';
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLClients = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/Clients/details';
+const apiURLClients = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/clients';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
@@ -24,12 +25,16 @@ export class ClientService {
         return this.http.post<Client>(apiURLClients, clientData);
     }
 
-    getClient(clientId: string): Observable<Client> {
-        return this.http.get<Client>(`${apiURLClients}/${clientId}`);
+    addClient(model: CreateClientRequest): Observable<CreateClientRequest>{
+        return this.http.post<CreateClientRequest>(apiURLClients, model);
     }
 
-    updateClient(clientData: FormData, clientId: string): Observable<Client> {
-        return this.http.put<Client>(`${apiURLClients}/${clientId}`, clientData);
+    getClient(clientId: string): Observable<CreateClientRequest> {
+        return this.http.get<Client>(`${apiURLClients}/${clientId}/details`);
+    }
+
+    updateClient(model: CreateClientRequest, clientId: string): Observable<CreateClientRequest> {
+        return this.http.put<Client>(`${apiURLClients}/${clientId}`, model);
     }
 
     deleteClient(clientId: string): Observable<any> {

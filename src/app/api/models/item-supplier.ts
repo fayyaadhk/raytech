@@ -4,8 +4,8 @@ import { Item } from './item';
 import { Supplier } from './supplier';
 export interface ItemSupplier {
   id?: number;
-  item?: Item;
+  itemId?: number;
   price?: number;
   priceDate?: string;
-  supplier?: Supplier;
+  supplierId?: number;
 }

@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Item } from './item';
 import { Supplier } from './supplier';
-export interface RfqItem {
+export class RfqItem {
   created?: string;
   expectedArrivalDate?: string;
   id?: number;
@@ -10,5 +10,5 @@ export interface RfqItem {
   priceQuoted?: number;
   quantity?: number;
   status?: null | string;
-  supplier?: Supplier;
+  supplier: Supplier;
 }

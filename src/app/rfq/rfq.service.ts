@@ -3,10 +3,13 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, switchMap, take, tap} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {Rfq} from "./rfq.model";
+// import {Rfq} from "./rfq.model";
+import {Rfq} from '../api/models/rfq';
+import {Client} from "../client/client.model";
+import {CreateRfqRequest} from "../api/models/create-rfq-request";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLClients = 'http://localhost:3000/' + 'clients';
+const apiURLRfqs = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqs';
 
 @Injectable({ providedIn: 'root' })
 export class RfqService {
@@ -16,23 +19,23 @@ export class RfqService {
     constructor(private http: HttpClient, private router: Router) {}
 
     getRfqs(): Observable<Rfq[]> {
-        return this.http.get<Rfq[]>(apiURLClients);
+        return this.http.get<Rfq[]>(apiURLRfqs);
     }
 
-    createRfq(rfqData: FormData): Observable<Rfq> {
-        return this.http.post<Rfq>(apiURLClients, rfqData);
+    createRfq(model: CreateRfqRequest): Observable<Rfq> {
+        return this.http.post<Rfq>(apiURLRfqs, model);
     }
 
     getRfq(rfqId: string): Observable<Rfq> {
-        return this.http.get<Rfq>(`${apiURLClients}/${rfqId}`);
+        return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}`);
     }
 
-    updateRfq(rfqData: FormData, rfqId: string): Observable<Rfq> {
-        return this.http.put<Rfq>(`${apiURLClients}/${rfqId}`, rfqData);
+    updateRfq(model: Rfq, rfqId: string): Observable<Rfq> {
+        return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}`, model);
     }
 
     deleteRfq(rfqId: string): Observable<any> {
-        return this.http.delete<any>(`${apiURLClients}/${rfqId}`);
+        return this.http.delete<any>(`${apiURLRfqs}/${rfqId}`);
     }
 
 }

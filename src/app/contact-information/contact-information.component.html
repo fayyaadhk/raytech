@@ -4,110 +4,126 @@
     Client Contact Information
 </p>
 <div class="flex flex-col gt-xs:flex-row">
-    <mat-form-field class="flex-auto gt-xs:pr-3">
-        <input
-            matInput
-            [placeholder]="'Work'">
-        <mat-icon
-            class="icon-size-5"
-            matPrefix
-            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-    </mat-form-field>
-    <mat-form-field class="flex-auto gt-xs:pl-3">
-        <input
-            matInput
-            [placeholder]="'Work'">
-        <mat-icon
-            class="icon-size-5"
-            matPrefix
-            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Whatsapp'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Whatsapp'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Telephone'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Email'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Address Line 1'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Address Line 2'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Suburb'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'City'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Postal Code'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Country'">
-        <span matPrefix>/</span>
-    </mat-form-field>
-</div>
-<div class="flex">
-    <mat-form-field class="flex-auto">
-        <input
-            matInput
-            [placeholder]="'Province'">
-        <span matPrefix>/</span>
-    </mat-form-field>
+
+    <ng-container [formGroup]="form">
+        <ng-container formGroupName="contactInformation">
+            <div class="flex">
+                <mat-form-field class="flex-auto gt-xs:pr-3">
+                    <input
+                        matInput
+                        formControlName="work"
+                        [placeholder]="'Work'">
+                    <mat-icon
+                        class="icon-size-5"
+                        matPrefix
+                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                    <input
+                        matInput
+                        formControlName="cellphone"
+                        [placeholder]="'Cellphone'">
+                    <mat-icon
+                        class="icon-size-5"
+                        matPrefix
+                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.whatsapp"
+                        [placeholder]="'Whatsapp'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.telephone"
+                        [placeholder]="'Telephone'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.email"
+                        [placeholder]="'Email'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+        </ng-container>
+        <ng-container formGroupName="address">
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.line1"
+                        [placeholder]="'Address Line 1'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.line2"
+                        [placeholder]="'Address Line 2'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.suburb"
+                        [placeholder]="'Suburb'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.city"
+                        [placeholder]="'City'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.postalCode"
+                        [placeholder]="'Postal Code'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.country"
+                        [placeholder]="'Country'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+            <div class="flex">
+                <mat-form-field class="flex-auto">
+                    <input
+                        matInput
+                        formControlName="contactInformation.address.province"
+                        [placeholder]="'Province'">
+                    <span matPrefix>/</span>
+                </mat-form-field>
+            </div>
+        </ng-container>
+    </ng-container>
 </div>

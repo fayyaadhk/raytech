@@ -1,1 +1,552 @@
-<p>add-rfq works!</p>
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <!-- Loader -->
+        <!--        <div-->
+        <!--            class="absolute inset-x-0 bottom-0"-->
+        <!--            *ngIf="isLoading">-->
+        <!--            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>-->
+        <!--        </div>-->
+        <!-- Title -->
+        <!--        <div class="text-4xl font-extrabold tracking-tight">Add RFQ</div>-->
+        <div
+            class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+            <div class="flex-1 min-w-0">
+                <!-- Breadcrumbs -->
+                <div class="flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/rfqs">RFQ's</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Add RFQ</a>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="mt-2">
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                        Add RFQ
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Add product button -->
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="onCancle()">
+                <mat-icon [svgIcon]="'heroicons_outline:arrow-circle-left'"></mat-icon>
+                <span class="ml-2 mr-1">Cancel</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+        <div class="flex flex-col flex-auto min-w-0">
+            <!-- Header -->
+
+            <!-- Main -->
+            <div class="flex-auto p-6 sm:p-10">
+
+                <div class="max-w-3xl">
+
+                    <div class="prose prose-sm max-w-3xl">
+                        <h2>New RFQ Details</h2>
+                        <p>
+                            Here's a very simple form layout to showcase the form fields.
+                        </p>
+                    </div>
+
+                    <form
+                        class="p-4 bg-card shadow rounded overflow-hidden"
+                        [formGroup]="verticalStepperForm">
+                        <mat-horizontal-stepper
+                            [linear]="true"
+                            #verticalStepper>
+                            <mat-step
+                                [formGroupName]="'step1'"
+                                [stepControl]="verticalStepperForm.get('step1')"
+                                #verticalStepperStep1>
+                                <ng-template matStepLabel>RFQ Details</ng-template>
+                                <p class="my-6 font-medium">
+                                    Fill in RFQ details
+                                </p>
+                                <div class="flex">
+                                    <mat-form-field
+                                        [ngClass]="formFieldHelpers"
+                                        class="w-full"
+                                        [floatLabel]="'always'">
+                                        <mat-label>RFQ Number</mat-label>
+                                        <input
+                                            matInput
+                                            [formControlName]="'rfqNumber'"
+                                            [placeholder]="'Portal RFQ Number'">
+                                    </mat-form-field>
+                                </div>
+                                <div class="flex flex-col gt-xs:flex-row">
+                                    <mat-form-field
+                                        [ngClass]="formFieldHelpers"
+                                        class="flex-auto">
+                                        <mat-label>Date Due</mat-label>
+                                        <input
+                                            matInput
+                                            [formControlName]="'dueDate'"
+                                            [placeholder]="'Date for RFQ deadline'"
+                                            [matDatepicker]="picker1">
+                                        <mat-datepicker-toggle
+                                            matSuffix
+                                            [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field
+                                        [ngClass]="formFieldHelpers"
+                                        class="fuse-mat-textarea flex-auto">
+                                        <mat-label>Description</mat-label>
+                                        <textarea
+                                            matInput
+                                            [formControlName]="'description'"
+                                            [placeholder]="'Description/Notes'"
+                                            matTextareaAutosize></textarea>
+                                    </mat-form-field>
+                                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                                        <mat-label>Client</mat-label>
+                                        <!--                                    <input matInput formControlName="client">-->
+                                        <mat-select
+                                            name="client" formControlName="client">
+                                            <mat-option *ngFor="let client of clients"
+                                                        [value]="client.id">{{client.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            matPrefix
+                                            [svgIcon]="'heroicons_solid:user'"></mat-icon>
+                                    </mat-form-field>
+                                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                                        <mat-label>Buyer</mat-label>
+                                        <mat-select
+                                            name="client" formControlName="buyer">
+                                            <mat-option *ngFor="let client of clients"
+                                                        [value]="client.id">{{client.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            matPrefix
+                                            [svgIcon]="'heroicons_solid:user'"></mat-icon>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                                        <mat-label>RFQ Status</mat-label>
+                                        <mat-select
+                                            name="status"
+                                            formControlName="status"
+                                            [placeholder]="'Status'">
+                                            <mat-option *ngFor="let status of statuses"
+                                                        [value]="status.name">{{status.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            matPrefix
+                                            [svgIcon]="'heroicons_solid:document'"></mat-icon>
+                                    </mat-form-field>
+
+
+                                    <mat-label>RFQ Document</mat-label>
+
+                                    <!-- Image Preview -->
+                                    <div class="form-group">
+                                        <div class="preview" *ngIf="rfqDocumentPreview && rfqDocumentPreview !== null">
+                                            <img [src]="rfqDocumentPreview" [alt]="verticalStepperForm.value.name">
+                                        </div>
+                                    </div>
+                                    <input type="file" (change)="uploadRFQDocument($event)">
+
+
+                                </div>
+                                <div class="flex justify-end">
+                                    <button
+                                        class="px-8"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        [disabled]="verticalStepperStep1.stepControl.pristine || verticalStepperStep1.stepControl.invalid"
+                                        type="button"
+                                        matStepperNext>
+                                        Next
+                                    </button>
+                                </div>
+                            </mat-step>
+
+                            <!--                        <mat-step-->
+                            <!--                            [formGroupName]="'step2'"-->
+                            <!--                            [stepControl]="verticalStepperForm.get('step2')"-->
+                            <!--                            #verticalStepperStep2>-->
+                            <!--                            <ng-template matStepLabel>Quotation Details</ng-template>-->
+                            <!--                            <p class="my-6 font-medium">-->
+                            <!--                                Prepared Quotation for RFQ-->
+                            <!--                            </p>-->
+                            <!--                            <div class="flex flex-col gt-xs:flex-row">-->
+                            <!--                                &lt;!&ndash; Image Preview &ndash;&gt;-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <div class="preview" *ngIf="quoteDocumentPreview && quoteDocumentPreview !== null">-->
+                            <!--                                        <img [src]="quoteDocumentPreview" [alt]="verticalStepperForm.value.name">-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                                <input type="file" (change)="uploadQuotation($event)">-->
+
+                            <!--                                <mat-form-field-->
+                            <!--                                    [ngClass]="formFieldHelpers"-->
+                            <!--                                    class="flex-auto">-->
+                            <!--                                    <mat-label>Date Quote was submitted</mat-label>-->
+                            <!--                                    <input-->
+                            <!--                                        matInput-->
+                            <!--                                        [formControlName]="'quoteSentDate'"-->
+                            <!--                                        [placeholder]="'Quote Sent date'"-->
+                            <!--                                        [matDatepicker]="quoteDatePicker">-->
+                            <!--                                    <mat-datepicker-toggle-->
+                            <!--                                        matSuffix-->
+                            <!--                                        [for]="quoteDatePicker"></mat-datepicker-toggle>-->
+                            <!--                                    <mat-datepicker #quoteDatePicker></mat-datepicker>-->
+                            <!--                                </mat-form-field>-->
+
+                            <!--                            </div>-->
+
+
+                            <!--                            <div class="flex justify-end">-->
+                            <!--                                <button-->
+                            <!--                                    class="px-8 mr-2"-->
+                            <!--                                    mat-flat-button-->
+                            <!--                                    [color]="'accent'"-->
+                            <!--                                    type="button"-->
+                            <!--                                    matStepperPrevious>-->
+                            <!--                                    Back-->
+                            <!--                                </button>-->
+                            <!--                                <button-->
+                            <!--                                    class="px-8"-->
+                            <!--                                    mat-flat-button-->
+                            <!--                                    [color]="'primary'"-->
+                            <!--                                    [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"-->
+                            <!--                                    type="button"-->
+                            <!--                                    matStepperNext>-->
+                            <!--                                    Next-->
+                            <!--                                </button>-->
+                            <!--                            </div>-->
+                            <!--                        </mat-step>-->
+
+                            <mat-step
+                                [formGroupName]="'step3'"
+                                [stepControl]="verticalStepperForm.get('step3')">
+                                <ng-template matStepLabel>RFQ Items</ng-template>
+                                <p class="my-6 font-medium">
+                                    Select items from inventory for this RFQ
+                                </p>
+                                <div class="flex flex-col gt-sm:flex-row">
+                                    <div class="flex flex-col">
+                                        <button mat-button (click)="openDialog()">Add item</button>
+                                    </div>
+                                    <!--                                <ng-container *ngFor="let item of items; let i = index">-->
+                                    <!--                                    <mat-checkbox-->
+                                    <!--                                        class="flex items-center h-10 min-h-10 px-4"-->
+                                    <!--                                        [value]="item.id"-->
+                                    <!--                                        (change)="onCheckChange($event)">-->
+                                    <!--                                        {{item.name}}-->
+                                    <!--                                    </mat-checkbox>-->
+                                    <!--                                    <mat-expansion-panel formGroupName="rfqItems">-->
+                                    <!--                                        <mat-expansion-panel-header>-->
+                                    <!--                                            <mat-panel-title>-->
+                                    <!--                                                Item details-->
+                                    <!--                                            </mat-panel-title>-->
+                                    <!--                                            <mat-panel-description>-->
+                                    <!--                                                Add item quantity, status, etc-->
+                                    <!--                                            </mat-panel-description>-->
+                                    <!--                                        </mat-expansion-panel-header>-->
+                                    <!--                                        <div class="flex">-->
+                                    <!--                                            <mat-form-field class="flex-auto gt-xs:pr-3">-->
+                                    <!--                                                <input-->
+                                    <!--                                                    matInput-->
+                                    <!--                                                    formControlName="quantity"-->
+                                    <!--                                                    [placeholder]="'Quantity'">-->
+                                    <!--                                                <mat-icon-->
+                                    <!--                                                    class="icon-size-5"-->
+                                    <!--                                                    matPrefix-->
+                                    <!--                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>-->
+                                    <!--                                            </mat-form-field>-->
+                                    <!--                                            <mat-form-field class="flex-auto gt-xs:pr-3">-->
+                                    <!--                                                <input-->
+                                    <!--                                                    matInput-->
+                                    <!--                                                    formControlName="status"-->
+                                    <!--                                                    [placeholder]="'Status'">-->
+                                    <!--                                                <mat-icon-->
+                                    <!--                                                    class="icon-size-5"-->
+                                    <!--                                                    matPrefix-->
+                                    <!--                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>-->
+                                    <!--                                            </mat-form-field>-->
+                                    <!--                                            <mat-form-field class="flex-auto gt-xs:pr-3">-->
+                                    <!--                                                <input-->
+                                    <!--                                                    matInput-->
+                                    <!--                                                    formControlName="price"-->
+                                    <!--                                                    [placeholder]="'price'">-->
+                                    <!--                                                <mat-icon-->
+                                    <!--                                                    class="icon-size-5"-->
+                                    <!--                                                    matPrefix-->
+                                    <!--                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>-->
+                                    <!--                                            </mat-form-field>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </mat-expansion-panel>-->
+                                    <!--                                </ng-container>-->
+
+
+                                    <!--                                <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">-->
+                                    <!--                                    <span class="font-medium mb-2">Push Notifications</span>-->
+                                    <!--                                    <mat-radio-group-->
+                                    <!--                                        class="flex flex-col"-->
+                                    <!--                                        [color]="'primary'"-->
+                                    <!--                                        >-->
+                                    <!--                                        <mat-radio-button-->
+                                    <!--                                            class="mb-2"-->
+                                    <!--                                            [value]="'everything'">-->
+                                    <!--                                            Everything-->
+                                    <!--                                        </mat-radio-button>-->
+                                    <!--                                        <mat-radio-button-->
+                                    <!--                                            class="mb-2"-->
+                                    <!--                                            [value]="'just-good'">-->
+                                    <!--                                            Just the good stuff-->
+                                    <!--                                        </mat-radio-button>-->
+                                    <!--                                        <mat-radio-button [value]="'no-push'">-->
+                                    <!--                                            No push notifications-->
+                                    <!--                                        </mat-radio-button>-->
+                                    <!--                                    </mat-radio-group>-->
+                                    <!--                                </div>-->
+                                    <!--                                Add Expansion Panel-->
+                                </div>
+                                <div class="flex flex-col gt-sm:flex-row">
+                                    <div class="flex flex-col">
+                                            <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                                                <ng-container matColumnDef="id">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.itemId}} </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="name">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.name}} </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="quantity">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.quantity}} </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="price">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.price}} </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="actions">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems">
+                                                        <div class="truncate">
+                                                            <button
+                                                                (click)="updateRfqItem(rfqItems.itemId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
+                                                                <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+
+                                                            </button>
+                                                            <button
+                                                                (click)="removeRfqItem(rfqItems.id)">
+                                                                <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                                                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                                            </mat-table>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gt-sm:flex-row">
+                                    <div class="flex flex-col">
+                                        <mat-expansion-panel formGroupName="itemForm">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Add Item
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    Add additional items
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="name"
+                                                        [placeholder]="'Name'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="description"
+                                                        [placeholder]="'Description'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="shortDescription"
+                                                        [placeholder]="'Short Description'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="sku"
+                                                        [placeholder]="'SKU'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="rrsp"
+                                                        [placeholder]="'RRSP'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="thumbnail"
+                                                        [placeholder]="'Thumbnail'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="description"
+                                                        [placeholder]="'Description'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="category"
+                                                        [placeholder]="'Category'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                    <input
+                                                        matInput
+                                                        formControlName="brand"
+                                                        [placeholder]="'Brand'">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        matPrefix
+                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <button
+                                                mat-flat-button
+                                                (click)="addItem()"
+                                                [color]="'primary'">
+                                                Add Item
+                                            </button>
+                                        </mat-expansion-panel>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mt-8">
+                                    <button
+                                        class="px-8 mr-2"
+                                        mat-flat-button
+                                        [color]="'accent'"
+                                        type="button"
+                                        matStepperPrevious>
+                                        Back
+                                    </button>
+                                    <button
+                                        class="px-8"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        type="button"
+                                        matStepperNext>
+                                        Next
+                                    </button>
+                                </div>
+                            </mat-step>
+
+                            <mat-step>
+                                <ng-template matStepLabel>Done</ng-template>
+                                <p class="my-6 font-medium">
+                                    Thank you for completing our form! You can reset the form if you would like to
+                                    change your
+                                    information.
+                                </p>
+                                <div class="flex justify-end mt-8">
+                                    <button
+                                        class="px-8 mr-2"
+                                        mat-flat-button
+                                        [color]="'accent'"
+                                        type="button"
+                                        matStepperPrevious>
+                                        Back
+                                    </button>
+                                    <button
+                                        class="px-8"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        type="reset"
+                                        (click)="onSubmit()">
+                                        Submit
+                                    </button>
+                                </div>
+                            </mat-step>
+                        </mat-horizontal-stepper>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

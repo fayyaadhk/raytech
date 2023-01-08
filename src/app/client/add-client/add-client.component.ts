@@ -6,27 +6,53 @@ import {Client} from '../client.model';
 import {FuseConfirmationService} from '../../../@fuse/services/confirmation';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
+import {CreateClientRequest} from "../../api/models/create-client-request";
+import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-client',
   templateUrl: './add-client.component.html',
-  styleUrls: ['./add-client.component.scss']
+    styles: [
+        /* language=SCSS */`
+            .inventory-grid {
+                grid-template-columns: 48px auto 40px;
+
+                @screen sm {
+                    grid-template-columns: 48px auto 112px 72px;
+                }
+
+                @screen md {
+                    grid-template-columns: 48px 112px auto 112px 72px;
+                }
+
+                @screen lg {
+                    grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+                }
+            }
+        `
+    ],
 })
 export class AddClientComponent implements OnInit, OnDestroy{
     editmode = false;
     form: FormGroup;
+    contactFormroup;
     isSubmitted = false;
     endsubs$: Subject<any> = new Subject();
     addSuccess = false;
     updateSuccess = false;
     currentClientId: string;
     imageDisplay: string | ArrayBuffer;
+    isLoading: boolean = false;
+    client: any = null;
+    updateOld: boolean = false;
+    public contactInfo: any = {};
 
     constructor(private clientService: ClientService,
                 private formBuilder: FormBuilder,
                 private _fuseConfirmationService: FuseConfirmationService,
                 private location: Location,
                 private route: ActivatedRoute) {
+
     }
 
     ngOnInit() {
@@ -42,26 +68,67 @@ export class AddClientComponent implements OnInit, OnDestroy{
     private _initForm() {
         this.form = this.formBuilder.group({
             name: ['', Validators.required],
-            thumbnail: ['', Validators.required],
-            mobile: ['', Validators.required],
-            email: ['', Validators.required],
-            active: ['']
+            buyer: [null],
+            contactInformation: this.formBuilder.group({
+                work: [''],
+                cellphone: [''],
+                telephone: [''],
+                whatsapp: [''],
+                email: [''],
+                address: this.formBuilder.group({
+                    line1: [''],
+                    line2: [''],
+                    suburb: [''],
+                    postalCode: [''],
+                    city: [''],
+                    province: [''],
+                    country: [''],
+                })
+            }),
+            rfq: [null],
         });
     }
 
     onSubmit() {
         this.isSubmitted = true;
+        this.isLoading = true;
+
         if (this.form.invalid) {return;}
 
-        const clientFormData = new FormData();
-        Object.keys(this.clientForm).map((key) => {
-            clientFormData.append(key, this.clientForm[key].value);
-            console.log(this.clientForm[key].value);
-        });
+        // const clientFormData = new FormData();
+        // Object.keys(this.clientForm).map((key) => {
+        //     clientFormData.append(key, this.clientForm[key].value);
+        //     console.log(this.clientForm[key].value);
+        // });
+        const updateClient: CreateClientRequest = new CreateClientRequest();
+        // updateClient.name = this.form.get('name').value;
+        // updateClient.buyer = this.form.get('buyer').value;
+        // updateClient.contactInformation = this.form.get('contactInformation').value;
+
         if (this.editmode) {
-            this._updateClient(clientFormData);
+            if (this.clientContactInformation){
+                console.log('>>> this.client', this.client.contactInformation);
+                updateClient.name = this.form.get('name').value;
+                updateClient.buyer = this.form.get('buyer').value;
+                updateClient.contactInformation = this.form.get('contactInformation').value;
+                updateClient.contactInformation.id = this.client.contactInformation.id;
+                updateClient.contactInformation.address.id = this.client.contactInformation.address.id;
+                this.updateOld = false;
+            }
+            else{
+                if(!this.updateOld){
+                    updateClient.name = this.form.get('name').value;
+                    updateClient.buyer = this.form.get('buyer').value;
+                    updateClient.contactInformation = this.form.get('contactInformation').value;
+                }
+            }
+            this._updateClient(updateClient);
+            this.isLoading = false;
+            // this.location.back();
         } else {
-            this._addClient(clientFormData);
+            this._addClient();
+            this.isLoading = false;
+            this.location.back();
         }
     }
     onCancle() {
@@ -81,15 +148,48 @@ export class AddClientComponent implements OnInit, OnDestroy{
         }
     }
 
-    private _addClient(clientData: FormData) {
-        if(clientData){
+    private _addClient() {
+        console.log('>>> GOT INTO ADD');
+        const newClient: CreateClientRequest = new CreateClientRequest();
+        console.log('>>> INSTANTIATED');
+
+        newClient.name = this.form.get('name').value;
+        console.log('>>> ASSIGNED NAME');
+
+        newClient.buyer = this.form.get('buyer').value;
+        console.log('>>> t=assigned work', this.form.get('contactInformation').value);
+        if (this.form.get('contactInformation').value){
+            newClient.contactInformation = this.form.get('contactInformation').value;
+            console.log('>>> newCLient', newClient);
+        }
+        else{
+            newClient.contactInformation = null;
+        }
+      /*  newClient.contactInformation.work = this.form.get(['contactInformation','work']).value;
+
+        //newClient.contactInformation.work = this.form.controls['contactInformation'].value.work;
+        newClient.contactInformation.telephone = this.form.get(['contactInformation','telephone']).value;
+        newClient.contactInformation.cellphone = this.form.get(['contactInformation','cellphone']).value;
+        newClient.contactInformation.email = this.form.get(['contactInformation','email']).value;
+        newClient.contactInformation.whatsapp = this.form.get(['contactInformation','whatsapp']).value;
+        newClient.contactInformation.address.line1 = this.form.get(['contactInformation','address', 'line1']).value;
+        newClient.contactInformation.address.line2 = this.form.get(['contactInformation','address', 'line2']).value;
+        newClient.contactInformation.address.postalCode = this.form.get(['contactInformation','address', 'postalCode']).value;
+        newClient.contactInformation.address.suburb = this.form.get(['contactInformation','address', 'suburb']).value;
+        newClient.contactInformation.address.city = this.form.get(['contactInformation','address', 'city']).value;
+        newClient.contactInformation.address.province = this.form.get(['contactInformation','address', 'province']).value;
+        newClient.contactInformation.address.country = this.form.get(['contactInformation','address', 'country']).value;*/
+        //newClient.rfQs = this.form.get('rfq').value;
+
+        if(newClient){
             this.clientService
-                .createClient(clientData)
+                .addClient(newClient)
                 .pipe(takeUntil(this.endsubs$))
                 .subscribe(
-                    (client: Client) => {
+                    (client) => {
                         this.addSuccess = true;
                         console.log(client);
+                        this.form.reset();
                     },
                     () => {
                         this.addSuccess = false;
@@ -97,11 +197,11 @@ export class AddClientComponent implements OnInit, OnDestroy{
                 );
         }
         else{
-            console.log(clientData);
+            console.log(newClient);
         }
     }
 
-    private _updateClient(clientData: FormData) {
+    private _updateClient(clientData: CreateClientRequest) {
         this.clientService
             .updateClient(clientData, this.currentClientId)
             .pipe(takeUntil(this.endsubs$))
@@ -116,6 +216,7 @@ export class AddClientComponent implements OnInit, OnDestroy{
     }
 
     private _checkEditMode() {
+        console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
             if (params.id) {
                 this.editmode = true;
@@ -124,16 +225,45 @@ export class AddClientComponent implements OnInit, OnDestroy{
                     .getClient(params.id)
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((client) => {
+                        this.client = client;
                         this.clientForm.name.setValue(client.name);
-                        this.clientForm.mobile.setValue(client.mobile);
-                        this.clientForm.email.setValue(client.email);
-                        this.clientForm.active.setValue(client.active);
-                        this.imageDisplay = client.thumbnail;
-                        this.clientForm.thumbnail.setValidators([]);
-                        this.clientForm.thumbnail.updateValueAndValidity();
+                        this.clientForm.buyer.setValue(client.buyer);
+                        console.log('HERE1', client.contactInformation);
+
+                        if(this.client.contactInformation){
+                            this.contactInfo = {
+                                work: client.contactInformation.work,
+                                cellphone: client.contactInformation.cellphone,
+                                telephone: client.contactInformation.telephone,
+                                email: client.contactInformation.email,
+                                whatsapp: client.contactInformation.whatsapp,
+                                address: {
+                                    line1: client.contactInformation.address.line1,
+                                    line2: client.contactInformation.address.line2,
+                                    suburb: client.contactInformation.address.suburb,
+                                    city: client.contactInformation.address.city,
+                                    postalCode: client.contactInformation.address.postalCode,
+                                    province: client.contactInformation.address.province,
+                                    country: client.contactInformation.address.country
+                                }
+                            };
+
+                            console.log("this.contactInfo", this.contactInfo);
+                            this.clientForm.contactInformation.setValue(this.contactInfo);
+                        }
+                        else{
+                            console.log('After IF ');
+                            //this.clientForm.contactInformation.setValue(client.contactInformation);
+                        }
+                        //this.clientForm.thumbnail.setValidators([]);
+                        //this.clientForm.thumbnail.updateValueAndValidity();
                     });
             }
         });
+    }
+
+    get clientContactInformation(){
+        return this.client.contactInformation;
     }
 
     get clientForm() {

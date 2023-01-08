@@ -3,10 +3,10 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-import {Category} from './category.model';
+import {Category} from '../api/models/category';
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLCategories = 'http://localhost:3000/' + 'categories';
+const apiURLCategories = 'http://raytechholdings-001-site1.etempurl.com/api/' + 'categories';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
@@ -19,8 +19,8 @@ export class CategoryService {
         return this.http.get<Category[]>(apiURLCategories);
     }
 
-    createCategory(categoryData: FormData): Observable<Category> {
-        return this.http.post<Category>(apiURLCategories, categoryData);
+    createCategory(model: Category): Observable<Category> {
+        return this.http.post<Category>(apiURLCategories, model);
     }
 
     getCategory(categoryId: string): Observable<Category> {

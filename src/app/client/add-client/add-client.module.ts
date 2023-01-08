@@ -17,19 +17,22 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCardModule} from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDividerModule} from '@angular/material/divider';
 import {SharedModule} from '../../shared/shared.module';
 import {AddClientComponent} from './add-client.component';
+import {ContactInformationComponent} from '../../contact-information/contact-information.component';
 
 const clientRoutes: Route[] = [
     {
         path     : '',
-        component: AddClientComponent
+        component: AddClientComponent,
     }
 ];
 
 @NgModule({
     declarations: [
-        AddClientComponent
+        AddClientComponent,
+        ContactInformationComponent
     ],
     imports     : [
         RouterModule.forChild(clientRoutes),
@@ -49,6 +52,7 @@ const clientRoutes: Route[] = [
         MatCardModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
+        MatDividerModule,
         SharedModule
     ]
 })
