@@ -81,6 +81,8 @@ export class RfqItemComponent implements OnInit {
                 this.isLoading = false;
                 this.dialogRef.close(
                     {
+                        editMode: this.editmode,
+                        rfqItemId: this.data.rfqItemId,
                         itemId: this.rfqItemForm.get('itemId').value,
                         name: this.itemName,
                         quantity: this.rfqItemForm.get('quantity').value,

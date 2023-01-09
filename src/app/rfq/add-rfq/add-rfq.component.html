@@ -347,10 +347,10 @@
 
                                                 <ng-container matColumnDef="actions">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems">
+                                                    <mat-cell *matCellDef="let rfqItems; let i = index">
                                                         <div class="truncate">
                                                             <button
-                                                                (click)="updateRfqItem(rfqItems.itemId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
+                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
                                                                 <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                             </button>

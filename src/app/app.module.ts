@@ -39,9 +39,9 @@ const routerConfig: ExtraOptions = {
     declarations: [
         AppComponent
     ],
-    providers:[
-        {provide: LocationStrategy, useClass: PathLocationStrategy}
-    ],
+    // providers:[
+    //     {provide: LocationStrategy, useClass: PathLocationStrategy}
+    // ],
     imports     : [
         BrowserModule,
         BrowserAnimationsModule,
