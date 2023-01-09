@@ -40,7 +40,8 @@ import {CreateRfqRequest} from "../../api/models/create-rfq-request";
         `
     ],
 })
-export class AddRfqComponent implements OnInit, AfterViewInit {
+
+export class AddRfqComponent implements OnInit {
     editmode = false;
     verticalStepperForm: FormGroup;
     quoteDocumentPreview: string;
@@ -84,21 +85,7 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
                 private router: Router) {
     }
 
-    //
-    // private onChanged(event: any) {
-    //     console.log(">>> this.rfqItems", this.rfqForm["step3"].value["rfqItems"]);
-    //     const selectedRFQItems = (this.verticalStepperForm.controls['step3'].value["rfqItems"] as FormArray);
-    //     if (event.target.checked) {
-    //         selectedRFQItems.push(new FormControl(event.target.value));
-    //     } else {
-    //         const index = selectedRFQItems.controls
-    //             .findIndex(x => x.value === event.target.value);
-    //         selectedRFQItems.removeAt(index);
-    //     }
-    // }
-
     openDialog() {
-        console.log("before open");
 
         const dialogRef = this.dialog.open(RfqItemComponent, {
             width: '600px',
@@ -108,12 +95,7 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(res => {
             // received data from dialog-component
             if (res) {
-                //if (this.rfqItems.{
-
-                //} else {
-                    this.rfqItems.push(res);
-                //}
-
+                this.rfqItems.push(res);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
                 console.log(res.data);
                 console.log(this.rfqItems);
@@ -121,15 +103,13 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         })
     }
 
-    private rfqItemExist(itemId: number): boolean {
-        return this.rfqItems.some(x => x.itemId === itemId);
-    }
+    updateRfqItem(rfqItemId: number, rfqId: number, quantity: string, price: number, status: string) {
 
-    updateRfqItem(rfqId: number, quantity: string, price: number, status: string) {
         const dialogRef = this.dialog.open(RfqItemComponent, {
             width: '600px',
             data: {
                 modalTitle: 'Add New RFQ Item',
+                rfqItemId: rfqItemId,
                 itemId: rfqId,
                 quantity: quantity,
                 price: price,
@@ -138,18 +118,14 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            // received data from dialog-component
-            if (this.rfqItemExist(res.itemId)) {
-                let updateItem = this.rfqItems.find(this.findIndexToUpdate, res.itemId);
+            console.log(">>> res", res);
+            if (res.editMode) {
 
-                let index = this.rfqItems.indexOf(updateItem);
-
-                this.rfqItems[index] = res;
+                this.rfqItems[res.rfqItemId] = res;
 
                 this.dataSource = new MatTableDataSource(this.rfqItems);
-                console.log(res.data);
                 console.log(this.rfqItems);
-            }else{
+            } else {
                 this.rfqItems.push(res);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
 
@@ -158,24 +134,16 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         })
     }
 
-    findIndexToUpdate(newItem) {
-        return newItem.itemId === this;
-    }
-
     removeRfqItem(rfqId: number) {
         this.rfqItems.splice(rfqId, 1);
         this.dataSource = new MatTableDataSource(this.rfqItems);
     }
-
 
     ngOnInit() {
         this.isLoading = true;
         this._initForm();
         this._getClients();
         this._getItems();
-    }
-
-    ngAfterViewInit() {
     }
 
     private _initForm() {
@@ -215,32 +183,30 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         //this.addCheckboxes();
     }
 
-    onCheckChange(event) {
-        const formArray: FormArray = this.verticalStepperForm.get('step3.rfqItems') as FormArray;
-        /* Selected */
-        if (event.checked) {
-            // Add a new control in the arrayForm
-            console.log(event.source.value);
-            formArray.push(new FormControl(event.source.value));
-        }
-        /* unselected */
-        else {
-            // find the unselected element
-            let i: number = 0;
-            formArray.controls.forEach((ctrl: FormControl) => {
-                if (ctrl.value == event.checked) {
-                    // Remove the unselected element from the arrayForm
-                    formArray.removeAt(i);
-                    return;
-                }
+    /* onCheckChange(event) {
+         const formArray: FormArray = this.verticalStepperForm.get('step3.rfqItems') as FormArray;
+         /!* Selected *!/
+         if (event.checked) {
+             // Add a new control in the arrayForm
+             console.log(event.source.value);
+             formArray.push(new FormControl(event.source.value));
+         }
+         else {
+             // find the unselected element
+             let i: number = 0;
+             formArray.controls.forEach((ctrl: FormControl) => {
+                 if (ctrl.value == event.checked) {
+                     // Remove the unselected element from the arrayForm
+                     formArray.removeAt(i);
+                     return;
+                 }
 
-                i++;
-            });
-        }
-    }
+                 i++;
+             });
+         }
+     }*/
 
     ngOnDestroy() {
-        //this.endsubs$.next(null);
         this.endsubs$.complete();
     }
 
@@ -251,13 +217,6 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         if (this.verticalStepperForm.invalid) {
             return;
         }
-        // const rfqFormData = new FormData();
-        // Object.keys(this.rfqForm).map((key) => {
-        //     rfqFormData.append(key, this.rfqForm[key].value);
-        // });
-        // updateClient.name = this.form.get('name').value;
-        // updateClient.buyer = this.form.get('buyer').value;
-        // updateClient.contactInformation = this.form.get('contactInformation').value;
 
         if (this.editmode) {
             const updateRfq = new Rfq();
@@ -272,7 +231,7 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
             this._updateRfq(updateRfq);
             this.isLoading = false;
         }
-        // this.location.back();
+
         else {
             this._addRfq();
             this.isLoading = false;
@@ -285,51 +244,16 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
         this.location.back();
     }
 
-    filterItems(event) {
-        const value = event.target.value.toLowerCase();
-
-        this.filteredItems = this.items.filter(item => item.name.toLowerCase().includes(value));
-    }
-
-    filterItemsInputKeyDown(event) {
-        // Return if the pressed key is not 'Enter'
-        if (event.key !== 'Enter') {
-            return;
-        }
-
-        // If there is no tag available...
-        if (this.filteredItems.length === 0) {
-            // Create the tag
-            //this.createTag(event.target.value);
-
-            // Clear the input
-            event.target.value = '';
-
-            // Return
-            return;
-        }
-    }
-
     addItem() {
-        console.log('>>> GOT INTO ADD');
         const newItem: ItemClass = new ItemClass();
-        console.log('>>> initialised ');
         newItem.name = this.verticalStepperForm.get('step3.itemForm.name').value;
-        console.log('>>> get value name from controller', this.verticalStepperForm.get('step3.itemForm.name').value);
         newItem.shortDescription = this.verticalStepperForm.get(['step3.itemForm.shortDescription']).value;
-        console.log('>>> get value short description from controller', this.verticalStepperForm.get(['step3.itemForm.shortDescription']).value);
         newItem.description = this.verticalStepperForm.get(['step3.itemForm.description']).value;
-        console.log('>>> get value description from controller', this.verticalStepperForm.get(['step3.itemForm.description']).value);
         newItem.sku = this.verticalStepperForm.get(['step3.itemForm.sku']).value;
-        console.log('>>> get value sku from controller', this.verticalStepperForm.get(['step3.itemForm.sku']).value);
         newItem.rrsp = this.verticalStepperForm.get(['step3.itemForm.rrsp']).value;
-        console.log('>>> get value rrsp from controller', this.verticalStepperForm.get(['step3.itemForm.rrsp']).value);
         newItem.thumbnail = this.verticalStepperForm.get(['step3.itemForm.thumbnail']).value;
-        console.log('>>> get value thumbnail from controller', this.verticalStepperForm.get(['step3.itemForm.thumbnail']).value);
         newItem.categoryId = this.verticalStepperForm.get(['step3.itemForm.category']).value;
-        console.log('>>> get value category from controller', this.verticalStepperForm.get(['step3.itemForm.category']).value);
         newItem.brandId = this.verticalStepperForm.get(['step3.itemForm.brand']).value;
-        console.log('>>> get value brand from controller', this.verticalStepperForm.get(['step3.itemForm.brand']).value);
         console.log('>>> get values from controller', newItem);
         this.itemService
             .addItem(newItem)
@@ -377,7 +301,7 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
             clientId: this.verticalStepperForm.get('step1.client').value,
             buyerId: this.verticalStepperForm.get('step1.buyer').value,
             due: this.verticalStepperForm.get('step1.dueDate').value,
-            rfqNumber:this.verticalStepperForm.get('step1.rfqNumber').value,
+            rfqNumber: this.verticalStepperForm.get('step1.rfqNumber').value,
             rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value
         };
 
@@ -417,7 +341,6 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
     }
 
     private _checkEditMode() {
-        console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
             if (params.id) {
                 this.editmode = true;
@@ -441,12 +364,8 @@ export class AddRfqComponent implements OnInit, AfterViewInit {
                         this.rfqForm.purchaseOrderReceivedDate.setValue(rfq.purchaseOrderReceivedDate);
                         this.rfqForm.purchaseOrderDueDate.setValue(rfq.purchaseOrderDueDate);
                         this.rfqForm.purchaseOrderDocumentUrl.setValue(rfq.purchaseOrderDocumentUrl);
-                        console.log('HERE1', rfq.description);
 
-                        console.log("Items ", rfq.items);
-                        //this.clientForm.contactInformation.setValue(this.contactInfo);
-                        //this.clientForm.thumbnail.setValidators([]);
-                        //this.clientForm.thumbnail.updateValueAndValidity();
+                        console.log("rfq.items ", rfq.items);
                     });
             }
         });
