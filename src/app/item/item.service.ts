@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import {ItemClass} from "./item.model";
 import {Item} from '../api/models/item';
 import {SupplierItem} from "../api/models/supplier-item";
+import {DetailedItem} from "../api/models/detailed-item";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 // const apiURLItems = 'http://localhost:3000/' + 'Items';
@@ -36,6 +37,10 @@ export class ItemService {
 
     getItemWithDetails(itemId: number): Observable<Item> {
         return this.http.get<Item>(`${apiURLItems}/${itemId}/details`);
+    }
+
+    getItemWithAllDetails(itemId: number): Observable<DetailedItem> {
+        return this.http.get<DetailedItem>(`${apiURLItems}/${itemId}/details/full`);
     }
 
     getItemSuppliers(itemId: number): Observable<SupplierItem[]> {
