@@ -19,17 +19,25 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
 import {SharedModule} from '../shared/shared.module';
 import {ItemComponent} from './item.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
+import {MatDividerModule} from "@angular/material/divider";
 
 const itemRoutes: Route[] = [
     {
         path     : '',
         component: ItemComponent
+    },
+    {
+        path     : 'details/:id',
+        component: ItemDetailsComponent,
+
     }
 ];
 
 @NgModule({
     declarations: [
-        ItemComponent
+        ItemComponent,
+        ItemDetailsComponent
     ],
     imports     : [
         RouterModule.forChild(itemRoutes),
@@ -49,6 +57,7 @@ const itemRoutes: Route[] = [
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatTableModule,
+        MatDividerModule,
         SharedModule
     ]
 })

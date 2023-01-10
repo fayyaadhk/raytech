@@ -36,9 +36,14 @@
     </div>
 
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{item.id}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-            <mat-cell *matCellDef="let item"> {{item.name}} </mat-cell>
+            <mat-cell *matCellDef="let item"> <a routerLink="details/{{item.id}}">{{item.name}}</a> </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="shortDescription">
