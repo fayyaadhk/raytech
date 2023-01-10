@@ -283,6 +283,18 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
+            {path: 'items', loadChildren: () => import('app/item/item.module').then(m => m.ItemModule)},
+        ]
+    },
+    {
+        path       : '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component  : LayoutComponent,
+        resolve    : {
+            initialData: InitialDataResolver,
+        },
+        children   : [
             {path: 'items/form', loadChildren: () => import('app/item/add-item/add-item.module').then(m => m.AddItemModule)},
         ]
     },

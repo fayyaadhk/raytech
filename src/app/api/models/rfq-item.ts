@@ -5,8 +5,9 @@ import { Supplier } from './supplier';
 export class RfqItem {
   created?: string;
   expectedArrivalDate?: string;
-  id?: number;
-  item?: Item;
+  id: number;
+  RfqId: number;
+  item: Item;
   priceQuoted?: number;
   quantity?: number;
   status?: null | string;

@@ -3,6 +3,7 @@
 import { Category } from './category';
 import { ItemSupplier } from './item-supplier';
 import { Rfq } from './rfq';
+import {RfqItem} from "./rfq-item";
 export interface Item {
   brandId?: null | number;
   category?: Category;
@@ -12,7 +13,7 @@ export interface Item {
   id?: number;
   itemSuppliers?: null | Array<ItemSupplier>;
   name?: null | string;
-  rfQs?: null | Array<Rfq>;
+  rfqItems?: null | Array<RfqItem>;
   rrsp?: null | number;
   shortDescription?: null | string;
   sku?: null | string;
