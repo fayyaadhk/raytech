@@ -6,6 +6,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Item} from "../../api/models/item";
 import {ItemSupplier} from "../../api/models/item-supplier";
 import {SupplierItem} from "../../api/models/supplier-item";
+import {DetailedItem} from "../../api/models/detailed-item";
 
 @Component({
   selector: 'app-item-details',
@@ -14,7 +15,7 @@ import {SupplierItem} from "../../api/models/supplier-item";
 })
 export class ItemDetailsComponent {
     itemId: number;
-    item: Item;
+    item: DetailedItem;
     itemSuppliers: SupplierItem[] = [];
 
     data: any;
@@ -49,12 +50,12 @@ export class ItemDetailsComponent {
 
     private _getItem(){
         this.itemService
-            .getItemWithDetails(this.itemId)
+            .getItemWithAllDetails(this.itemId)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.item = item;
                 console.log("this.item", this.item)
-                // this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
+                this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
                 this.isLoading = false;
             });
     }
