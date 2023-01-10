@@ -1,4 +1,3 @@
-<!--
 <div class="flex flex-col flex-auto w-full">
 
     <div
@@ -7,7 +6,7 @@
         <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
     <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8"  *ngIf="!isLoading">
-        &lt;!&ndash; Title and action buttons &ndash;&gt;
+        <!-- Title and action buttons -->
         <div class="flex items-center justify-between w-full">
             <div>
                 <h2 class="text-3xl font-semibold tracking-tight leading-8">Clients Details</h2>
@@ -16,7 +15,7 @@
         </div>
         <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8">
             <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
-                &lt;!&ndash; Previous statement &ndash;&gt;
+                <!-- Previous statement -->
                 <div class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
                     <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
                         <mat-icon
@@ -63,16 +62,16 @@
                             <div
                                 class="mt-2 font-medium text-xl leading-none">{{clients.contactInformation.whatsapp}}</div>
                         </div>
-                        &lt;!&ndash;                        <div class="flex flex-col mx-6 my-3">&ndash;&gt;
-                        &lt;!&ndash;                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>&ndash;&gt;
-                        &lt;!&ndash;                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> &ndash;&gt;
+                        <!--                        <div class="flex flex-col mx-6 my-3">-->
+                        <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
+                        <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8">
-            &lt;!&ndash; Recent transactions table &ndash;&gt;
+            <!-- Recent transactions table -->
             <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="p-6">
                     <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
@@ -85,7 +84,7 @@
                         [dataSource]="dataSource"
                         #recentTransactionsTable>
 
-                        &lt;!&ndash; Transaction ID &ndash;&gt;
+                        <!-- Transaction ID -->
                         <ng-container matColumnDef="id">
                             <th
                                 mat-header-cell
@@ -102,7 +101,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; RFQ Number &ndash;&gt;
+                        <!-- RFQ Number -->
                         <ng-container matColumnDef="rfqNumber">
                             <th
                                 mat-header-cell
@@ -119,7 +118,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Name &ndash;&gt;
+                        <!-- Name -->
                         <ng-container matColumnDef="quantity">
                             <th
                                 mat-header-cell
@@ -136,7 +135,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Date Created &ndash;&gt;
+                        <!-- Date Created -->
                         <ng-container matColumnDef="dateCreated">
                             <th
                                 mat-header-cell
@@ -153,7 +152,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Date Due &ndash;&gt;
+                        <!-- Date Due -->
                         <ng-container matColumnDef="due">
                             <th
                                 mat-header-cell
@@ -170,7 +169,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="status">
                             <th
                                 mat-header-cell
@@ -190,7 +189,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="rfqDocumentUrl">
                             <th
                                 mat-header-cell
@@ -207,7 +206,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="quoteDocumentUrl">
                             <th
                                 mat-header-cell
@@ -224,7 +223,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="quoteSentDate">
                             <th
                                 mat-header-cell
@@ -241,7 +240,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="purchaseOrderDocumentUrl">
                             <th
                                 mat-header-cell
@@ -258,7 +257,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="purchaseOrderDueDate">
                             <th
                                 mat-header-cell
@@ -275,7 +274,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="purchaseOrderReceivedDate">
                             <th
                                 mat-header-cell
@@ -292,7 +291,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="purchaseOrderOutcome">
                             <th
                                 mat-header-cell
@@ -309,7 +308,7 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Status &ndash;&gt;
+                        <!-- Status -->
                         <ng-container matColumnDef="purchaseOrderStatus">
                             <th
                                 mat-header-cell
@@ -326,16 +325,16 @@
                             </td>
                         </ng-container>
 
-                        &lt;!&ndash; Footer &ndash;&gt;
-                        &lt;!&ndash;                            <ng-container matColumnDef="recentOrdersTableFooter">&ndash;&gt;
-                        &lt;!&ndash;                                <td&ndash;&gt;
-                        &lt;!&ndash;                                    class="py-6 px-0 border-0"&ndash;&gt;
-                        &lt;!&ndash;                                    mat-footer-cell&ndash;&gt;
-                        &lt;!&ndash;                                    *matFooterCellDef&ndash;&gt;
-                        &lt;!&ndash;                                    colspan="6">&ndash;&gt;
-                        &lt;!&ndash;                                    <button mat-stroked-button>See all transactions</button>&ndash;&gt;
-                        &lt;!&ndash;                                </td>&ndash;&gt;
-                        &lt;!&ndash;                            </ng-container>&ndash;&gt;
+                        <!-- Footer -->
+                        <!--                            <ng-container matColumnDef="recentOrdersTableFooter">-->
+                        <!--                                <td-->
+                        <!--                                    class="py-6 px-0 border-0"-->
+                        <!--                                    mat-footer-cell-->
+                        <!--                                    *matFooterCellDef-->
+                        <!--                                    colspan="6">-->
+                        <!--                                    <button mat-stroked-button>See all transactions</button>-->
+                        <!--                                </td>-->
+                        <!--                            </ng-container>-->
                         <tr
                             mat-header-row
                             *matHeaderRowDef="displayedColumns"></tr>
@@ -343,17 +342,16 @@
                             class="order-row h-16"
                             mat-row
                             *matRowDef="let row; columns: displayedColumns;"></tr>
-                        &lt;!&ndash;                            <tr&ndash;&gt;
-                        &lt;!&ndash;                                class="h-16 border-0"&ndash;&gt;
-                        &lt;!&ndash;                                mat-footer-row&ndash;&gt;
-                        &lt;!&ndash;                                *matFooterRowDef="['recentOrdersTableFooter']"></tr>&ndash;&gt;
+                        <!--                            <tr-->
+                        <!--                                class="h-16 border-0"-->
+                        <!--                                mat-footer-row-->
+                        <!--                                *matFooterRowDef="['recentOrdersTableFooter']"></tr>-->
                     </table>
                 </div>
             </div>
 
-            &lt;!&ndash; Budget &ndash;&gt;
+            <!-- Budget -->
         </div>
 
     </div>
 </div>
--->
