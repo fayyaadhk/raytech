@@ -17,20 +17,25 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
-
 import {SharedModule} from '../shared/shared.module';
 import {ClientComponent} from './client.component';
+import {ClientDetailsComponent} from "./client-details/client-details.component";
 
 const clientRoutes: Route[] = [
     {
         path     : '',
         component: ClientComponent
+    },
+    {
+        path     : 'details/:id',
+        component: ClientDetailsComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        ClientComponent
+        ClientComponent,
+        ClientDetailsComponent,
     ],
     imports     : [
         RouterModule.forChild(clientRoutes),

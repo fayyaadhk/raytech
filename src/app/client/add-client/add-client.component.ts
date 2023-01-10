@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../client.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject, takeUntil} from 'rxjs';
-import {Client} from '../client.model';
+import {Client} from '../../api/models/client';
 import {FuseConfirmationService} from '../../../@fuse/services/confirmation';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';

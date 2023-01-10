@@ -30,6 +30,10 @@ export class RfqService {
         return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}`);
     }
 
+    getRfqDetails(rfqId: string): Observable<Rfq> {
+        return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}/details`);
+    }
+
     updateRfq(model: Rfq, rfqId: string): Observable<Rfq> {
         return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}`, model);
     }

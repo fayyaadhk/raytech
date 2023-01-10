@@ -62,7 +62,7 @@ export class AddRfqComponent implements OnInit {
     currentRfqId: string;
     sub: Subscription;
     dataSource: MatTableDataSource<RfqItem>;
-    displayedColumns = ['id', 'name', 'quantity', 'price', 'actions']
+    displayedColumns = ['id', 'name', 'quantity', 'price', 'actions'];
     statuses: any = [
         {id: 1, name: 'Issued'},
         {id: 2, name: 'Sourcing'},

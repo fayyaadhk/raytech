@@ -20,10 +20,11 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
 import {SharedModule} from '../../shared/shared.module';
 import {RfqDetailsComponent} from './rfq-details.component';
 
-const addDetailsRoutes: Route[] = [
+const detailsRoutes: Route[] = [
     {
         path     : '',
         component: RfqDetailsComponent
@@ -35,7 +36,7 @@ const addDetailsRoutes: Route[] = [
         RfqDetailsComponent
     ],
     imports     : [
-        RouterModule.forChild(addDetailsRoutes),
+        RouterModule.forChild(detailsRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -55,6 +56,7 @@ const addDetailsRoutes: Route[] = [
         MatDatepickerModule,
         MatNativeDateModule,
         MatRadioModule,
+        MatTableModule,
         SharedModule
     ]
 })

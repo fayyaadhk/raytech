@@ -91,6 +91,7 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'suppliers', loadChildren: () => import('app/supplier/supplier.module').then(m => m.SupplierModule)},
+            {path: 'suppliers/details/:id', loadChildren: () => import('app/supplier/supplier.module').then(m => m.SupplierModule)},
         ]
     },
     {
@@ -127,6 +128,7 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'clients', loadChildren: () => import('app/client/client.module').then(m => m.ClientModule)},
+            {path: 'clients/details/:id', loadChildren: () => import('app/client/client.module').then(m => m.ClientModule)},
         ]
     },
     {

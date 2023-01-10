@@ -179,63 +179,6 @@
                                     </button>
                                 </div>
                             </mat-step>
-
-                            <!--                        <mat-step-->
-                            <!--                            [formGroupName]="'step2'"-->
-                            <!--                            [stepControl]="verticalStepperForm.get('step2')"-->
-                            <!--                            #verticalStepperStep2>-->
-                            <!--                            <ng-template matStepLabel>Quotation Details</ng-template>-->
-                            <!--                            <p class="my-6 font-medium">-->
-                            <!--                                Prepared Quotation for RFQ-->
-                            <!--                            </p>-->
-                            <!--                            <div class="flex flex-col gt-xs:flex-row">-->
-                            <!--                                &lt;!&ndash; Image Preview &ndash;&gt;-->
-                            <!--                                <div class="form-group">-->
-                            <!--                                    <div class="preview" *ngIf="quoteDocumentPreview && quoteDocumentPreview !== null">-->
-                            <!--                                        <img [src]="quoteDocumentPreview" [alt]="verticalStepperForm.value.name">-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                                <input type="file" (change)="uploadQuotation($event)">-->
-
-                            <!--                                <mat-form-field-->
-                            <!--                                    [ngClass]="formFieldHelpers"-->
-                            <!--                                    class="flex-auto">-->
-                            <!--                                    <mat-label>Date Quote was submitted</mat-label>-->
-                            <!--                                    <input-->
-                            <!--                                        matInput-->
-                            <!--                                        [formControlName]="'quoteSentDate'"-->
-                            <!--                                        [placeholder]="'Quote Sent date'"-->
-                            <!--                                        [matDatepicker]="quoteDatePicker">-->
-                            <!--                                    <mat-datepicker-toggle-->
-                            <!--                                        matSuffix-->
-                            <!--                                        [for]="quoteDatePicker"></mat-datepicker-toggle>-->
-                            <!--                                    <mat-datepicker #quoteDatePicker></mat-datepicker>-->
-                            <!--                                </mat-form-field>-->
-
-                            <!--                            </div>-->
-
-
-                            <!--                            <div class="flex justify-end">-->
-                            <!--                                <button-->
-                            <!--                                    class="px-8 mr-2"-->
-                            <!--                                    mat-flat-button-->
-                            <!--                                    [color]="'accent'"-->
-                            <!--                                    type="button"-->
-                            <!--                                    matStepperPrevious>-->
-                            <!--                                    Back-->
-                            <!--                                </button>-->
-                            <!--                                <button-->
-                            <!--                                    class="px-8"-->
-                            <!--                                    mat-flat-button-->
-                            <!--                                    [color]="'primary'"-->
-                            <!--                                    [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"-->
-                            <!--                                    type="button"-->
-                            <!--                                    matStepperNext>-->
-                            <!--                                    Next-->
-                            <!--                                </button>-->
-                            <!--                            </div>-->
-                            <!--                        </mat-step>-->
-
                             <mat-step
                                 [formGroupName]="'step3'"
                                 [stepControl]="verticalStepperForm.get('step3')">

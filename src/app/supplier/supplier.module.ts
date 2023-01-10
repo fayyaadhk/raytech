@@ -21,17 +21,23 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import {SharedModule} from '../shared/shared.module';
+import {SupplierDetailsComponent} from "./supplier-details/supplier-details.component";
 
 const supplierRoutes: Route[] = [
     {
         path     : '',
         component: SupplierComponent
+    },
+    {
+        path     : 'details/:id',
+        component: SupplierDetailsComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        SupplierComponent
+        SupplierComponent,
+        SupplierDetailsComponent
     ],
     imports     : [
         RouterModule.forChild(supplierRoutes),

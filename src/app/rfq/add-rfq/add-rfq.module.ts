@@ -25,6 +25,7 @@ import {AddRfqComponent} from './add-rfq.component';
 import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatTableModule} from '@angular/material/table';
+import {MatDividerModule} from '@angular/material/divider';
 
 const addRfqRoutes: Route[] = [
     {
@@ -61,7 +62,8 @@ const addRfqRoutes: Route[] = [
         MatRadioModule,
         SharedModule,
         MatDialogModule,
-        MatTableModule
+        MatTableModule,
+        MatDividerModule
     ]
 })
 export class AddRfqModule

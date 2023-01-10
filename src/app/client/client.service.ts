@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable, Subject, switchMap, take, tap} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import {Client} from './client.model';
+import {Client} from '../api/models/client';
 import { CreateClientRequest } from '../api/models/create-client-request';
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
@@ -25,11 +25,15 @@ export class ClientService {
         return this.http.post<Client>(apiURLClients, clientData);
     }
 
-    addClient(model: CreateClientRequest): Observable<CreateClientRequest>{
+    addClient(model: CreateClientRequest): Observable<Client>{
         return this.http.post<CreateClientRequest>(apiURLClients, model);
     }
 
-    getClient(clientId: string): Observable<CreateClientRequest> {
+    getClient(clientId: string): Observable<Client> {
+        return this.http.get<Client>(`${apiURLClients}/${clientId}`);
+    }
+
+    getClientDetails(clientId: string): Observable<Client> {
         return this.http.get<Client>(`${apiURLClients}/${clientId}/details`);
     }
 
