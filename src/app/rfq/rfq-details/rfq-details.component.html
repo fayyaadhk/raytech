@@ -352,7 +352,7 @@
                                     mat-cell
                                     *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{items.name}}
+                                    <a routerLink="/items/details/{{items.id}}">{{items.name}}</a>
                                 </span>
                                 </td>
                             </ng-container>
