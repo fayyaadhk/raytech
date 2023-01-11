@@ -46,6 +46,11 @@
             <mat-cell *matCellDef="let item"> <a routerLink="details/{{item.id}}">{{item.name}}</a> </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="sku">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> SKU </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{item.sku}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="shortDescription">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
             <mat-cell *matCellDef="let item"> {{item.shortDescription}} </mat-cell>

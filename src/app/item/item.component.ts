@@ -35,7 +35,7 @@ export class ItemComponent implements OnInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<ItemClass>;
-    displayedColumns = ['id', 'name', 'shortDescription', 'category', 'editDelete'];
+    displayedColumns = ['id', 'name', 'sku', 'shortDescription', 'category', 'editDelete'];
 
 
     constructor(private itemService: ItemService,
