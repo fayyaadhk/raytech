@@ -31,6 +31,9 @@ import {RfqDetailsModule} from "./rfq/rfq-details/rfq-details,module";
 import {HashLocationStrategy, LocationStrategy, PathLocationStrategy} from "@angular/common";
 import { ClientDetailsComponent } from './client/client-details/client-details.component';
 import { SupplierDetailsComponent } from './supplier/supplier-details/supplier-details.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { AddSuppliersComponent } from './suppliers/add-suppliers/add-suppliers.component';
+import { SuppliersDetailsComponent } from './suppliers/suppliers-details/suppliers-details.component';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
