@@ -24,7 +24,7 @@ export class ItemDetailsComponent {
     isLoading: boolean = false;
 
     rfqItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    rfqItemsTableColumns: string[] = ['rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
+    rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
 
     itemSuppliersDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
     itemSuppliersTableColumns: string[] = ['supplierName', 'price', 'dateQuoted', 'actions'];

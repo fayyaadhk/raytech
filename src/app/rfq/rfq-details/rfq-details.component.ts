@@ -95,7 +95,9 @@ export class RfqDetailsComponent implements OnInit {
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((rfq) => {
                         this.rfqs = rfq;
-                        console.log(this.rfqs.items);
+                        console.log("this.rfq", this.rfqs);
+
+                        console.log("this.rfq.items", this.rfqs.items);
                         if (this.rfqs.quoteDocumentUrl) {
                             this.hasQuote = true;
                         }
@@ -111,13 +113,14 @@ export class RfqDetailsComponent implements OnInit {
 
                         for(let i = 0; i < this.rfqs.items.length; i++){
                             this.items.push({
-                                id: this.rfqs.items[i].id,
+                                id: this.rfqs.items[i].item.id,
                                 name: this.rfqs.items[i].item.name,
                                 quantity: this.rfqs.items[i].quantity,
                                 price: this.rfqs.items[i].priceQuoted,
                                 status: this.rfqs.items[i].status
                             });
                         }
+                        console.log(">>>> this.items", this.items);
                         this.dataSource = new MatTableDataSource(this.items);
                         //this.clientForm.contactInformation.setValue(this.contactInfo);
                         //this.clientForm.thumbnail.setValidators([]);

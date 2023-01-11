@@ -29,15 +29,7 @@ export class ClientDetailsComponent implements OnInit{
         'dateCreated',
         //'description',
         'due',
-        'status',
-        'rfqDocumentUrl',
-        'quoteDocumentUrl',
-        'quoteSentDate',
-        'purchaseOrderDocumentUrl',
-        'purchaseOrderDueDate',
-        'purchaseOrderReceivedDate',
-        'purchaseOrderOutcome',
-        'purchaseOrderStatus'
+        'status'
     ];
     quoteDocumentPreview: string;
     purchaseOrderDocumentPreview: string;
