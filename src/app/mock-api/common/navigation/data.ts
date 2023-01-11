@@ -58,26 +58,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 ]
             },
             {
-                id   : 'buyers',
-                title: 'Buyers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
-                children: [
-                    {
-                        id   : 'buyers.view',
-                        title: 'View All Buyers',
-                        type : 'basic',
-                        link : '/buyers'
-                    },
-                    {
-                        id   : 'buyers.add',
-                        title: 'Add New Buyer',
-                        type : 'basic',
-                        link : '/buyers/add'
-                    }
-                ]
-            },
-            {
                 id   : 'rfq',
                 title: 'RFQs',
                 type : 'collapsable',

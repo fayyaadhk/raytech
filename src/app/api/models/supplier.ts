@@ -3,8 +3,9 @@
 import { ContactInformation } from './contact-information';
 import { ItemSupplier } from './item-supplier';
 import { Person } from './person';
-export interface Supplier {
-  contactInfoId?: ContactInformation;
+export class Supplier {
+  contactInfo?: ContactInformation;
+  contactInfoId?: number;
   contactPersonId?: Person;
   created?: string;
   id?: number;

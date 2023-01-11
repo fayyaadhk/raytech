@@ -90,32 +90,10 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-            {path: 'suppliers', loadChildren: () => import('app/supplier/supplier.module').then(m => m.SupplierModule)},
-            {path: 'suppliers/details/:id', loadChildren: () => import('app/supplier/supplier.module').then(m => m.SupplierModule)},
-        ]
-    },
-    {
-        path       : '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
-        component  : LayoutComponent,
-        resolve    : {
-            initialData: InitialDataResolver,
-        },
-        children   : [
-            {path: 'suppliers/form', loadChildren: () => import('app/supplier/add-supplier/add-supplier.module').then(m => m.AddSupplierModule)},
-        ]
-    },
-    {
-        path       : '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
-        component  : LayoutComponent,
-        resolve    : {
-            initialData: InitialDataResolver,
-        },
-        children   : [
-            {path: 'suppliers/form/:id', loadChildren: () => import('app/supplier/add-supplier/add-supplier.module').then(m => m.AddSupplierModule)},
+            {path: 'suppliers', loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)},
+            {path: 'suppliers/details/:id', loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)},
+            {path: 'suppliers/form', loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)},
+            {path: 'suppliers/form/:id', loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)},
         ]
     },
     {

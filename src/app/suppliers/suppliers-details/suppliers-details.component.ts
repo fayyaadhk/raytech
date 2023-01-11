@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
@@ -7,11 +7,11 @@ import {ClientService} from "../../client/client.service";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-supplier-details',
-  templateUrl: './supplier-details.component.html',
-  styleUrls: ['./supplier-details.component.scss']
+  selector: 'app-suppliers-details',
+  templateUrl: './suppliers-details.component.html',
+  styleUrls: ['./suppliers-details.component.scss']
 })
-export class SupplierDetailsComponent implements OnInit {
+export class SuppliersDetailsComponent {
     clients: any;
     endsubs$: Subject<any> = new Subject();
     isLoading: boolean = false;
@@ -131,31 +131,4 @@ export class SupplierDetailsComponent implements OnInit {
         });
     }
 
-    uploadQuotation(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.form.patchValue({
-            quoteDocument: file
-        });
-        this.form.get('quoteDocumentUrl').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.quoteDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    uploadPurchaseOrder(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.form.patchValue({
-            purchaseOrderDocument: file
-        });
-        this.form.get('purchaseOrderDocumentUrl').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.purchaseOrderDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
 }

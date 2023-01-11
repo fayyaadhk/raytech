@@ -5,12 +5,13 @@
         *ngIf="isLoading">
         <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
-    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8"  *ngIf="!isLoading">
+
         <!-- Title and action buttons -->
         <div class="flex items-center justify-between w-full">
             <div>
-                <h2 class="text-3xl font-semibold tracking-tight leading-8">Suppliers Details</h2>
-                <div class="font-medium tracking-tight text-secondary">Keep track of a Supplier</div>
+                <h2 class="text-3xl font-semibold tracking-tight leading-8">Clients Details</h2>
+                <div class="font-medium tracking-tight text-secondary">Keep track of a Client</div>
             </div>
         </div>
 
