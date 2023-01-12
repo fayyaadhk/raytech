@@ -23,7 +23,7 @@ export class RfqDetailsComponent implements OnInit {
     formFieldHelpers: string[] = [''];
     form: FormGroup;
     dataSource: MatTableDataSource<RfqItem>;
-    displayedColumns = ['id', 'name', 'quantity', 'price', 'status'];
+    displayedColumns = ['rfqItemId', 'id', 'name', 'sku', 'quantity', 'price', 'status'];
     quoteDocumentPreview: string;
     purchaseOrderDocumentPreview: string;
     items = [];
@@ -113,8 +113,10 @@ export class RfqDetailsComponent implements OnInit {
 
                         for(let i = 0; i < this.rfqs.items.length; i++){
                             this.items.push({
+                                rfqItemId: this.rfqs.items[i].id,
                                 id: this.rfqs.items[i].item.id,
                                 name: this.rfqs.items[i].item.name,
+                                sku: this.rfqs.items[i].item.sku,
                                 quantity: this.rfqs.items[i].quantity,
                                 price: this.rfqs.items[i].priceQuoted,
                                 status: this.rfqs.items[i].status
