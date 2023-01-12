@@ -3,10 +3,7 @@ import {AuthGuard} from 'app/core/auth/guards/auth.guard';
 import {NoAuthGuard} from 'app/core/auth/guards/noAuth.guard';
 import {LayoutComponent} from 'app/layout/layout.component';
 import {InitialDataResolver} from 'app/app.resolvers';
-import {SupplierComponent} from "./supplier/supplier.component";
-import {ItemComponent} from "./item/item.component";
 import {RfqComponent} from "./rfq/rfq.component";
-import {CategoryComponent} from "./category/category.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -14,14 +11,14 @@ import {CategoryComponent} from "./category/category.component";
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch: 'full', redirectTo: 'example'},
+    {path: '', pathMatch : 'full', redirectTo: 'rfqs'},
 
     // Redirect signed in user to the '/example'
     //
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'example'},
+    {path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'rfqs'},
 
     // Auth routes for guests
     {
@@ -120,19 +117,7 @@ export const appRoutes: Route[] = [
             {
                 path: 'suppliers',
                 loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)
-            },
-            {
-                path: 'suppliers/details/:id',
-                loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)
-            },
-            {
-                path: 'suppliers/form',
-                loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)
-            },
-            {
-                path: 'suppliers/form/:id',
-                loadChildren: () => import('app/suppliers/suppliers.module').then(m => m.SuppliersModule)
-            },
+            }
         ]
     },
     {
@@ -145,10 +130,6 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'clients', loadChildren: () => import('app/client/client.module').then(m => m.ClientModule)},
-            {
-                path: 'clients/details/:id',
-                loadChildren: () => import('app/client/client.module').then(m => m.ClientModule)
-            },
         ]
     },
     {
@@ -340,6 +321,21 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'items', loadChildren: () => import('app/item/item.module').then(m => m.ItemModule)},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'purchase-orders',
+                loadChildren: () => import('app/purchase-orders/purchase-orders.module').then(m => m.PurchaseOrdersModule)
+            },
         ]
     },
     {

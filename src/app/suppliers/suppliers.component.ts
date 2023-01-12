@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {Supplier} from "../api/models/supplier";
-import {SupplierService} from "../supplier/supplier.service";
 import {Router} from "@angular/router";
+import {SupplierService} from "./suppliers.service";
 
 @Component({
   selector: 'app-suppliers',

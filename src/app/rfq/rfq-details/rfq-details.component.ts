@@ -50,6 +50,8 @@ export class RfqDetailsComponent implements OnInit {
         {id: 9, name: 'Cancelled'},
     ];
 
+    poItemTotal: number;
+
     constructor(private rfqService: RfqService,
                 private route: ActivatedRoute,
                 private clientService: ClientService,
@@ -158,6 +160,13 @@ export class RfqDetailsComponent implements OnInit {
             this.purchaseOrderDocumentPreview = reader.result as string;
         };
         reader.readAsDataURL(file);
+    }
+
+    getPOItemValue(){
+        const result = this.rfqs.purchaseOrder.items.map(a => a.priceQuoted).reduce(function(a, b){
+            return a + b;
+        });
+        return result;
     }
 
 }

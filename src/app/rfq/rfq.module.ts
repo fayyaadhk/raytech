@@ -20,11 +20,25 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 import {SharedModule} from '../shared/shared.module';
 import {RfqComponent} from './rfq.component';
+import {ItemComponent} from "../item/item.component";
+import {ItemDetailsComponent} from "../item/item-details/item-details.component";
+import {RfqDetailsComponent} from "./rfq-details/rfq-details.component";
+import {AddRfqComponent} from "./add-rfq/add-rfq.component";
 
 const rfqRoutes: Route[] = [
     {
         path     : '',
         component: RfqComponent
+    },
+    {
+        path     : 'details/:id',
+        component: RfqDetailsComponent,
+
+    },
+    {
+        path     : 'form',
+        component: AddRfqComponent,
+
     }
 ];
 
