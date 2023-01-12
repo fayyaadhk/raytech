@@ -5,6 +5,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {RfqItem} from "../../api/models/rfq-item";
 import {ClientService} from "../../client/client.service";
 import {ActivatedRoute} from "@angular/router";
+import {Supplier} from "../../api/models/supplier";
+import {SupplierService} from "../suppliers.service";
+import {SupplierItem} from "../../api/models/supplier-item";
 
 @Component({
   selector: 'app-suppliers-details',
@@ -12,35 +15,23 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./suppliers-details.component.scss']
 })
 export class SuppliersDetailsComponent {
-    clients: any;
+    suppliers: any;
     endsubs$: Subject<any> = new Subject();
     isLoading: boolean = false;
-    currentClientId: string;
-    client: any;
-    hasQuote: boolean = false;
-    hasPurchaseOrder: boolean = false;
-    formFieldHelpers: string[] = [''];
+    currentSupplierId: string;
+    supplier: any;
     form: FormGroup;
-    dataSource: MatTableDataSource<RfqItem>;
+    dataSource: MatTableDataSource<Supplier>;
     displayedColumns = [
-        'id',
-        'rfqNumber',
-        'dateCreated',
-        //'description',
-        'due',
-        'status',
-        'rfqDocumentUrl',
-        'quoteDocumentUrl',
-        'quoteSentDate',
-        'purchaseOrderDocumentUrl',
-        'purchaseOrderDueDate',
-        'purchaseOrderReceivedDate',
-        'purchaseOrderOutcome',
-        'purchaseOrderStatus'
+        'itemId',
+        'supplierId',
+        'itemName',
+        'supplierPrice',
+        'itemPriceDate',
+        'rrsp'
     ];
-    quoteDocumentPreview: string;
-    purchaseOrderDocumentPreview: string;
     items = [];
+    supplierItems: any;
     statuses: any = [
         {id: 1, name: 'Issued'},
         {id: 2, name: 'Sourcing'},
@@ -64,64 +55,58 @@ export class SuppliersDetailsComponent {
         {id: 9, name: 'Cancelled'},
     ];
 
-    constructor(private clientService: ClientService,
+    constructor(private supplierService: SupplierService,
                 private formBuilder: FormBuilder,
                 private route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this.isLoading = true;
-        this._getRfqDetails();
-        this._initForm();
+        this._getSupplierDetails();
+        // this._initForm();
     }
 
-    private _initForm() {
-        // Vertical stepper form
-        this.form = this.formBuilder.group({
-            quoteDocumentUrl: [''],
-            quoteSentDate: [''],
-            purchaseOrderDocumentUrl: [''],
-            purchaseOrderDueDate: [''],
-            purchaseOrderReceivedDate: [''],
-            purchaseOrderOutcome: [''],
-            purchaseOrderStatus: [''],
-        });
-    }
+    // private _initForm() {
+    //     // Vertical stepper form
+    //     this.form = this.formBuilder.group({
+    //     });
+    // }
 
-    private _getRfqDetails() {
+    private _getSupplierDetails() {
         console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
             console.log(params);
             if (params.id) {
-                this.currentClientId = params.id;
-                console.log('>>>>>>', this.currentClientId)
-                this.clientService
-                    .getClientDetails(this.currentClientId)
+                this.currentSupplierId = params.id;
+                console.log('>>>>>>', this.currentSupplierId)
+                this.supplierService
+                    .getSupplierDetails(this.currentSupplierId)
                     .pipe(takeUntil(this.endsubs$))
-                    .subscribe((client) => {
-                        this.clients = client;
-                        console.log(this.clients);
-                        console.log(this.clients.rfQs);
+                    .subscribe((supplier) => {
+                        this.suppliers = supplier;
+                        console.log(this.suppliers);
+                        console.log(this.suppliers.supplierItems);
 
-                        for(let i = 0; i < this.clients.rfQs.length; i++){
-                            this.items.push({
-                                id: this.clients.rfQs[i].id,
-                                rfqNumber: this.clients.rfQs[i].rfqNumber,
-                                description: this.clients.rfQs[i].description,
-                                due: this.clients.rfQs[i].due,
-                                status: this.clients.rfQs[i].status,
-                                dateCreated: this.clients.rfQs[i].dateCreated,
-                                rfqDocumentUrl: this.clients.rfQs[i].rfqDocumentUrl,
-                                quoteDocumentUrl: this.clients.rfQs[i].quoteDocumentUrl,
-                                quoteSentDate: this.clients.rfQs[i].quoteSentDate,
-                                purchaseOrderDocumentUrl: this.clients.rfQs[i].purchaseOrderDocumentUrl,
-                                purchaseOrderDueDate: this.clients.rfQs[i].purchaseOrderDueDate,
-                                purchaseOrderReceivedDate: this.clients.rfQs[i].purchaseOrderReceivedDate,
-                                purchaseOrderOutcome: this.clients.rfQs[i].purchaseOrderOutcome,
-                                purchaseOrderStatus: this.clients.rfQs[i].purchaseOrderStatus,
+                        this.supplierService.getSupplierItems(this.currentSupplierId)
+                            .pipe(takeUntil(this.endsubs$))
+                            .subscribe((supplierItems) =>{
+                                this.supplierItems = supplierItems;
+                                console.log(this.supplierItems);
+                                for(let i = 0; i < this.supplierItems.length; i++){
+                                    this.items.push({
+                                        itemId: this.supplierItems[i].item.id,
+                                        name: this.supplierItems[i].item.name,
+                                        rrsp: this.supplierItems[i].item.rrsp,
+                                        supplierId: this.supplierItems[i].supplier.id,
+                                        price: this.supplierItems[i].supplierPrice,
+                                        priceDate: this.supplierItems[i].supplierPriceDate,
+                                    });
+                                }
+                                this.dataSource = new MatTableDataSource(this.supplierItems);
                             });
-                        }
-                        this.dataSource = new MatTableDataSource(this.items);
+
+                        console.log('THIS.ITEMS ', this.items);
+
                         this.isLoading = false;
                         //this.clientForm.contactInformation.setValue(this.contactInfo);
                         //this.clientForm.thumbnail.setValidators([]);

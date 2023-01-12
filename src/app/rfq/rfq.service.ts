@@ -27,7 +27,7 @@ export class RfqService {
     }
 
     getRfq(rfqId: string): Observable<Rfq> {
-        return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}`);
+        return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}/details`);
     }
 
     getRfqDetails(rfqId: string): Observable<Rfq> {

@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 
 import { Supplier } from '../api/models/supplier';
 import {Rfq} from "../api/models/rfq";
+import {CreateSupplierRequest} from "../api/models/create-supplier-request";
+import {UpdateSupplierRequest} from "../api/models/update-supplier-request";
+import {SupplierItem} from "../api/models/supplier-item";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/suppliers';
@@ -26,11 +29,15 @@ export class SupplierService {
         return this.http.get<Supplier>(`${apiURLSuppliers}/${supplierId}/details`);
     }
 
-    createSupplier(model: Supplier): Observable<Supplier> {
+    getSupplierItems(supplierId: string): Observable<SupplierItem> {
+        return this.http.get<SupplierItem>(`${apiURLSuppliers}/${supplierId}/items`);
+    }
+
+    createSupplier(model: CreateSupplierRequest): Observable<Supplier> {
         return this.http.post<Supplier>(apiURLSuppliers, model);
     }
 
-    updateSupplier(model: Supplier, supplierId: string): Observable<Supplier> {
+    updateSupplier(model: UpdateSupplierRequest, supplierId: string): Observable<Supplier> {
         return this.http.put<Supplier>(`${apiURLSuppliers}/${supplierId}`, model);
     }
 

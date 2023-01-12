@@ -57,8 +57,8 @@ export class AddRfqComponent implements OnInit {
     clients: any = [];
     items: any = [];
     rfqItems: any = [];
-    filteredItems: any = [];
-    selectedId: number[];
+    public rfqDetails: any = {};
+    public rfqItemDetails: any = {};
     currentRfqId: string;
     sub: Subscription;
     dataSource: MatTableDataSource<RfqItem>;
@@ -144,6 +144,7 @@ export class AddRfqComponent implements OnInit {
         this._initForm();
         this._getClients();
         this._getItems();
+        this._checkEditMode();
     }
 
     private _initForm() {
@@ -167,7 +168,6 @@ export class AddRfqComponent implements OnInit {
                 quantity: [null],
                 status: [''],
                 price: [null],
-                pushNotifications: ['everything', Validators.required],
                 itemForm: this.formBuilder.group({
                     name: ['',],
                     description: [''],
@@ -219,15 +219,16 @@ export class AddRfqComponent implements OnInit {
         }
 
         if (this.editmode) {
-            const updateRfq = new Rfq();
-            updateRfq.rfqNumber = this.verticalStepperForm.get('rfqNumber').value;
-            updateRfq.buyerId = this.verticalStepperForm.get('buyerId').value;
-            updateRfq.description = this.verticalStepperForm.get('description').value;
-            updateRfq.clientId = this.verticalStepperForm.get('clientId').value;
-            updateRfq.due = this.verticalStepperForm.get('dueDate').value;
-            updateRfq.rfqDocumentUrl = this.verticalStepperForm.get('rfqDocument').value;
-            updateRfq.status = this.verticalStepperForm.get('status').value;
-            updateRfq.items = this.verticalStepperForm.get('rfqItems').value;
+            const updateRfq: Rfq = {
+                items: this.rfqItems,
+                description: this.verticalStepperForm.get('step1.description').value,
+                status: this.verticalStepperForm.get('step1.status').value,
+                clientId: this.verticalStepperForm.get('step1.client').value,
+                buyerId: this.verticalStepperForm.get('step1.buyer').value,
+                due: this.verticalStepperForm.get('step1.dueDate').value,
+                rfqNumber: this.verticalStepperForm.get('step1.rfqNumber').value,
+                rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value
+            };
             this._updateRfq(updateRfq);
             this.isLoading = false;
         }
@@ -350,22 +351,38 @@ export class AddRfqComponent implements OnInit {
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((rfq) => {
                         this.rfqs = rfq;
-                        this.rfqForm.rfqNumber.setValue(rfq.rfqNumber);
-                        this.rfqForm.dueDate.setValue(rfq.due);
-                        this.rfqForm.description.setValue(rfq.description);
-                        this.rfqForm.rfqDocument.setValue(rfq.rfqDocumentUrl);
-                        this.rfqForm.client.setValue(rfq.clientId);
-                        this.rfqForm.buyer.setValue(rfq.buyerId);
-                        this.rfqForm.status.setValue(rfq.status);
-                        this.rfqForm.quoteDocument.setValue(rfq.quoteDocumentUrl);
-                        this.rfqForm.quoteSentDate.setValue(rfq.quoteSentDate);
-                        this.rfqForm.rfqItems.setValue(rfq.items);
-                        this.rfqForm.rfqDocumentUrl.setValue(rfq.rfqDocumentUrl);
-                        this.rfqForm.purchaseOrderReceivedDate.setValue(rfq.purchaseOrderReceivedDate);
-                        this.rfqForm.purchaseOrderDueDate.setValue(rfq.purchaseOrderDueDate);
-                        this.rfqForm.purchaseOrderDocumentUrl.setValue(rfq.purchaseOrderDocumentUrl);
-
-                        console.log("rfq.items ", rfq.items);
+                        console.log("--- rfqs ", this.rfqs);
+                        if(this.rfqs) {
+                            this.rfqDetails = {
+                                rfqNumber: this.rfqs.rfqNumber,
+                                dueDate: this.rfqs.due,
+                                description: this.rfqs.description,
+                                rfqDocument: this.rfqs.rfqDocumentUrl,
+                                client: this.rfqs.clientId,
+                                buyer: this.rfqs.buyerId,
+                                status: this.rfqs.status
+                            };
+                        }
+                            // for(let r = 0; r < this.rfqs.items.length; r++) {
+                                console.log(this.rfqs.items[0].status);
+                                this.rfqItems = this.rfqs.items;
+                                this.rfqItemDetails = [{
+                                    rfqItems: this.rfqs.items[0].item,
+                                    quantity: this.rfqs.items[0].quantity,
+                                    status: this.rfqs.items[0].status,
+                                    price: this.rfqs.items[0].priceQuoted,
+                                    itemForm: null
+                                }];
+                            // }
+                        //     //this.rfqItems = this.rfqs.items;
+                            console.log(this.rfqItemDetails);
+                            this.rfqForm.step1.setValue(this.rfqDetails);
+                            // this.rfqForm.step3.setValue(this.rfqItemDetails);
+                        this.dataSource = new MatTableDataSource(this.rfqItems);
+                        this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
+                        // this.rfqForm['step3']['status'].setValue(this.rfqs.items.status);
+                        // this.rfqForm['step3']['price'].setValue(this.rfqs.priceQuoted);
+                        // this.rfqForm['step3']['itemForm'].setValue(null);
                     });
             }
         });

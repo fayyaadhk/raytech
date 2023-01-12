@@ -10,6 +10,8 @@ import {SupplierService} from "../suppliers.service";
 import {ClientService} from "../../client/client.service";
 import {CreateClientRequest} from "../../api/models/create-client-request";
 import {Client} from "../../api/models/client";
+import {UpdateSupplierRequest} from "../../api/models/update-supplier-request";
+import {CreateSupplierRequest} from "../../api/models/create-supplier-request";
 
 @Component({
   selector: 'app-add-suppliers',
@@ -30,6 +32,7 @@ export class AddSuppliersComponent {
     supplier: any = null;
     updateOld: boolean = false;
     public contactInfo: any = {};
+    public contactPerson: any = {};
 
     constructor(private supplierService: SupplierService,
                 private formBuilder: FormBuilder,
@@ -68,6 +71,25 @@ export class AddSuppliersComponent {
                     country: [''],
                 })
             }),
+            contactPerson: this.formBuilder.group({
+                firstName: [''],
+                lastName: [''],
+                idNumber: [null],
+                work: [''],
+                cellphone: [''],
+                telephone: [''],
+                whatsapp: [''],
+                email: [''],
+                address: this.formBuilder.group({
+                    line1: [''],
+                    line2: [''],
+                    suburb: [''],
+                    postalCode: [''],
+                    city: [''],
+                    province: [''],
+                    country: [''],
+                })
+            }),
         });
     }
 
@@ -77,21 +99,23 @@ export class AddSuppliersComponent {
 
         if (this.form.invalid) {return;}
 
-        const updateSupplier: Supplier = new Supplier();
+        const updateSupplier: UpdateSupplierRequest = new UpdateSupplierRequest();
 
         if (this.editmode) {
             if (this.supplierContactInformation){
                 console.log('>>> this.supplier', this.supplier.contactInformation);
                 updateSupplier.name = this.form.get('name').value;
                 updateSupplier.contactInfo = this.form.get('contactInformation').value;
-                updateSupplier.contactInfoId = this.supplier.contactInfo.id;
+                updateSupplier.contactInfo = this.supplier.contactInfo.id;
                 updateSupplier.contactInfo.address.id = this.supplier.contactInfo.address.id;
+                updateSupplier.contactPerson = this.form.get('contactPerson').value;
                 this.updateOld = false;
             }
             else{
                 if(!this.updateOld){
                     updateSupplier.name = this.form.get('name').value;
                     updateSupplier.contactInfo = this.form.get('contactInformation').value;
+                    updateSupplier.contactPerson = this.form.get('contactPerson').value;
                 }
             }
             this._updateSupplier(updateSupplier);
@@ -122,7 +146,7 @@ export class AddSuppliersComponent {
 
     private _addSupplier() {
         console.log('>>> GOT INTO ADD');
-        const newSupplier: Supplier = new Supplier();
+        const newSupplier: CreateSupplierRequest = new CreateSupplierRequest();
         console.log('>>> INSTANTIATED');
 
         newSupplier.name = this.form.get('name').value;
@@ -135,6 +159,13 @@ export class AddSuppliersComponent {
         }
         else{
             newSupplier.contactInfo = null;
+        }
+        if (this.form.get('contactPerson').value){
+            newSupplier.contactPerson = this.form.get('contactPerson').value;
+            console.log('>>> newSupplier', newSupplier);
+        }
+        else{
+            newSupplier.contactPerson = null;
         }
         if(newSupplier){
             this.supplier
@@ -207,6 +238,33 @@ export class AddSuppliersComponent {
                         }
                         else{
                             console.log('After IF ');
+                            //this.clientForm.contactInfo.setValue(client.contactInfo);
+                        }
+
+                        if(this.supplier.contactPerson){
+                            this.contactPerson = {
+
+                                work: supplier.contactPerson.contactInformation.work,
+                                cellphone: supplier.contactPerson.contactInformation.cellphone,
+                                telephone: supplier.contactPerson.contactInformation.telephone,
+                                email: supplier.contactPerson.contactInformation.email,
+                                whatsapp: supplier.contactPerson.contactInformation.whatsapp,
+                                address: {
+                                    line1: supplier.contactPerson.contactInformation.address.line1,
+                                    line2: supplier.contactPerson.contactInformation.address.line2,
+                                    suburb: supplier.contactPerson.contactInformation.address.suburb,
+                                    city: supplier.contactPerson.contactInformation.address.city,
+                                    postalCode: supplier.contactPerson.contactInformation.address.postalCode,
+                                    province: supplier.contactPerson.contactInformation.address.province,
+                                    country: supplier.contactPerson.contactInformation.address.country
+                                }
+                            };
+
+                            console.log("this.contactPerson ", this.contactPerson);
+                            this.supplierForm.contactPerson.setValue(this.contactPerson);
+                        }
+                        else{
+                            console.log('After IF contact person ');
                             //this.clientForm.contactInfo.setValue(client.contactInfo);
                         }
                         //this.clientForm.thumbnail.setValidators([]);
