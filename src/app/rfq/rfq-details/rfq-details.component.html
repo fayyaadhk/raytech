@@ -323,13 +323,29 @@
                             [dataSource]="dataSource"
                             #recentTransactionsTable>
 
+                            <!-- RFQ Item ID -->
+                            <ng-container matColumnDef="rfqItemId">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef>
+                                    RFQ Item ID
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let items">
+                                <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                    {{items.rfqItemId}}
+                                </span>
+                                </td>
+                            </ng-container>
                             <!-- Transaction ID -->
                             <ng-container matColumnDef="id">
                                 <th
                                     mat-header-cell
                                     mat-sort-header
                                     *matHeaderCellDef>
-                                    ID
+                                    Item ID
                                 </th>
                                 <td
                                     mat-cell
@@ -353,6 +369,23 @@
                                     *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
                                     <a routerLink="/items/details/{{items.id}}">{{items.name}}</a>
+                                </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- SKU -->
+                            <ng-container matColumnDef="sku">
+                                <th
+                                    mat-header-cell
+                                    mat-sort-header
+                                    *matHeaderCellDef>
+                                    SKU
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let items">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{items.sku}}
                                 </span>
                                 </td>
                             </ng-container>

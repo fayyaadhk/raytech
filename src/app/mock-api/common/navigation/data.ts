@@ -1,361 +1,385 @@
 /* tslint:disable:max-line-length */
-import { FuseNavigationItem } from '@fuse/components/navigation';
+import {FuseNavigationItem} from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
     {
-        id   : 'buying',
+        id: 'buying',
         title: 'Buying',
         subtitle: 'Procurement and Fulfillment',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'suppliers',
+                id: 'suppliers',
                 title: 'Suppliers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'suppliers.view',
+                        id: 'suppliers.view',
                         title: 'View All Suppliers',
-                        type : 'basic',
-                        link : '/suppliers'
+                        type: 'basic',
+                        link: '/suppliers'
                     },
                     {
-                        id   : 'suppliers.add',
+                        id: 'suppliers.add',
                         title: 'Add New Supplier',
-                        type : 'basic',
-                        link : '/suppliers/form'
+                        type: 'basic',
+                        link: '/suppliers/form'
                     }
-                ]            }
+                ]
+            }
         ]
     },
     {
-        id   : 'selling',
+        id: 'selling',
         title: 'Selling',
         subtitle: 'Quoting and Sales Process',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'clients',
+                id: 'clients',
                 title: 'Clients',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'clients.view',
+                        id: 'clients.view',
                         title: 'View All Clients',
-                        type : 'basic',
-                        link : '/clients'
+                        type: 'basic',
+                        link: '/clients'
                     },
                     {
-                        id   : 'clients.add',
+                        id: 'clients.add',
                         title: 'Add New Client',
-                        type : 'basic',
-                        link : '/clients/form'
+                        type: 'basic',
+                        link: '/clients/form'
                     }
                 ]
             },
             {
-                id   : 'rfq',
+                id: 'rfq',
                 title: 'RFQs',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'rfqs.view',
+                        id: 'rfqs.view',
                         title: 'View All RFQs',
-                        type : 'basic',
-                        link : '/rfqs'
+                        type: 'basic',
+                        link: '/rfqs'
                     },
                     {
-                        id   : 'rfqs.add',
+                        id: 'rfqs.add',
                         title: 'Add New RFQ',
-                        type : 'basic',
-                        link : '/rfqs/form'
+                        type: 'basic',
+                        link: '/rfqs/form'
                     }
                 ]
             },
             {
-                id   : 'purchase.orders',
+                id: 'purchase.orders',
                 title: 'Purchase Orders',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'po.view',
+                        id: 'po.view',
                         title: 'View All Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders'
+                        type: 'basic',
+                        link: '/purchase-orders'
                     },
                     {
-                        id   : 'po.add',
+                        id: 'po.add',
                         title: 'Add New Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders/form'
+                        type: 'basic',
+                        link: '/purchase-orders/form'
                     }
                 ]
             },
         ]
     },
     {
-        id   : 'inventory',
+        id: 'inventory',
         title: 'Inventory',
         subtitle: 'Stock Management',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'commodities',
-                title: 'Commodities',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
-                link : '/commodities',
+                id: 'items',
+                title: 'Items',
+                type: 'collapsable',
+                icon: 'heroicons_outline:archive',
                 children: [
                     {
-                        id   : 'commodities.view',
-                        title: 'View Commodities',
-                        type : 'basic',
-                        link : '/commodities'
-                    },
-                    {
-                        id   : 'commodities.add',
-                        title: 'Add New Commodity',
-                        type : 'basic',
-                        link : '/commodities/form'
-                    }
-                ]
-            },
-            {
-                id   : 'items',
-                title: 'Stock Items',
-                type : 'collapsable',
-                icon : 'heroicons_outline:archive',
-                children: [
-                    {
-                        id   : 'items.view',
+                        id: 'items.view',
                         title: 'View All Items',
-                        type : 'basic',
-                        link : '/items'
+                        type: 'basic',
+                        link: '/items'
                     },
                     {
-                        id   : 'items.add',
+                        id: 'items.add',
                         title: 'Add New Item',
-                        type : 'basic',
-                        link : '/items/form'
+                        type: 'basic',
+                        link: '/items/form'
                     }
                 ]
             },
             {
-                id   : 'categories',
+                id: 'categories',
                 title: 'Categories',
-                type : 'collapsable',
-                icon : 'heroicons_outline:view-grid',
-                link : '/categories',
+                type: 'collapsable',
+                icon: 'heroicons_outline:view-grid',
+                link: '/categories',
                 children: [
                     {
-                        id   : 'categories.view',
+                        id: 'categories.view',
                         title: 'View Categories',
-                        type : 'basic',
-                        link : '/categories'
+                        type: 'basic',
+                        link: '/categories'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Category',
-                        type : 'basic',
-                        link : '/categories/form'
+                        type: 'basic',
+                        link: '/categories/form'
                     }
                 ]
             },
+            {
+                id: 'commodities',
+                title: 'Commodities',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/commodities',
+                children: [
+                    {
+                        id: 'commodities.view',
+                        title: 'View Commodities',
+                        type: 'basic',
+                        link: '/commodities'
+                    },
+                    {
+                        id: 'commodities.add',
+                        title: 'Add New Commodity',
+                        type: 'basic',
+                        link: '/commodities/form'
+                    }
+                ]
+            },
+            {
+                id: 'brands',
+                title: 'Brands',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/brands',
+                children: [
+                    {
+                        id: 'brands.view',
+                        title: 'View Brands',
+                        type: 'basic',
+                        link: '/brands'
+                    },
+                    {
+                        id: 'brands.add',
+                        title: 'Add New Brand',
+                        type: 'basic',
+                        link: '/brands/form'
+                    }
+                ]
+            },
+
         ]
     },
 
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
-        id   : 'buying',
+        id: 'buying',
         title: 'Buying',
         subtitle: 'Procurement and Fulfillment',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'suppliers',
+                id: 'suppliers',
                 title: 'Suppliers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'suppliers.view',
+                        id: 'suppliers.view',
                         title: 'View All Suppliers',
-                        type : 'basic',
-                        link : '/suppliers'
+                        type: 'basic',
+                        link: '/suppliers'
                     },
                     {
-                        id   : 'suppliers.add',
+                        id: 'suppliers.add',
                         title: 'Add New Supplier',
-                        type : 'basic',
-                        link : '/suppliers/form'
+                        type: 'basic',
+                        link: '/suppliers/form'
                     }
-                ]            }
+                ]
+            }
         ]
     },
     {
-        id   : 'selling',
+        id: 'selling',
         title: 'Selling',
         subtitle: 'Quoting and Sales Process',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'clients',
+                id: 'clients',
                 title: 'Clients',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'clients.view',
+                        id: 'clients.view',
                         title: 'View All Clients',
-                        type : 'basic',
-                        link : '/clients'
+                        type: 'basic',
+                        link: '/clients'
                     },
                     {
-                        id   : 'clients.add',
+                        id: 'clients.add',
                         title: 'Add New Client',
-                        type : 'basic',
-                        link : '/clients/form'
+                        type: 'basic',
+                        link: '/clients/form'
                     }
                 ]
             },
             {
-                id   : 'buyers',
+                id: 'buyers',
                 title: 'Buyers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'buyers.view',
+                        id: 'buyers.view',
                         title: 'View All Buyers',
-                        type : 'basic',
-                        link : '/buyers'
+                        type: 'basic',
+                        link: '/buyers'
                     },
                     {
-                        id   : 'buyers.add',
+                        id: 'buyers.add',
                         title: 'Add New Buyer',
-                        type : 'basic',
-                        link : '/buyers/add'
+                        type: 'basic',
+                        link: '/buyers/add'
                     }
                 ]
             },
             {
-                id   : 'rfq',
+                id: 'rfq',
                 title: 'RFQs',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'rfqs.view',
+                        id: 'rfqs.view',
                         title: 'View All RFQs',
-                        type : 'basic',
-                        link : '/rfqs'
+                        type: 'basic',
+                        link: '/rfqs'
                     },
                     {
-                        id   : 'rfqs.add',
+                        id: 'rfqs.add',
                         title: 'Add New RFQ',
-                        type : 'basic',
-                        link : '/rfqs/form'
+                        type: 'basic',
+                        link: '/rfqs/form'
                     }
                 ]
             },
             {
-                id   : 'purchase.orders',
+                id: 'purchase.orders',
                 title: 'Purchase Orders',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'po.view',
+                        id: 'po.view',
                         title: 'View All Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders'
+                        type: 'basic',
+                        link: '/purchase-orders'
                     },
                     {
-                        id   : 'po.add',
+                        id: 'po.add',
                         title: 'Add New Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders/form'
+                        type: 'basic',
+                        link: '/purchase-orders/form'
                     }
                 ]
             },
         ]
     },
     {
-        id   : 'inventory',
+        id: 'inventory',
         title: 'Inventory',
         subtitle: 'Stock Management',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'commodities',
+                id: 'commodities',
                 title: 'Commodities',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
-                link : '/commodities',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/commodities',
                 children: [
                     {
-                        id   : 'commodities.view',
+                        id: 'commodities.view',
                         title: 'View Commodities',
-                        type : 'basic',
-                        link : '/commodities'
+                        type: 'basic',
+                        link: '/commodities'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Commodity',
-                        type : 'basic',
-                        link : '/commodities/form'
+                        type: 'basic',
+                        link: '/commodities/form'
                     }
                 ]
             },
             {
-                id   : 'items',
+                id: 'items',
                 title: 'Stock Items',
-                type : 'collapsable',
-                icon : 'heroicons_outline:archive',
+                type: 'collapsable',
+                icon: 'heroicons_outline:archive',
                 children: [
                     {
-                        id   : 'items.view',
+                        id: 'items.view',
                         title: 'View All Items',
-                        type : 'basic',
-                        link : '/items'
+                        type: 'basic',
+                        link: '/items'
                     },
                     {
-                        id   : 'items.add',
+                        id: 'items.add',
                         title: 'Add New Item',
-                        type : 'basic',
-                        link : '/items/form'
+                        type: 'basic',
+                        link: '/items/form'
                     }
                 ]
             },
             {
-                id   : 'categories',
+                id: 'categories',
                 title: 'Categories',
-                type : 'collapsable',
-                icon : 'heroicons_outline:view-grid',
-                link : '/categories',
+                type: 'collapsable',
+                icon: 'heroicons_outline:view-grid',
+                link: '/categories',
                 children: [
                     {
-                        id   : 'categories.view',
+                        id: 'categories.view',
                         title: 'View Categories',
-                        type : 'basic',
-                        link : '/categories'
+                        type: 'basic',
+                        link: '/categories'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Category',
-                        type : 'basic',
-                        link : '/categories/form'
+                        type: 'basic',
+                        link: '/categories/form'
                     }
                 ]
             },
@@ -365,188 +389,189 @@ export const compactNavigation: FuseNavigationItem[] = [
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
-        id   : 'buying',
+        id: 'buying',
         title: 'Buying',
         subtitle: 'Procurement and Fulfillment',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'suppliers',
+                id: 'suppliers',
                 title: 'Suppliers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'suppliers.view',
+                        id: 'suppliers.view',
                         title: 'View All Suppliers',
-                        type : 'basic',
-                        link : '/suppliers'
+                        type: 'basic',
+                        link: '/suppliers'
                     },
                     {
-                        id   : 'suppliers.add',
+                        id: 'suppliers.add',
                         title: 'Add New Supplier',
-                        type : 'basic',
-                        link : '/suppliers/form'
+                        type: 'basic',
+                        link: '/suppliers/form'
                     }
-                ]            }
+                ]
+            }
         ]
     },
     {
-        id   : 'selling',
+        id: 'selling',
         title: 'Selling',
         subtitle: 'Quoting and Sales Process',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'clients',
+                id: 'clients',
                 title: 'Clients',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'clients.view',
+                        id: 'clients.view',
                         title: 'View All Clients',
-                        type : 'basic',
-                        link : '/clients'
+                        type: 'basic',
+                        link: '/clients'
                     },
                     {
-                        id   : 'clients.add',
+                        id: 'clients.add',
                         title: 'Add New Client',
-                        type : 'basic',
-                        link : '/clients/form'
+                        type: 'basic',
+                        link: '/clients/form'
                     }
                 ]
             },
             {
-                id   : 'buyers',
+                id: 'buyers',
                 title: 'Buyers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'buyers.view',
+                        id: 'buyers.view',
                         title: 'View All Buyers',
-                        type : 'basic',
-                        link : '/buyers'
+                        type: 'basic',
+                        link: '/buyers'
                     },
                     {
-                        id   : 'buyers.add',
+                        id: 'buyers.add',
                         title: 'Add New Buyer',
-                        type : 'basic',
-                        link : '/buyers/add'
+                        type: 'basic',
+                        link: '/buyers/add'
                     }
                 ]
             },
             {
-                id   : 'rfq',
+                id: 'rfq',
                 title: 'RFQs',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'rfqs.view',
+                        id: 'rfqs.view',
                         title: 'View All RFQs',
-                        type : 'basic',
-                        link : '/rfqs'
+                        type: 'basic',
+                        link: '/rfqs'
                     },
                     {
-                        id   : 'rfqs.add',
+                        id: 'rfqs.add',
                         title: 'Add New RFQ',
-                        type : 'basic',
-                        link : '/rfqs/form'
+                        type: 'basic',
+                        link: '/rfqs/form'
                     }
                 ]
             },
             {
-                id   : 'purchase.orders',
+                id: 'purchase.orders',
                 title: 'Purchase Orders',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'po.view',
+                        id: 'po.view',
                         title: 'View All Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders'
+                        type: 'basic',
+                        link: '/purchase-orders'
                     },
                     {
-                        id   : 'po.add',
+                        id: 'po.add',
                         title: 'Add New Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders/form'
+                        type: 'basic',
+                        link: '/purchase-orders/form'
                     }
                 ]
             },
         ]
     },
     {
-        id   : 'inventory',
+        id: 'inventory',
         title: 'Inventory',
         subtitle: 'Stock Management',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'commodities',
+                id: 'commodities',
                 title: 'Commodities',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
-                link : '/commodities',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/commodities',
                 children: [
                     {
-                        id   : 'commodities.view',
+                        id: 'commodities.view',
                         title: 'View Commodities',
-                        type : 'basic',
-                        link : '/commodities'
+                        type: 'basic',
+                        link: '/commodities'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Commodity',
-                        type : 'basic',
-                        link : '/commodities/form'
+                        type: 'basic',
+                        link: '/commodities/form'
                     }
                 ]
             },
             {
-                id   : 'items',
+                id: 'items',
                 title: 'Stock Items',
-                type : 'collapsable',
-                icon : 'heroicons_outline:archive',
+                type: 'collapsable',
+                icon: 'heroicons_outline:archive',
                 children: [
                     {
-                        id   : 'items.view',
+                        id: 'items.view',
                         title: 'View All Items',
-                        type : 'basic',
-                        link : '/items'
+                        type: 'basic',
+                        link: '/items'
                     },
                     {
-                        id   : 'items.add',
+                        id: 'items.add',
                         title: 'Add New Item',
-                        type : 'basic',
-                        link : '/items/form'
+                        type: 'basic',
+                        link: '/items/form'
                     }
                 ]
             },
             {
-                id   : 'categories',
+                id: 'categories',
                 title: 'Categories',
-                type : 'collapsable',
-                icon : 'heroicons_outline:view-grid',
-                link : '/categories',
+                type: 'collapsable',
+                icon: 'heroicons_outline:view-grid',
+                link: '/categories',
                 children: [
                     {
-                        id   : 'categories.view',
+                        id: 'categories.view',
                         title: 'View Categories',
-                        type : 'basic',
-                        link : '/categories'
+                        type: 'basic',
+                        link: '/categories'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Category',
-                        type : 'basic',
-                        link : '/categories/form'
+                        type: 'basic',
+                        link: '/categories/form'
                     }
                 ]
             },
@@ -556,188 +581,189 @@ export const futuristicNavigation: FuseNavigationItem[] = [
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'buying',
+        id: 'buying',
         title: 'Buying',
         subtitle: 'Procurement and Fulfillment',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'suppliers',
+                id: 'suppliers',
                 title: 'Suppliers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'suppliers.view',
+                        id: 'suppliers.view',
                         title: 'View All Suppliers',
-                        type : 'basic',
-                        link : '/suppliers'
+                        type: 'basic',
+                        link: '/suppliers'
                     },
                     {
-                        id   : 'suppliers.add',
+                        id: 'suppliers.add',
                         title: 'Add New Supplier',
-                        type : 'basic',
-                        link : '/suppliers/form'
+                        type: 'basic',
+                        link: '/suppliers/form'
                     }
-                ]            }
+                ]
+            }
         ]
     },
     {
-        id   : 'selling',
+        id: 'selling',
         title: 'Selling',
         subtitle: 'Quoting and Sales Process',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'clients',
+                id: 'clients',
                 title: 'Clients',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'clients.view',
+                        id: 'clients.view',
                         title: 'View All Clients',
-                        type : 'basic',
-                        link : '/clients'
+                        type: 'basic',
+                        link: '/clients'
                     },
                     {
-                        id   : 'clients.add',
+                        id: 'clients.add',
                         title: 'Add New Client',
-                        type : 'basic',
-                        link : '/clients/form'
+                        type: 'basic',
+                        link: '/clients/form'
                     }
                 ]
             },
             {
-                id   : 'buyers',
+                id: 'buyers',
                 title: 'Buyers',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'buyers.view',
+                        id: 'buyers.view',
                         title: 'View All Buyers',
-                        type : 'basic',
-                        link : '/buyers'
+                        type: 'basic',
+                        link: '/buyers'
                     },
                     {
-                        id   : 'buyers.add',
+                        id: 'buyers.add',
                         title: 'Add New Buyer',
-                        type : 'basic',
-                        link : '/buyers/add'
+                        type: 'basic',
+                        link: '/buyers/add'
                     }
                 ]
             },
             {
-                id   : 'rfq',
+                id: 'rfq',
                 title: 'RFQs',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'rfqs.view',
+                        id: 'rfqs.view',
                         title: 'View All RFQs',
-                        type : 'basic',
-                        link : '/rfqs'
+                        type: 'basic',
+                        link: '/rfqs'
                     },
                     {
-                        id   : 'rfqs.add',
+                        id: 'rfqs.add',
                         title: 'Add New RFQ',
-                        type : 'basic',
-                        link : '/rfqs/form'
+                        type: 'basic',
+                        link: '/rfqs/form'
                     }
                 ]
             },
             {
-                id   : 'purchase.orders',
+                id: 'purchase.orders',
                 title: 'Purchase Orders',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
                 children: [
                     {
-                        id   : 'po.view',
+                        id: 'po.view',
                         title: 'View All Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders'
+                        type: 'basic',
+                        link: '/purchase-orders'
                     },
                     {
-                        id   : 'po.add',
+                        id: 'po.add',
                         title: 'Add New Purchase Orders',
-                        type : 'basic',
-                        link : '/purchase-orders/form'
+                        type: 'basic',
+                        link: '/purchase-orders/form'
                     }
                 ]
             },
         ]
     },
     {
-        id   : 'inventory',
+        id: 'inventory',
         title: 'Inventory',
         subtitle: 'Stock Management',
-        type : 'group',
-        icon : 'heroicons_outline:chart-pie',
+        type: 'group',
+        icon: 'heroicons_outline:chart-pie',
         children: [
             {
-                id   : 'commodities',
+                id: 'commodities',
                 title: 'Commodities',
-                type : 'collapsable',
-                icon : 'heroicons_outline:chart-pie',
-                link : '/commodities',
+                type: 'collapsable',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/commodities',
                 children: [
                     {
-                        id   : 'commodities.view',
+                        id: 'commodities.view',
                         title: 'View Commodities',
-                        type : 'basic',
-                        link : '/commodities'
+                        type: 'basic',
+                        link: '/commodities'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Commodity',
-                        type : 'basic',
-                        link : '/commodities/form'
+                        type: 'basic',
+                        link: '/commodities/form'
                     }
                 ]
             },
             {
-                id   : 'items',
+                id: 'items',
                 title: 'Stock Items',
-                type : 'collapsable',
-                icon : 'heroicons_outline:archive',
+                type: 'collapsable',
+                icon: 'heroicons_outline:archive',
                 children: [
                     {
-                        id   : 'items.view',
+                        id: 'items.view',
                         title: 'View All Items',
-                        type : 'basic',
-                        link : '/items'
+                        type: 'basic',
+                        link: '/items'
                     },
                     {
-                        id   : 'items.add',
+                        id: 'items.add',
                         title: 'Add New Item',
-                        type : 'basic',
-                        link : '/items/form'
+                        type: 'basic',
+                        link: '/items/form'
                     }
                 ]
             },
             {
-                id   : 'categories',
+                id: 'categories',
                 title: 'Categories',
-                type : 'collapsable',
-                icon : 'heroicons_outline:view-grid',
-                link : '/categories',
+                type: 'collapsable',
+                icon: 'heroicons_outline:view-grid',
+                link: '/categories',
                 children: [
                     {
-                        id   : 'categories.view',
+                        id: 'categories.view',
                         title: 'View Categories',
-                        type : 'basic',
-                        link : '/categories'
+                        type: 'basic',
+                        link: '/categories'
                     },
                     {
-                        id   : 'commodities.add',
+                        id: 'commodities.add',
                         title: 'Add New Category',
-                        type : 'basic',
-                        link : '/categories/form'
+                        type: 'basic',
+                        link: '/categories/form'
                     }
                 ]
             },
