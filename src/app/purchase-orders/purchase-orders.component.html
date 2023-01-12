@@ -9,7 +9,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Suppliers</div>
+        <div class="text-4xl font-extrabold tracking-tight">Purchase Orders</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -21,14 +21,14 @@
                 <input
                     matInput
                     (keyup)="applyFilter($event.target.value)"
-                    [placeholder]="'Search suppliers'">
+                    [placeholder]="'Search clients'">
             </mat-form-field>
             <!-- Add product button -->
             <button
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="createSupplier()">
+                (click)="createItem()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
@@ -38,30 +38,40 @@
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-            <mat-cell *matCellDef="let supplier"> {{supplier.id}} </mat-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.id}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-            <mat-cell *matCellDef="let supplier"> {{supplier.name}} </mat-cell>
+        <ng-container matColumnDef="PONumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> <a routerLink="details/{{purchaseOrder.id}}">{{purchaseOrder.poNumber}}</a> </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="contactPerson">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Contact Person </mat-header-cell>
-            <mat-cell *matCellDef="let supplier"> {{supplier?.contactPersonId }} </mat-cell>
+        <ng-container matColumnDef="RFQNumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.rfqId}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="itemCount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.items.length}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.status }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="editDelete">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let supplier">
+            <mat-cell *matCellDef="let purchaseOrder">
                 <div class="truncate">
                     <button
-                        (click)="updateSupplier(supplier.id)">
+                        (click)="updateItem(purchaseOrder.id)">
                         <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                     </button>
                     <button class="ml-4"
-                            (click)="deleteSupplier(supplier.id)">
+                            (click)="deleteItem(purchaseOrder.id)">
                         <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
                     </button>
 
