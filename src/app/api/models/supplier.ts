@@ -6,7 +6,7 @@ import { Person } from './person';
 export class Supplier {
   contactInfo?: ContactInformation;
   contactInfoId?: number;
-  contactPersonId?: Person;
+  contactPerson?: Person;
   created?: string;
   id?: number;
   name?: null | string;

@@ -234,6 +234,168 @@
                                     </ng-container>
                                 </div>
 
+                                <mat-divider class="mt-6 mb-10"></mat-divider>
+                                <p class="text-lg font-medium">Contact Person</p>
+                                <p class="text-secondary mb-6">
+                                    Supplier Contact Person Information
+                                </p>
+
+                                <div class="flex flex-col gt-xs:flex-row">
+                                    <ng-container formGroupName="contactPerson">
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                <input
+                                                    matInput
+                                                    formControlName="firstName"
+                                                    [placeholder]="'First Name'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                                <input
+                                                    matInput
+                                                    formControlName="lastName"
+                                                    [placeholder]="'Last Name'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto">
+                                                <input
+                                                    matInput
+                                                    type="number"
+                                                    formControlName="idNumber"
+                                                    [placeholder]="'ID Number'">
+                                                <span matPrefix>/</span>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                                <input
+                                                    matInput
+                                                    formControlName="work"
+                                                    [placeholder]="'Work'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto gt-xs:pl-3">
+                                                <input
+                                                    matInput
+                                                    formControlName="cellphone"
+                                                    [placeholder]="'Cellphone'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto">
+                                                <input
+                                                    matInput
+                                                    formControlName="whatsapp"
+                                                    [placeholder]="'Whatsapp'">
+                                                <span matPrefix>/</span>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto">
+                                                <input
+                                                    matInput
+                                                    formControlName="telephone"
+                                                    [placeholder]="'Telephone'">
+                                                <span matPrefix>/</span>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="flex-auto">
+                                                <input
+                                                    matInput
+                                                    formControlName="email"
+                                                    [placeholder]="'Email'">
+                                                <span matPrefix>/</span>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <ng-container formGroupName="address">
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="line1"
+                                                        [placeholder]="'Address Line 1'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="line2"
+                                                        [placeholder]="'Address Line 2'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="suburb"
+                                                        [placeholder]="'Suburb'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="city"
+                                                        [placeholder]="'City'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="postalCode"
+                                                        [placeholder]="'Postal Code'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="country"
+                                                        [placeholder]="'Country'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="flex">
+                                                <mat-form-field class="flex-auto">
+                                                    <input
+                                                        matInput
+                                                        formControlName="province"
+                                                        [placeholder]="'Province'">
+                                                    <span matPrefix>/</span>
+                                                </mat-form-field>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
 
                             </div>
                         </div>
