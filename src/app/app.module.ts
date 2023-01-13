@@ -14,7 +14,10 @@ import {AppComponent} from 'app/app.component';
 import {appRoutes} from 'app/app.routing';
 import {AngularMaterialModule} from './angular-material.module';
 
-
+const routerConfig: ExtraOptions = {
+    preloadingStrategy       : PreloadAllModules,
+    scrollPositionRestoration: 'enabled'
+};
 @NgModule({
     declarations: [
         AppComponent,
@@ -23,7 +26,7 @@ import {AngularMaterialModule} from './angular-material.module';
     //     {provide: LocationStrategy, useClass: PathLocationStrategy}
     // ],
     imports: [
-        RouterModule.forRoot(appRoutes),
+        RouterModule.forRoot(appRoutes, routerConfig),
         BrowserModule,
         BrowserAnimationsModule,
 
@@ -40,7 +43,8 @@ import {AngularMaterialModule} from './angular-material.module';
 
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({}),
-        AngularMaterialModule
+        AngularMaterialModule,
+
     ],
     bootstrap: [
         AppComponent

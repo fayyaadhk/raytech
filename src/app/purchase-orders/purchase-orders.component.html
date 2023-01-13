@@ -51,6 +51,16 @@
             <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.rfqId}} </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="DateReceived">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Date Received </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.dateReceived  | date:'MMM dd, yyyy'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="DateDue">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Date Due </mat-header-cell>
+            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.due  | date:'MMM dd, yyyy'}} </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="itemCount">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count </mat-header-cell>
             <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.items.length}} </mat-cell>

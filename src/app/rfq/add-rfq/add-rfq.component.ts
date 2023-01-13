@@ -347,7 +347,7 @@ export class AddRfqComponent implements OnInit {
                 this.editmode = true;
                 this.currentRfqId = params.id;
                 this.rfqService
-                    .getRfq(params.id)
+                    .getRfqDetails(params.id)
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((rfq) => {
                         this.rfqs = rfq;

@@ -21,6 +21,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatDividerModule} from "@angular/material/divider";
 import {SharedModule} from "../shared/shared.module";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 const purchaseOrderRoutes: Route[] = [
     {
@@ -38,6 +39,7 @@ const purchaseOrderRoutes: Route[] = [
     declarations: [PurchaseOrdersComponent, PurchaseOrderDetailComponent],
     imports: [
         RouterModule.forChild(purchaseOrderRoutes),
+        MatDatepickerModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
