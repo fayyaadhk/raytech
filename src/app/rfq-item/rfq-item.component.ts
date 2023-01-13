@@ -79,17 +79,34 @@ export class RfqItemComponent implements OnInit {
             .subscribe((item) => {
                 this.itemName = item.name;
                 this.isLoading = false;
-                this.dialogRef.close(
-                    {
-                        editMode: this.editmode,
-                        rfqItemId: this.data.rfqItemId,
-                        itemId: this.rfqItemForm.get('itemId').value,
-                        name: this.itemName,
-                        quantity: this.rfqItemForm.get('quantity').value,
-                        price: this.rfqItemForm.get('price').value,
-                        status: this.rfqItemForm.get('itemStatus').value
-                    }
-                )
+                if(this.editmode){
+                    this.dialogRef.close(
+                        {
+                            editMode: this.editmode,
+                            rfqItemId: this.data.rfqItemId,
+                            itemId: this.rfqItemForm.get('itemId').value,
+                            name: this.itemName,
+                            quantity: this.rfqItemForm.get('quantity').value,
+                            price: this.rfqItemForm.get('price').value,
+                            status: this.rfqItemForm.get('itemStatus').value
+                        }
+                    )
+                }
+                else{
+                    this.dialogRef.close(
+                        {
+                            editMode: this.editmode,
+                            newItem: true,
+                            rfqItemId: this.data.rfqItemId,
+                            itemId: this.rfqItemForm.get('itemId').value,
+                            name: this.itemName,
+                            quantity: this.rfqItemForm.get('quantity').value,
+                            price: this.rfqItemForm.get('price').value,
+                            status: this.rfqItemForm.get('itemStatus').value
+                        }
+                    )
+                }
+
             });
         this.addSuccess = true;
     }
