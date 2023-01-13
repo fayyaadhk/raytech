@@ -16,6 +16,8 @@ import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {RfqItem} from "../../api/models/rfq-item";
 import {CreateRfqRequest} from "../../api/models/create-rfq-request";
+import {UpdateRfqItem} from "../../api/models/update-rfq-item";
+import {CreateRfqItem} from "../../api/models/create-rfq-item";
 
 @Component({
     selector: 'app-add-rfq',
@@ -58,8 +60,10 @@ export class AddRfqComponent implements OnInit {
     items: any = [];
     rfqItems: any = [];
     public rfqDetails: any = {};
-    public rfqItemDetails: any = {};
-    currentRfqId: string;
+    public rfqItemDetails: any = [];
+    setStep3: any = [];
+    createNew: boolean = false;
+    currentRfqId: number;
     sub: Subscription;
     dataSource: MatTableDataSource<RfqItem>;
     displayedColumns = ['id', 'name', 'quantity', 'price', 'actions'];
@@ -108,7 +112,6 @@ export class AddRfqComponent implements OnInit {
         const dialogRef = this.dialog.open(RfqItemComponent, {
             width: '600px',
             data: {
-                modalTitle: 'Add New RFQ Item',
                 rfqItemId: rfqItemId,
                 itemId: rfqId,
                 quantity: quantity,
@@ -219,6 +222,8 @@ export class AddRfqComponent implements OnInit {
         }
 
         if (this.editmode) {
+            console.log(this.rfqItems);
+
             const updateRfq: Rfq = {
                 items: this.rfqItems,
                 description: this.verticalStepperForm.get('step1.description').value,
@@ -230,14 +235,62 @@ export class AddRfqComponent implements OnInit {
                 rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value
             };
             this._updateRfq(updateRfq);
-            this.isLoading = false;
-        }
 
-        else {
+            console.log('RFQS >>> ', this.rfqs);
+            for (let r = 0; r < this.rfqItems.length; r++) {
+                console.log(this.rfqItems);
+                console.log('edit mode ',this.rfqItems[r].editmode);
+                    if (this.rfqItems[r].editmode === true) {
+                        const updateRfqItem: UpdateRfqItem = {
+                            rfqItemId: this.rfqs.items[r].id,
+                            itemId: this.rfqItems[r].itemId,
+                            quantity: this.rfqItems[r].quantity,
+                            priceQuoted: this.rfqItems[r].price,
+                            status: this.rfqItems[r].status
+                        };
+                        console.log('UPDATE RFQ ITEMS ', updateRfqItem);
+                        this.rfqService
+                            .updateRfqItem(updateRfqItem, this.rfqs.items[r].id)
+                            .pipe(takeUntil(this.endsubs$))
+                            .subscribe(
+                                (rfq: RfqModule) => {
+                                    this.updateSuccess = true;
+                                },
+                                () => {
+                                    this.updateSuccess = false;
+                                }
+                            );
+                    } else if(this.rfqItems[r].editMode === false){
+                        const addRfqItem: CreateRfqItem = {
+                            rfqId: this.currentRfqId,
+                            itemId: this.rfqItems[r].itemId,
+                            quantity: this.rfqItems[r].quantity,
+                            priceQuoted: this.rfqItems[r].price,
+                            status: this.rfqItems[r].status
+                        };
+                        console.log('ADD RFQ ITEM', addRfqItem);
+                        this.rfqService
+                            .createRfqItem(addRfqItem)
+                            .pipe(takeUntil(this.endsubs$))
+                            .subscribe(
+                                (rfq: RfqModule) => {
+                                    this.addSuccess = true;
+                                },
+                                () => {
+                                    this.addSuccess = false;
+                                }
+                            );
+                    }
+            }
+            this.isLoading = false;
+            this.updateSuccess = true;
+            this.router.navigateByUrl('rfqs');
+        } else {
             this._addRfq();
             this.isLoading = false;
             this.verticalStepperForm.reset();
             this.router.navigateByUrl('rfqs');
+            this.addSuccess = true;
         }
     }
 
@@ -341,6 +394,20 @@ export class AddRfqComponent implements OnInit {
             );
     }
 
+    private _updateRfqItem(rfqItemData: UpdateRfqItem) {
+        this.rfqService
+            .updateRfqItem(rfqItemData, this.currentRfqId)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe(
+                (rfq: RfqModule) => {
+                    this.updateSuccess = true;
+                },
+                () => {
+                    this.updateSuccess = false;
+                }
+            );
+    }
+
     private _checkEditMode() {
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
             if (params.id) {
@@ -352,7 +419,7 @@ export class AddRfqComponent implements OnInit {
                     .subscribe((rfq) => {
                         this.rfqs = rfq;
                         console.log("--- rfqs ", this.rfqs);
-                        if(this.rfqs) {
+                        if (this.rfqs) {
                             this.rfqDetails = {
                                 rfqNumber: this.rfqs.rfqNumber,
                                 dueDate: this.rfqs.due,
@@ -363,23 +430,38 @@ export class AddRfqComponent implements OnInit {
                                 status: this.rfqs.status
                             };
                         }
-                            // for(let r = 0; r < this.rfqs.items.length; r++) {
-                                console.log(this.rfqs.items[0].status);
-                                this.rfqItems = this.rfqs.items;
-                                this.rfqItemDetails = [{
-                                    rfqItems: this.rfqs.items[0].item,
-                                    quantity: this.rfqs.items[0].quantity,
-                                    status: this.rfqs.items[0].status,
-                                    price: this.rfqs.items[0].priceQuoted,
-                                    itemForm: null
-                                }];
-                            // }
+
+
+                        for (let r = 0; r < this.rfqs.items.length; r++) {
+                            console.log(">>>this.rfqs.items", this.rfqs.items);
+                            // this.rfqItems = this.rfqs.items;
+                            this.rfqItemDetails.push({
+                                rfqItemId: this.rfqs.items[r].id,
+                                itemId: this.rfqs.items[r].item.id,
+                                name: this.rfqs.items[r].item.name,
+                                quantity: this.rfqs.items[r].quantity,
+                                status: this.rfqs.items[r].status,
+                                price: this.rfqs.items[r].priceQuoted,
+                            });
+                            //
+                            // console.log('rfqItemDetails before step 3', this.rfqItemDetails)
+                            //
+                            // this.setStep3 = {
+                            //     rfqItems: this.rfqItemDetails[r],
+                            //     quantity: this.rfqs.items[r].quantity,
+                            //     status: this.rfqs.items[r].status,
+                            //     price: this.rfqs.items[r].priceQuoted,
+                            //     itemForm: null
+                            // };
+                        }
+
+                        this.rfqItems = this.rfqItemDetails;
                         //     //this.rfqItems = this.rfqs.items;
-                            console.log(this.rfqItemDetails);
-                            this.rfqForm.step1.setValue(this.rfqDetails);
-                            // this.rfqForm.step3.setValue(this.rfqItemDetails);
+                        console.log("this.rfqItems", this.rfqItems);
+                        this.rfqForm.step1.setValue(this.rfqDetails);
+                        //this.rfqForm.step3.setValue(this.setStep3);
                         this.dataSource = new MatTableDataSource(this.rfqItems);
-                        this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
+                        console.log(">>> this.datasouce", this.dataSource)
                         // this.rfqForm['step3']['status'].setValue(this.rfqs.items.status);
                         // this.rfqForm['step3']['price'].setValue(this.rfqs.priceQuoted);
                         // this.rfqForm['step3']['itemForm'].setValue(null);

@@ -7,9 +7,12 @@ import { Router } from '@angular/router';
 import {Rfq} from '../api/models/rfq';
 import {Client} from "../client/client.model";
 import {CreateRfqRequest} from "../api/models/create-rfq-request";
+import {UpdateRfqItem} from "../api/models/update-rfq-item";
+import {CreateRfqItem} from "../api/models/create-rfq-item";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLRfqs = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqs';
+const apiURLRfqItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqitems';
 
 @Injectable({ providedIn: 'root' })
 export class RfqService {
@@ -30,12 +33,20 @@ export class RfqService {
         return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}`);
     }
 
+    createRfqItem(model: CreateRfqItem): Observable<CreateRfqItem> {
+        return this.http.post<CreateRfqItem>(apiURLRfqItems, model);
+    }
+
     getRfqDetails(rfqId: string): Observable<Rfq> {
         return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}/details`);
     }
 
-    updateRfq(model: Rfq, rfqId: string): Observable<Rfq> {
+    updateRfq(model: Rfq, rfqId: number): Observable<Rfq> {
         return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}`, model);
+    }
+
+    updateRfqItem(model: UpdateRfqItem, rfqItemId: number): Observable<UpdateRfqItem> {
+        return this.http.put<UpdateRfqItem>(`${apiURLRfqItems}/${rfqItemId}`, model);
     }
 
     deleteRfq(rfqId: string): Observable<any> {

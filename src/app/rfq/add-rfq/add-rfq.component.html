@@ -466,6 +466,38 @@
                                     change your
                                     information.
                                 </p>
+                                <div
+                                    class="flex items-center mr-4"
+                                    *ngIf="addSuccess">
+                                    <ng-container *ngIf="addSuccess === true">
+                                        <mat-icon
+                                            class="text-green-500"
+                                            [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                        <span class="ml-2">RFQ added</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="addSuccess === false">
+                                        <mat-icon
+                                            class="text-red-500"
+                                            [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                        <span class="ml-2">An error occurred, try again!</span>
+                                    </ng-container>
+                                </div>
+                                <div
+                                    class="flex items-center mr-4"
+                                    *ngIf="updateSuccess">
+                                    <ng-container *ngIf="updateSuccess === true">
+                                        <mat-icon
+                                            class="text-green-500"
+                                            [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                        <span class="ml-2">RFQ updated</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="updateSuccess === false">
+                                        <mat-icon
+                                            class="text-red-500"
+                                            [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                        <span class="ml-2">An error occurred, try again!</span>
+                                    </ng-container>
+                                </div>
                                 <div class="flex justify-end mt-8">
                                     <button
                                         class="px-8 mr-2"

@@ -17,7 +17,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
 
-
 import {SharedModule} from '../shared/shared.module';
 import {RfqComponent} from './rfq.component';
 import {ItemComponent} from "../item/item.component";
