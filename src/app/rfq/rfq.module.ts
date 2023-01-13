@@ -8,7 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatRippleModule} from '@angular/material/core';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -24,6 +24,9 @@ import {ItemComponent} from "../item/item.component";
 import {ItemDetailsComponent} from "../item/item-details/item-details.component";
 import {RfqDetailsComponent} from "./rfq-details/rfq-details.component";
 import {AddRfqComponent} from "./add-rfq/add-rfq.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 const rfqRoutes: Route[] = [
     {
@@ -48,6 +51,7 @@ const rfqRoutes: Route[] = [
     ],
     imports     : [
         RouterModule.forChild(rfqRoutes),
+        MatNativeDateModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -64,6 +68,8 @@ const rfqRoutes: Route[] = [
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatTableModule,
+        MatDialogModule,
+        MatDatepickerModule,
         SharedModule
     ]
 })

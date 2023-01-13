@@ -35,7 +35,7 @@ export class PurchaseOrdersComponent {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<PurchaseOrder>;
-    displayedColumns = ['id', 'PONumber', 'RFQNumber', 'itemCount', 'status', 'editDelete'];
+    displayedColumns = ['id', 'PONumber', 'RFQNumber', 'DateReceived', 'DateDue', 'itemCount', 'status', 'editDelete'];
 
 
     constructor(private purchaseOrderService: PurchaseOrderService,
@@ -57,7 +57,7 @@ export class PurchaseOrdersComponent {
         this.router.navigateByUrl(`purchase-orders/form/${itemId}`);
     }
 
-    deleteItem(itemId: string) {
+    deleteItem(itemId: number) {
         const confirmation = this.fuseConfirmationService.open({
             title: 'Delete Purchase Order',
             message: 'Are you sure you want to remove this Purchase Order? This action cannot be undone!',

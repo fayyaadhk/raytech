@@ -1,168 +1,23 @@
 <div class="flex flex-col flex-auto w-full">
-<div class="flex flex-col flex-auto w-full">
+    <div class="flex flex-col flex-auto w-full">
 
-    <div
-        class="absolute inset-x-0 bottom-0"
-        *ngIf="isLoading">
-        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-    </div>
-    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
-
-        <!-- Title and action buttons -->
-        <div class="flex items-center justify-between w-full">
-            <div>
-                <h2 class="text-3xl font-semibold tracking-tight leading-8">RFQ Details</h2>
-                <div class="font-medium tracking-tight text-secondary">Keep track of an RFQ</div>
-            </div>
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
+        <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
 
-        <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8" *ngIf="!isLoading">
-            <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
-                <!-- Previous statement -->
-                <div class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
-                    <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                        <mat-icon
-                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                            [svgIcon]="'heroicons_outline:check-circle'"></mat-icon>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="flex flex-col">
-                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ
-                                Number: {{rfqs.rfqNumber}} </div>
-                            <div class="text-green-600 font-medium text-sm">
-                                Created on {{rfqs.dateCreated | date:'MMM dd, yyyy'}}
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="flex items-center">
-                        <div class="flex flex-col">
-                            <!--                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ Description</div>-->
-                            <div class="text-green-600 font-medium text-sm">
-                                {{rfqs.description}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="flex flex-col">
-                            <!--                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ Description</div>-->
-                            <div class="text-green-600 font-medium text-sm">
-                                {{rfqs.rfqDocumentUrl}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                        <div class="flex flex-col mx-6 my-3">
-                            <div class="text-sm font-medium leading-none text-secondary">Date Due</div>
-                            <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.due | date}}</div>
-                        </div>
-                        <div class="flex flex-col mx-6 my-3">
-                            <div class="text-sm font-medium leading-none text-secondary">Client</div>
-                            <div class="mt-2 font-medium text-3xl leading-none">{{client.name }}</div>
-                        </div>
-                        <div class="flex flex-col mx-6 my-3">
-                            <div class="text-sm font-medium leading-none text-secondary">Status</div>
-                            <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.status }}</div>
-                        </div>
-                        <!--                        <div class="flex flex-col mx-6 my-3">-->
-                        <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
-                        <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
-                    </div>
+            <!-- Title and action buttons -->
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <h2 class="text-3xl font-semibold tracking-tight leading-8">RFQ Details</h2>
+                    <div class="font-medium tracking-tight text-secondary">Keep track of an RFQ</div>
                 </div>
             </div>
 
-            <!-- Quotation Details  -->
-            <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
-                <!-- Previous statement -->
-                <div class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
-                    <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                        <mat-icon
-                            class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                            [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
-                    </div>
-                    <ng-container *ngIf="hasQuote">
-                        <div class="flex items-center">
-                            <div class="flex flex-col">
-                                <div class="text-lg font-medium tracking-tight leading-6 truncate">Quotation Details
-                                </div>
-                                <div class="text-red-600 font-medium text-sm">
-                                    Quote sent date {{rfqs.quoteSentDate}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                            <div class="flex flex-col mx-6 my-3">
-                                <div class="text-sm font-medium leading-none text-secondary">Quotation Document URL
-                                </div>
-                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.quoteDocumentUrl}}</div>
-                            </div>
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="!hasQuote" [formGroup]="form">
-                        <div class="flex items-center">
-                            <div class="flex flex-col">
-                                <div class="text-lg font-medium tracking-tight leading-6 truncate">Quotation Details
-                                </div>
-                                <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                                    <div class="flex flex-col mx-6 my-3">
-
-                                        <div class="text-sm font-medium leading-none text-secondary">
-
-                                            <div class="flex">
-                                                <mat-form-field
-                                                    [ngClass]="formFieldHelpers"
-                                                    class="flex-auto">
-                                                    <mat-label>Quote Sent Date</mat-label>
-                                                    <input
-                                                        matInput
-                                                        [formControlName]="'quoteSentDate'"
-                                                        [placeholder]="'Quote Sent Date'"
-                                                        [matDatepicker]="picker1">
-                                                    <mat-datepicker-toggle
-                                                        matSuffix
-                                                        [for]="picker1"></mat-datepicker-toggle>
-                                                    <mat-datepicker #picker1></mat-datepicker>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col mx-6 my-3">
-                                        <div class="text-md font-medium leading-none text-secondary">
-                                            <div class="text-lg font-medium leading-none text-secondary">Quote Document
-                                                URL
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="preview"
-                                                     *ngIf="quoteDocumentPreview && quoteDocumentPreview !== null">
-                                                    <img [src]="quoteDocumentPreview"
-                                                         [alt]="form.value.quoteDocumentUrl">
-                                                </div>
-                                            </div>
-                                            <input type="file" (change)="uploadQuotation($event)">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                            <div class="flex flex-col mx-6 my-3">
-                                <button
-                                    class="px-8"
-                                    mat-flat-button
-                                    [color]="'primary'"
-                                    type="reset"
-                                    (click)="onSubmitQuotation(currentRfqId)">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-
-            <!-- Purchase Order Details  -->
             <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8" *ngIf="!isLoading">
-                <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row" *ngIf="rfqs.purchaseOrder">
+                <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
                     <!-- Previous statement -->
                     <div
                         class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
@@ -173,10 +28,10 @@
                         </div>
                         <div class="flex items-center">
                             <div class="flex flex-col">
-                                <div class="text-lg font-medium tracking-tight leading-6 truncate">Purchase Order
-                                    Number: {{rfqs.purchaseOrder.poNumber}} </div>
+                                <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ
+                                    Number: {{rfqs.rfqNumber}} </div>
                                 <div class="text-green-600 font-medium text-sm">
-                                    Created on {{rfqs.purchaseOrder.dateReceived | date:'MMM dd, yyyy'}}
+                                    Created on {{rfqs.dateCreated | date:'MMM dd, yyyy'}}
                                 </div>
                             </div>
 
@@ -200,245 +55,398 @@
                         <div class="flex flex-row flex-wrap mt-4 -mx-6">
                             <div class="flex flex-col mx-6 my-3">
                                 <div class="text-sm font-medium leading-none text-secondary">Date Due</div>
-                                <div class="text-orange-600 mt-2 font-medium text-3xl leading-none">{{rfqs.purchaseOrder.due | date:'MMM dd, y'}}</div>
+                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.due | date}}</div>
+                            </div>
+                            <div class="flex flex-col mx-6 my-3">
+                                <div class="text-sm font-medium leading-none text-secondary">Client</div>
+                                <div class="mt-2 font-medium text-3xl leading-none">{{client.name }}</div>
                             </div>
                             <div class="flex flex-col mx-6 my-3">
                                 <div class="text-sm font-medium leading-none text-secondary">Status</div>
-                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.purchaseOrder.status }}</div>
+                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.status }}</div>
                             </div>
-                            <div class="flex flex-col mx-6 my-3">
-                                <div class="text-sm font-medium leading-none text-secondary">Total Value</div>
-                                <div class="mt-2 font-medium text-3xl leading-none">{{this.getPOItemValue() | currency:'R'}}</div>
-                            </div>
-
                             <!--                        <div class="flex flex-col mx-6 my-3">-->
                             <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
                             <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
                         </div>
-                        <div class="flex flex-row flex-wrap -mx-6">
-                            <div class="flex flex-col mx-6 my-3">
-                                <button
-                                    class="px-8"
-                                    mat-flat-button
-                                    [color]="'primary'"
-                                    type="reset"
-                                    (click)="onSubmitQuotation(this.rfqs.purchaseOrder.id)">
-                                    View Purchase Order
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8">
-                    <!-- Recent transactions table -->
-                    <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                        <div class="p-6">
-                            <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
+                <!-- Quotation Details  -->
+                <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
+                    <!-- Previous statement -->
+                    <div
+                        class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
                         </div>
-                        <div class="overflow-x-auto mx-6">
-                            <table
-                                class="w-full bg-transparent"
-                                mat-table
-                                matSort
-                                [dataSource]="dataSource"
-                                #recentTransactionsTable>
+                        <ng-container *ngIf="hasQuote">
+                            <div class="flex items-center">
+                                <div class="flex flex-col">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Quotation Details
+                                    </div>
+                                    <div class="text-red-600 font-medium text-sm">
+                                        Quote sent date {{rfqs.quoteSentDate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                                <div class="flex flex-col mx-6 my-3">
+                                    <div class="text-sm font-medium leading-none text-secondary">Quotation Document URL
+                                    </div>
+                                    <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.quoteDocumentUrl}}</div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!hasQuote" [formGroup]="form">
+                            <div class="flex items-center">
+                                <div class="flex flex-col">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Quotation Details
+                                    </div>
+                                    <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                                        <div class="flex flex-col mx-6 my-3">
 
-                                <!-- RFQ Item ID -->
-                                <ng-container matColumnDef="rfqItemId">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        RFQ Item ID
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                            <div class="text-sm font-medium leading-none text-secondary">
+
+                                                <div class="flex">
+                                                    <mat-form-field
+                                                        [ngClass]="formFieldHelpers"
+                                                        class="flex-auto">
+                                                        <mat-label>Quote Sent Date</mat-label>
+                                                        <input
+                                                            matInput
+                                                            [formControlName]="'quoteSentDate'"
+                                                            [placeholder]="'Quote Sent Date'"
+                                                            [matDatepicker]="picker1">
+                                                        <mat-datepicker-toggle
+                                                            matSuffix
+                                                            [for]="picker1"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker1></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-6 my-3">
+                                            <div class="text-md font-medium leading-none text-secondary">
+                                                <div class="text-lg font-medium leading-none text-secondary">Quote
+                                                    Document
+                                                    URL
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="preview"
+                                                         *ngIf="quoteDocumentPreview && quoteDocumentPreview !== null">
+                                                        <img [src]="quoteDocumentPreview"
+                                                             [alt]="form.value.quoteDocumentUrl">
+                                                    </div>
+                                                </div>
+                                                <input type="file" (change)="uploadQuotation($event)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                                <div class="flex flex-col mx-6 my-3">
+                                    <button
+                                        class="px-8"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        type="reset"
+                                        (click)="onSubmitQuotation(currentRfqId)">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Purchase Order Details  -->
+                <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8" *ngIf="!isLoading">
+                    <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row" *ngIf="rfqs.purchaseOrder">
+                        <!-- Previous statement -->
+                        <div
+                            class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
+                            <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                                <mat-icon
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"></mat-icon>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex flex-col">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Purchase Order
+                                        Number: {{rfqs.purchaseOrder.poNumber}} </div>
+                                    <div class="text-green-600 font-medium text-sm">
+                                        Created on {{rfqs.purchaseOrder.dateReceived | date:'MMM dd, yyyy'}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex flex-col">
+                                    <!--                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ Description</div>-->
+                                    <div class="text-green-600 font-medium text-sm">
+                                        {{rfqs.description}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex flex-col">
+                                    <!--                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ Description</div>-->
+                                    <div class="text-green-600 font-medium text-sm">
+                                        {{rfqs.rfqDocumentUrl}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                                <div class="flex flex-col mx-6 my-3">
+                                    <div class="text-sm font-medium leading-none text-secondary">Date Due</div>
+                                    <div
+                                        class="text-orange-600 mt-2 font-medium text-3xl leading-none">{{rfqs.purchaseOrder.due | date:'MMM dd, y'}}</div>
+                                </div>
+                                <div class="flex flex-col mx-6 my-3">
+                                    <div class="text-sm font-medium leading-none text-secondary">Status</div>
+                                    <div
+                                        class="mt-2 font-medium text-3xl leading-none">{{rfqs.purchaseOrder.status }}</div>
+                                </div>
+                                <div class="flex flex-col mx-6 my-3">
+                                    <div class="text-sm font-medium leading-none text-secondary">Total Value</div>
+                                    <div
+                                        class="mt-2 font-medium text-3xl leading-none">{{this.getPOItemValue() | currency:'R'}}</div>
+                                </div>
+
+                                <!--                        <div class="flex flex-col mx-6 my-3">-->
+                                <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
+                                <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
+                            </div>
+                            <div class="flex flex-row flex-wrap -mx-6">
+                                <div class="flex flex-col mx-6 my-3">
+                                    <button
+                                        class="px-8"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        type="reset"
+                                        (click)="onSubmitQuotation(this.rfqs.purchaseOrder.id)">
+                                        View Purchase Order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full mt-8">
+                        <!-- Recent transactions table -->
+                        <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="p-6">
+                                <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
+                            </div>
+                            <div class="overflow-x-auto mx-6">
+                                <table
+                                    class="w-full bg-transparent"
+                                    mat-table
+                                    matSort
+                                    [dataSource]="dataSource"
+                                    #recentTransactionsTable>
+
+                                    <!-- RFQ Item ID -->
+                                    <ng-container matColumnDef="rfqItemId">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            RFQ Item ID
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
                                     {{items.rfqItemId}}
                                 </span>
-                                    </td>
-                                </ng-container>
-                                <!-- Transaction ID -->
-                                <ng-container matColumnDef="id">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        Item ID
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                        </td>
+                                    </ng-container>
+                                    <!-- Transaction ID -->
+                                    <ng-container matColumnDef="id">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            Item ID
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
                                     {{items.id}}
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- Date -->
-                                <ng-container matColumnDef="name">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        Name
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                    <!-- Date -->
+                                    <ng-container matColumnDef="name">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            Name
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
                                     <a routerLink="/items/details/{{items.id}}">{{items.name}}</a>
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- SKU -->
-                                <ng-container matColumnDef="sku">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        SKU
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                    <!-- SKU -->
+                                    <ng-container matColumnDef="sku">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            SKU
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
                                     {{items.sku}}
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- Name -->
-                                <ng-container matColumnDef="quantity">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        Quantity
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                    <!-- Name -->
+                                    <ng-container matColumnDef="quantity">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            Quantity
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
                                     {{items.quantity}}
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- Amount -->
-                                <ng-container matColumnDef="price">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        Price
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                    <!-- Amount -->
+                                    <ng-container matColumnDef="price">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            Price
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span class="pr-6 font-medium whitespace-nowrap">
                                     {{items.price | currency:'R'}}
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- Status -->
-                                <ng-container matColumnDef="status">
-                                    <th
-                                        mat-header-cell
-                                        mat-sort-header
-                                        *matHeaderCellDef>
-                                        Status
-                                    </th>
-                                    <td
-                                        mat-cell
-                                        *matCellDef="let items">
+                                    <!-- Status -->
+                                    <ng-container matColumnDef="status">
+                                        <th
+                                            mat-header-cell
+                                            mat-sort-header
+                                            *matHeaderCellDef>
+                                            Status
+                                        </th>
+                                        <td
+                                            mat-cell
+                                            *matCellDef="let items">
                                 <span
                                     class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
                                     [ngClass]="{'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50': items.status === 'pending',
                                                 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50': items.status === 'completed'}">
                                     <span class="leading-relaxed whitespace-nowrap">{{items.status}}</span>
                                 </span>
-                                    </td>
-                                </ng-container>
+                                        </td>
+                                    </ng-container>
 
-                                <!-- Footer -->
-                                <!--                            <ng-container matColumnDef="recentOrdersTableFooter">-->
-                                <!--                                <td-->
-                                <!--                                    class="py-6 px-0 border-0"-->
-                                <!--                                    mat-footer-cell-->
-                                <!--                                    *matFooterCellDef-->
-                                <!--                                    colspan="6">-->
-                                <!--                                    <button mat-stroked-button>See all transactions</button>-->
-                                <!--                                </td>-->
-                                <!--                            </ng-container>-->
-                                <tr
-                                    mat-header-row
-                                    *matHeaderRowDef="displayedColumns"></tr>
-                                <tr
-                                    class="order-row h-16"
-                                    mat-row
-                                    *matRowDef="let row; columns: displayedColumns;"></tr>
-                                <!--                            <tr-->
-                                <!--                                class="h-16 border-0"-->
-                                <!--                                mat-footer-row-->
-                                <!--                                *matFooterRowDef="['recentOrdersTableFooter']"></tr>-->
-                            </table>
+                                    <!-- Footer -->
+                                    <!--                            <ng-container matColumnDef="recentOrdersTableFooter">-->
+                                    <!--                                <td-->
+                                    <!--                                    class="py-6 px-0 border-0"-->
+                                    <!--                                    mat-footer-cell-->
+                                    <!--                                    *matFooterCellDef-->
+                                    <!--                                    colspan="6">-->
+                                    <!--                                    <button mat-stroked-button>See all transactions</button>-->
+                                    <!--                                </td>-->
+                                    <!--                            </ng-container>-->
+                                    <tr
+                                        mat-header-row
+                                        *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr
+                                        class="order-row h-16"
+                                        mat-row
+                                        *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    <!--                            <tr-->
+                                    <!--                                class="h-16 border-0"-->
+                                    <!--                                mat-footer-row-->
+                                    <!--                                *matFooterRowDef="['recentOrdersTableFooter']"></tr>-->
+                                </table>
+                            </div>
                         </div>
+
+                        <!-- Budget -->
                     </div>
 
-                    <!-- Budget -->
+                    <!-- Account balance -->
+                    <!--                        <div class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">-->
+                    <!--                            <div class="flex flex-col p-6 pb-4">-->
+                    <!--                                <div class="flex items-center justify-between">-->
+                    <!--                                    <div class="flex flex-col">-->
+                    <!--                                        <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Account Balance</div>-->
+                    <!--                                        <div class="text-secondary font-medium">Monthly balance growth and avg. monthly income</div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="ml-2">-->
+                    <!--                                        <button-->
+                    <!--                                            class="h-6 min-h-6 px-2 rounded-full bg-hover"-->
+                    <!--                                            mat-button-->
+                    <!--                                            [matMenuTriggerFor]="accountBalanceMenu">-->
+                    <!--                                            <span class="font-medium text-sm text-secondary">12 months</span>-->
+                    <!--                                        </button>-->
+                    <!--                                        <mat-menu #accountBalanceMenu="matMenu">-->
+                    <!--                                            <button mat-menu-item>3 months</button>-->
+                    <!--                                            <button mat-menu-item>6 months</button>-->
+                    <!--                                            <button mat-menu-item>9 months</button>-->
+                    <!--                                            <button mat-menu-item>12 months</button>-->
+                    <!--                                        </mat-menu>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="flex items-start mt-6 mr-2">-->
+                    <!--                                    <div class="flex flex-col">-->
+                    <!--                                        <div class="font-semibold text-3xl md:text-5xl tracking-tighter">{{data.accountBalance.growRate}}%</div>-->
+                    <!--                                        <div class="font-medium text-sm text-secondary leading-none">Average Monthly Growth</div>-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="flex flex-col ml-8 md:ml-16">-->
+                    <!--                                        <div class="font-semibold text-3xl md:text-5xl tracking-tighter">{{data.accountBalance.ami | currency:'USD'}}</div>-->
+                    <!--                                        <div class="font-medium text-sm text-secondary leading-none">Average Monthly Income</div>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="flex flex-col flex-auto">-->
+                    <!--                                <apx-chart-->
+                    <!--                                    class="flex-auto w-full h-full"-->
+                    <!--                                    [chart]="accountBalanceOptions.chart"-->
+                    <!--                                    [colors]="accountBalanceOptions.colors"-->
+                    <!--                                    [fill]="accountBalanceOptions.fill"-->
+                    <!--                                    [series]="accountBalanceOptions.series"-->
+                    <!--                                    [stroke]="accountBalanceOptions.stroke"-->
+                    <!--                                    [tooltip]="accountBalanceOptions.tooltip"-->
+                    <!--                                    [xaxis]="accountBalanceOptions.xaxis"></apx-chart>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
                 </div>
-
-                <!-- Account balance -->
-                <!--                        <div class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">-->
-                <!--                            <div class="flex flex-col p-6 pb-4">-->
-                <!--                                <div class="flex items-center justify-between">-->
-                <!--                                    <div class="flex flex-col">-->
-                <!--                                        <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Account Balance</div>-->
-                <!--                                        <div class="text-secondary font-medium">Monthly balance growth and avg. monthly income</div>-->
-                <!--                                    </div>-->
-                <!--                                    <div class="ml-2">-->
-                <!--                                        <button-->
-                <!--                                            class="h-6 min-h-6 px-2 rounded-full bg-hover"-->
-                <!--                                            mat-button-->
-                <!--                                            [matMenuTriggerFor]="accountBalanceMenu">-->
-                <!--                                            <span class="font-medium text-sm text-secondary">12 months</span>-->
-                <!--                                        </button>-->
-                <!--                                        <mat-menu #accountBalanceMenu="matMenu">-->
-                <!--                                            <button mat-menu-item>3 months</button>-->
-                <!--                                            <button mat-menu-item>6 months</button>-->
-                <!--                                            <button mat-menu-item>9 months</button>-->
-                <!--                                            <button mat-menu-item>12 months</button>-->
-                <!--                                        </mat-menu>-->
-                <!--                                    </div>-->
-                <!--                                </div>-->
-                <!--                                <div class="flex items-start mt-6 mr-2">-->
-                <!--                                    <div class="flex flex-col">-->
-                <!--                                        <div class="font-semibold text-3xl md:text-5xl tracking-tighter">{{data.accountBalance.growRate}}%</div>-->
-                <!--                                        <div class="font-medium text-sm text-secondary leading-none">Average Monthly Growth</div>-->
-                <!--                                    </div>-->
-                <!--                                    <div class="flex flex-col ml-8 md:ml-16">-->
-                <!--                                        <div class="font-semibold text-3xl md:text-5xl tracking-tighter">{{data.accountBalance.ami | currency:'USD'}}</div>-->
-                <!--                                        <div class="font-medium text-sm text-secondary leading-none">Average Monthly Income</div>-->
-                <!--                                    </div>-->
-                <!--                                </div>-->
-                <!--                            </div>-->
-                <!--                            <div class="flex flex-col flex-auto">-->
-                <!--                                <apx-chart-->
-                <!--                                    class="flex-auto w-full h-full"-->
-                <!--                                    [chart]="accountBalanceOptions.chart"-->
-                <!--                                    [colors]="accountBalanceOptions.colors"-->
-                <!--                                    [fill]="accountBalanceOptions.fill"-->
-                <!--                                    [series]="accountBalanceOptions.series"-->
-                <!--                                    [stroke]="accountBalanceOptions.stroke"-->
-                <!--                                    [tooltip]="accountBalanceOptions.tooltip"-->
-                <!--                                    [xaxis]="accountBalanceOptions.xaxis"></apx-chart>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
             </div>
         </div>
     </div>
+</div>
