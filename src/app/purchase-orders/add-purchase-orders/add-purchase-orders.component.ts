@@ -16,6 +16,12 @@ import {RfqItem} from "../../api/models/rfq-item";
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
 import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Rfq} from "../../rfq/rfq.model";
+import {UpdateRfqItem} from "../../api/models/update-rfq-item";
+import {RfqModule} from "../../rfq/rfq.module";
+import {CreateRfqItem} from "../../api/models/create-rfq-item";
+import {PurchaseOrdersItemComponent} from "../purchase-orders-item/purchase-orders-item.component";
+import {POStatus} from "../../data/purchase-order-status";
 
 @Component({
   selector: 'app-add-purchase-orders',
@@ -35,11 +41,18 @@ export class AddPurchaseOrdersComponent {
     purchaseOrder: any ;
     clients: any = null;
     buyers: any = null;
-    rfqs: any = null;
+    purchaseOrders: any = null;
     categories: any = null;
     purchaseOrderItems: any = [];
+    rfqs: any = [];
     dataSource: MatTableDataSource<PurchaseOrderItem>;
-    displayedColumns = ['id', 'name', 'quantity', 'price', 'actions'];
+    displayedColumns = ['id', 'name', 'supplier', 'quantity', 'price', 'actions'];
+    public purchaseOrderDetails: any = {};
+    public purchaseOrderItemDetails: any = [];
+    keys = Object.keys;
+    poStatus = POStatus;
+    poDocumentPreview: string;
+    formFieldHelpers: string[] = [''];
 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private clientService: ClientService,
@@ -55,9 +68,9 @@ export class AddPurchaseOrdersComponent {
 
     openDialog() {
 
-        const dialogRef = this.dialog.open(RfqItemComponent, {
+        const dialogRef = this.dialog.open(PurchaseOrdersItemComponent, {
             width: '600px',
-            data: {modalTitle: 'Add New RFQ Item'},
+            data: {modalTitle: 'Add New Purchase Order Item'},
         });
 
         dialogRef.afterClosed().subscribe(res => {
@@ -71,13 +84,14 @@ export class AddPurchaseOrdersComponent {
         })
     }
 
-    updatePurchaseOrderItem(rfqItemId: number, rfqId: number, quantity: string, price: number, status: string) {
+    updatePurchaseOrderItem(rfqItemId: number, supplierId:number, rfqId: number, quantity: string, price: number, status: string) {
 
-        const dialogRef = this.dialog.open(RfqItemComponent, {
+        const dialogRef = this.dialog.open(PurchaseOrdersItemComponent, {
             width: '600px',
             data: {
                 rfqItemId: rfqItemId,
                 itemId: rfqId,
+                supplierId: supplierId,
                 quantity: quantity,
                 price: price,
                 status: status
@@ -121,6 +135,7 @@ export class AddPurchaseOrdersComponent {
         this.form = this.formBuilder.group({
             poNumber: ['', Validators.required],
             dateReceived: [''],
+            due: [''],
             description: [''],
             buyer: [null],
             client: [null],
@@ -156,24 +171,78 @@ export class AddPurchaseOrdersComponent {
         this.isLoading = true;
 
         if (this.form.invalid) {return;}
-        const updatePurchaseOrder: PurchaseOrder = new PurchaseOrder();
-        updatePurchaseOrder.poNumber = this.form.get('poNumber').value;
-        updatePurchaseOrder.dateReceived = this.form.get('dateReceived').value;
-        updatePurchaseOrder.due = this.form.get('due').value;
-        updatePurchaseOrder.description = this.form.get('description').value;
-        updatePurchaseOrder.buyerId = this.form.get('buyer').value;
-        updatePurchaseOrder.clientId = this.form.get('client').value;
-        updatePurchaseOrder.purchaseOrderDocumentUrl = this.form.get('purchaseOrderDocumentUrl').value;
-        updatePurchaseOrder.status = this.form.get('status').value;
-        updatePurchaseOrder.items = this.form.get('itemForm').value;
         if (this.editmode) {
+            console.log(this.purchaseOrderItems);
+
+            const updatePurchaseOrder: PurchaseOrder = {
+                items: this.purchaseOrderItems,
+                rfqId: this.form.get('rfq').value,
+                dateReceived: this.form.get('dateReceived').value,
+                due: this.form.get('due').value,
+                description: this.form.get('description').value,
+                status: this.form.get('status').value,
+                clientId: this.form.get('client').value,
+                buyerId: this.form.get('buyer').value,
+                poNumber: this.form.get('poNumber').value,
+                purchaseOrderDocumentUrl: this.form.get('purchaseOrderDocumentUrl').value
+            };
             this._updateItem(updatePurchaseOrder);
+
+            console.log('RFQS >>> ', this.purchaseOrders);
+            for (let r = 0; r < this.purchaseOrderItems.length; r++) {
+                console.log(this.purchaseOrderItems);
+                console.log('edit mode ',this.purchaseOrderItems[r].editMode);
+                if (this.purchaseOrderItems[r].editMode === true) {
+                    const updateRfqItem: UpdateRfqItem = {
+                        rfqItemId: this.purchaseOrders.items[r].id,
+                        itemId: this.purchaseOrderItems[r].itemId,
+                        quantity: this.purchaseOrderItems[r].quantity,
+                        priceQuoted: this.purchaseOrderItems[r].price,
+                        status: this.purchaseOrderItems[r].status
+                    };
+                    console.log('UPDATE RFQ ITEMS ', updateRfqItem);
+                    this.rfqService
+                        .updateRfqItem(updateRfqItem, this.purchaseOrders.items[r].id)
+                        .pipe(takeUntil(this.endsubs$))
+                        .subscribe(
+                            (rfq: RfqModule) => {
+                                this.updateSuccess = true;
+                            },
+                            () => {
+                                this.updateSuccess = false;
+                            }
+                        );
+                } else if(this.purchaseOrderItems[r].editMode === false){
+                    const addRfqItem: CreateRfqItem = {
+                        rfqId: this.currentPurchaseOrderId,
+                        itemId: this.purchaseOrderItems[r].itemId,
+                        quantity: this.purchaseOrderItems[r].quantity,
+                        priceQuoted: this.purchaseOrderItems[r].price,
+                        status: this.purchaseOrderItems[r].status
+                    };
+                    console.log('ADD RFQ ITEM', addRfqItem);
+                    this.rfqService
+                        .createRfqItem(addRfqItem)
+                        .pipe(takeUntil(this.endsubs$))
+                        .subscribe(
+                            (rfq: RfqModule) => {
+                                this.addSuccess = true;
+                            },
+                            () => {
+                                this.addSuccess = false;
+                            }
+                        );
+                }
+            }
             this.isLoading = false;
-            // this.location.back();
+            this.updateSuccess = true;
+            this.router.navigateByUrl('purchase-orders');
         } else {
-            this._addItem();
+            this._addPurchaseOrder();
             this.isLoading = false;
-            this.router.navigateByUrl('items');
+            this.form.reset();
+            this.router.navigateByUrl('purchase-orders');
+            this.addSuccess = true;
         }
     }
     onCancle() {
@@ -193,9 +262,20 @@ export class AddPurchaseOrdersComponent {
         }
     }
 
-    private _addItem() {
+    private _addPurchaseOrder() {
         console.log('>>> GOT INTO ADD');
-        const newPurchaseOrder: PurchaseOrder = new PurchaseOrder();
+        const newPurchaseOrder: PurchaseOrder = {
+            items: this.purchaseOrderItems,
+            rfqId: this.form.get('rfq').value,
+            dateReceived: this.form.get('dateReceived').value,
+            due: this.form.get('due').value,
+            description: this.form.get('description').value,
+            status: this.form.get('status').value,
+            clientId: this.form.get('client').value,
+            buyerId: this.form.get('buyer').value,
+            poNumber: this.form.get('poNumber').value,
+            purchaseOrderDocumentUrl: this.form.get('purchaseOrderDocumentUrl').value,
+        };
         console.log('>>> initialised ');
 
         console.log('>>> get values from controller', newPurchaseOrder);
@@ -203,9 +283,9 @@ export class AddPurchaseOrdersComponent {
             .createPurchaseOrder(newPurchaseOrder)
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
-                (client) => {
+                (purchaseOrder) => {
                     this.addSuccess = true;
-                    console.log(client);
+                    console.log(purchaseOrder);
                     this.form.reset();
                 },
                 (error) => {
@@ -230,27 +310,68 @@ export class AddPurchaseOrdersComponent {
     }
 
     private _checkEditMode() {
-        console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
             if (params.id) {
                 this.editmode = true;
                 this.currentPurchaseOrderId = params.id;
                 this.purchaseOrderService
-                    .getPurchaseOrder(params.id)
+                    .getPurchaseOrderDetails(params.id)
                     .pipe(takeUntil(this.endsubs$))
-                    .subscribe((purchaseOrder) => {
-                        this.purchaseOrder = purchaseOrder;
-                        // this.itemForm.name.setValue(item.name);
-                        // this.itemForm.description.setValue(item.description);
-                        // this.itemForm.shortDescription.setValue(item.shortDescription);
-                        // this.itemForm.sku.setValue(item.sku);
-                        // this.itemForm.rrsp.setValue(item.rrsp);
-                        // this.itemForm.thumbnail.setValue(item.thumbnail);
-                        // this.itemForm.category.setValue(item.categoryId);
-                        // this.itemForm.brand.setValue(item.brandId);
+                    .subscribe((purchaseOrders) => {
+                        this.purchaseOrders = purchaseOrders;
+                        console.log("--- rfqs ", this.purchaseOrders);
+                        if (this.purchaseOrders) {
+                            this.purchaseOrderDetails = {
+                                poNumber: this.purchaseOrders.poNumber,
+                                dateReceived: this.purchaseOrders.dateReceived,
+                                due: this.purchaseOrders.due,
+                                description: this.purchaseOrders.description,
+                                purchaseOrderDocument: this.purchaseOrders.purchaseOrderDocumentUrl,
+                                client: this.purchaseOrders.clientId,
+                                buyer: this.purchaseOrders.buyerId,
+                                status: this.purchaseOrders.status
+                            };
+                        }
 
-                        // this.clientForm.buyer.setValue(client.buyer);
-                        console.log('HERE1', this.purchaseOrder);
+                        for (let r = 0; r < this.purchaseOrders.items.length; r++) {
+                            console.log(">>>this.rfqs.items", this.purchaseOrders.items);
+                            // this.rfqItems = this.rfqs.items;
+                            this.purchaseOrderItemDetails.push({
+                                rfqItemId: this.purchaseOrders.items[r].id,
+                                itemId: this.purchaseOrders.items[r].item.id,
+                                supplierId: this.purchaseOrders.items[r].supplierId,
+                                name: this.purchaseOrders.items[r].item.name,
+                                quantity: this.purchaseOrders.items[r].quantity,
+                                status: this.purchaseOrders.items[r].status,
+                                price: this.purchaseOrders.items[r].priceQuoted,
+                            });
+                            //
+                            // console.log('rfqItemDetails before step 3', this.rfqItemDetails)
+                            //
+                            // this.setStep3 = {
+                            //     rfqItems: this.rfqItemDetails[r],
+                            //     quantity: this.purchaseOrders.items[r].quantity,
+                            //     status: this.purchaseOrders.items[r].status,
+                            //     price: this.purchaseOrders.items[r].priceQuoted,
+                            //     itemForm: null
+                            // };
+                        }
+
+                        this.purchaseOrderItems = this.purchaseOrderDetails;
+                        //     //this.rfqItems = this.purchaseOrders.items;
+                        console.log("this.rfqItems", this.purchaseOrderItems);
+                        this.purchaseOrderForm.poNumber.setValue(this.purchaseOrders.poNumber);
+                        this.purchaseOrderForm.description.setValue(this.purchaseOrders.description);
+                        this.purchaseOrderForm.buyer.setValue(this.purchaseOrders.buyerId);
+                        this.purchaseOrderForm.items.setValue(this.purchaseOrderItemDetails);
+                        this.purchaseOrderForm.client.setValue(this.purchaseOrders.clientId);
+                        this.purchaseOrderForm.rfq.setValue(this.purchaseOrders.rfqId);
+                        //this.rfqForm.step3.setValue(this.setStep3);
+                        this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
+                        //this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
+                        // this.rfqForm['step3']['status'].setValue(this.purchaseOrders.items.status);
+                        // this.rfqForm['step3']['price'].setValue(this.purchaseOrders.priceQuoted);
+                        // this.rfqForm['step3']['itemForm'].setValue(null);
                     });
             }
         });
@@ -258,5 +379,20 @@ export class AddPurchaseOrdersComponent {
 
     get purchaseOrderForm() {
         return this.form.controls;
+    }
+
+    // Image Preview
+    uploadPODocument(event) {
+        const file = (event.target as HTMLInputElement).files[0];
+        this.form.patchValue({
+            poDocument: file
+        });
+        this.form.get('poDocument').updateValueAndValidity();
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.poDocumentPreview = reader.result as string;
+        };
+        reader.readAsDataURL(file);
     }
 }
