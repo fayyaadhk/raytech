@@ -11,7 +11,17 @@
 
          </div>-->
         <div *ngIf="!this.isLoading">
-            <app-rfq-summary [issuedRFQs]="dashboardSummary.issuedRFQs" [closingSoonRFQs]="dashboardSummary.closingSoonRFQs"></app-rfq-summary>
+            <app-rfq-summary [issuedRFQs]="dashboardSummary.issuedRFQs"
+                             [closingSoonRFQs]="dashboardSummary.closingSoonRFQs"
+                             [inProgressRFQs]="dashboardSummary.inProgressRFQs"
+                             [pendingSubmissionRFQs]="dashboardSummary.pendingSubmissionRFQs"
+            >
+
+            </app-rfq-summary>
+        </div>
+        <div *ngIf="!this.isLoading">
+
+            <app-job-tracker [rfqs]="dashboardSummary.issuedRFQs.concat(dashboardSummary.inProgressRFQs)"></app-job-tracker>
         </div>
 
 

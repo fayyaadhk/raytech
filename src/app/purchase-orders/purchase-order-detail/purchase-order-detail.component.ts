@@ -46,7 +46,6 @@ export class PurchaseOrderDetailComponent {
         });
         this.isLoading = true;
         this._getPurchaseOrder();
-        this._getRfq();
     }
 
     private _getPurchaseOrder(){
@@ -57,13 +56,15 @@ export class PurchaseOrderDetailComponent {
                 this.purchaseOrder = purchaseOrder;
                 console.log("this.purchaseOrder", this.purchaseOrder)
                 this.purchaseOrderItemsDataSource = new MatTableDataSource(this.purchaseOrder.items);
+                this._getRfq();
+
                 this.isLoading = false;
             });
     }
 
     private _getRfq(){
         this.rfqService
-            .getRfq(this.poId)
+            .getRfq(this.purchaseOrder.rfqId)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((rfq) => {
                 this.rfq = rfq;
