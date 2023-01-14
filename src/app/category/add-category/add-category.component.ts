@@ -6,6 +6,7 @@ import {FuseConfirmationService} from '../../../@fuse/services/confirmation';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {Category} from '../../api/models/category';
+import {CommodityService} from "../../commodity/commodity.service";
 
 @Component({
   selector: 'app-add-category',
@@ -41,16 +42,19 @@ export class AddCategoryComponent {
     imageDisplay: string | ArrayBuffer;
     isLoading: boolean = false;
     category: any = null;
+    commodities: any = [];
 
     constructor(private categoryService: CategoryService,
                 private formBuilder: FormBuilder,
                 private _fuseConfirmationService: FuseConfirmationService,
+                private commodityService: CommodityService,
                 private location: Location,
                 private route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this._initForm();
+        this._getCommodity();
         this._checkEditMode();
     }
 
@@ -62,6 +66,7 @@ export class AddCategoryComponent {
     private _initForm() {
         this.form = this.formBuilder.group({
             name: ['', Validators.required],
+            commodity: ['', Validators.required]
         });
     }
 
@@ -88,23 +93,26 @@ export class AddCategoryComponent {
         this.location.back();
     }
 
-    onImageUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            this.form.patchValue({ image: file });
-            this.form.get('image').updateValueAndValidity();
-            const fileReader = new FileReader();
-            fileReader.onload = () => {
-                this.imageDisplay = fileReader.result;
-            };
-            fileReader.readAsDataURL(file);
-        }
+    _getCommodity(){
+        this.commodityService
+            .getCommodities()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe(
+                (commodity) => {
+                    this.addSuccess = true;
+                    console.log(commodity);
+                },
+                () => {
+                    this.addSuccess = false;
+                }
+            );
     }
 
     private _addCategory(categoryData: FormData) {
         console.log('>>> GOT INTO ADD');
         const categoryForm: Category = new Category();
         this.categoryForm.name = this.form.get(['name']).value;
+        this.categoryForm.commodity = this.form.get(['commodity']).value;
             this.categoryService
                 .createCategory(categoryForm)
                 .pipe(takeUntil(this.endsubs$))

@@ -63,6 +63,20 @@
                                                 [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                                         </mat-form-field>
                                     </div>
+                                    <div class="flex">
+                                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                                            <mat-label>Commodity</mat-label>
+                                            <mat-select
+                                                name="rfq" formControlName="commodity">
+                                                <mat-option *ngFor="let commodity of commodities"
+                                                            [value]="commodity.id">{{commodity.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                matPrefix
+                                                [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                             </div>
                         </div>
