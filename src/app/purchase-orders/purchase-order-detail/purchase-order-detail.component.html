@@ -254,7 +254,7 @@
                                         <td
                                             mat-cell
                                             *matCellDef="let item">
-                                            <span class="leading-relaxed whitespace-nowrap"><a routerLink="/suppliers/details/{{item.supplier.id}}">{{item.supplier.name}}</a></span>
+                                            <span class="leading-relaxed whitespace-nowrap" *ngIf="item.supplier"><a routerLink="/suppliers/details/{{item.supplier.id}}">{{item.supplier.name}}</a></span>
 
                                         </td>
                                     </ng-container>

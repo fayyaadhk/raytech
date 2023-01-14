@@ -3,6 +3,29 @@ import {FuseNavigationItem} from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
     {
+        id      : 'dashboards',
+        title   : 'Dashboards',
+        subtitle: 'Overview of company operations',
+        type    : 'group',
+        icon    : 'heroicons_outline:support',
+        children: [
+            {
+                id   : 'dashboards.rfqDashboard',
+                title: 'RFQ Dashboard',
+                type : 'basic',
+                icon : 'heroicons_outline:speakerphone',
+                link : '/dashboard/rfqs'
+            },
+            {
+                id   : 'dashboards.poDashboard',
+                title: 'PO Dashboard',
+                type : 'basic',
+                icon : 'heroicons_outline:book-open',
+                link : '/dashboard/purchase-orders'
+            }
+        ]
+    },
+    {
         id: 'buying',
         title: 'Buying',
         subtitle: 'Procurement and Fulfillment',

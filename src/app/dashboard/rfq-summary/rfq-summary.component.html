@@ -39,7 +39,7 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">In Progress</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">24</div>
+            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{inProgressRFQs.length}}</div>
             <div class="text-lg font-medium text-amber-600 dark:text-amber-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Sourcing in progress</div>
@@ -53,7 +53,7 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">Pending Submission</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">38</div>
+            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{pendingSubmissionRFQs.length}}</div>
             <div class="text-lg font-medium text-green-600 dark:text-green-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Need uploading in VCM</div>
@@ -385,6 +385,7 @@
             </table>
         </div>
     </div>
+
 
 
 </div>
