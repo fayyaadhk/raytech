@@ -22,6 +22,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatDividerModule} from "@angular/material/divider";
 import {SharedModule} from "../shared/shared.module";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { AddPurchaseOrdersComponent } from './add-purchase-orders/add-purchase-orders.component';
 
 const purchaseOrderRoutes: Route[] = [
     {
@@ -32,11 +33,19 @@ const purchaseOrderRoutes: Route[] = [
         path: 'details/:id',
         component: PurchaseOrderDetailComponent,
 
-    }
+    },
+    {
+        path: 'form',
+        component: AddPurchaseOrdersComponent,
+    },
+    {
+        path: 'form/:id',
+        component: AddPurchaseOrdersComponent,
+    },
 ];
 
 @NgModule({
-    declarations: [PurchaseOrdersComponent, PurchaseOrderDetailComponent],
+    declarations: [PurchaseOrdersComponent, PurchaseOrderDetailComponent, AddPurchaseOrdersComponent],
     imports: [
         RouterModule.forChild(purchaseOrderRoutes),
         MatDatepickerModule,

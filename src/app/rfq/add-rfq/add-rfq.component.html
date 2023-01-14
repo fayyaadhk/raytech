@@ -186,9 +186,9 @@
                                 <p class="my-6 font-medium">
                                     Select items from inventory for this RFQ
                                 </p>
-                                <div class="flex flex-col gt-sm:flex-row">
+                                <div class="flex flex-col my-6">
                                     <div class="flex flex-col">
-                                        <button mat-button (click)="openDialog()">Add item</button>
+                                        <button mat-stroked-button (click)="openDialog()">Attach item to RFQ</button>
                                     </div>
                                     <!--                                <ng-container *ngFor="let item of items; let i = index">-->
                                     <!--                                    <mat-checkbox-->
@@ -311,12 +311,12 @@
                                             </mat-table>
                                     </div>
                                 </div>
-                                <div class="flex flex-col gt-sm:flex-row">
+                                <div class="flex flex-col my-6">
                                     <div class="flex flex-col">
                                         <mat-expansion-panel formGroupName="itemForm">
                                             <mat-expansion-panel-header>
                                                 <mat-panel-title>
-                                                    Add Item
+                                                    Add New Item
                                                 </mat-panel-title>
                                                 <mat-panel-description>
                                                     Add additional items
@@ -343,7 +343,7 @@
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
@@ -355,7 +355,7 @@
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
@@ -367,7 +367,7 @@
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:tag'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
@@ -375,11 +375,12 @@
                                                     <input
                                                         matInput
                                                         formControlName="rrsp"
+                                                        type="number"
                                                         [placeholder]="'RRSP'">
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:cash'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
@@ -391,43 +392,33 @@
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:photograph'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
                                                 <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="description"
-                                                        [placeholder]="'Description'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <mat-select
+                                                    name="category" formControlName="category" placeholder="Category">
+                                                    <mat-option *ngFor="let category of categories"
+                                                                [value]="category.id">{{category.name}}</mat-option>
+                                                </mat-select>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:view-list'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <div class="flex">
                                                 <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="category"
-                                                        [placeholder]="'Category'">
+                                                    <mat-select
+                                                        name="brand" formControlName="brand" placeholder="Brand">
+                                                        <mat-option *ngFor="let brand of brands"
+                                                                    [value]="brand.id">{{brand.name}}</mat-option>
+                                                    </mat-select>
                                                     <mat-icon
                                                         class="icon-size-5"
                                                         matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="brand"
-                                                        [placeholder]="'Brand'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                        [svgIcon]="'heroicons_solid:view-list'"></mat-icon>
                                                 </mat-form-field>
                                             </div>
                                             <button
