@@ -11,7 +11,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatRippleModule} from "@angular/material/core";
+import {MatNativeDateModule, MatRippleModule} from "@angular/material/core";
 import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
@@ -23,6 +23,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {SharedModule} from "../shared/shared.module";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { AddPurchaseOrdersComponent } from './add-purchase-orders/add-purchase-orders.component';
+import { PurchaseOrdersItemComponent } from './purchase-orders-item/purchase-orders-item.component';
 
 const purchaseOrderRoutes: Route[] = [
     {
@@ -45,10 +46,16 @@ const purchaseOrderRoutes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [PurchaseOrdersComponent, PurchaseOrderDetailComponent, AddPurchaseOrdersComponent],
+    declarations: [
+        PurchaseOrdersComponent,
+        PurchaseOrderDetailComponent,
+        AddPurchaseOrdersComponent,
+        PurchaseOrdersItemComponent
+    ],
     imports: [
         RouterModule.forChild(purchaseOrderRoutes),
         MatDatepickerModule,
+        MatNativeDateModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,

@@ -1,4 +1,4 @@
-enum POStatus {
+export enum POStatus {
     ISSUED = "ISSUED",
     IN_PROGRESS = "IN PROGRESS",
     PENDING_DELIVERY = "PENDING DELIVERY",
