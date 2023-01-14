@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {RfqService} from "../rfq.service";
 import {ActivatedRoute} from "@angular/router";
@@ -6,6 +6,7 @@ import {ClientService} from "../../client/client.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {RfqItem} from "../../api/models/rfq-item";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
     selector: 'app-rfq-details',
@@ -13,6 +14,8 @@ import {RfqItem} from "../../api/models/rfq-item";
     styleUrls: ['./rfq-details.component.scss']
 })
 export class RfqDetailsComponent implements OnInit {
+    @ViewChild('rfqsTable', {read: MatSort}) rfqsTableMatSort: MatSort;
+
     rfqs: any;
     endsubs$: Subject<any> = new Subject();
     isLoading: boolean = false;
