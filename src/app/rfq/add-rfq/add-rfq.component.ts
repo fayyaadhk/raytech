@@ -137,8 +137,6 @@ export class AddRfqComponent implements OnInit {
             } else {
                 this.rfqItems.push(res);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
-
-
             }
         })
     }
