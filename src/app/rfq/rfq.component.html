@@ -54,7 +54,7 @@
 
         <ng-container matColumnDef="due">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs">{{rfqs.due | date}}</mat-cell>
+            <mat-cell *matCellDef="let rfqs">{{rfqs.due | date: 'medium'}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="itemCount">

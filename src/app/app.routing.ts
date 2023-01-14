@@ -3,7 +3,6 @@ import {AuthGuard} from 'app/core/auth/guards/auth.guard';
 import {NoAuthGuard} from 'app/core/auth/guards/noAuth.guard';
 import {LayoutComponent} from 'app/layout/layout.component';
 import {InitialDataResolver} from 'app/app.resolvers';
-import {RfqComponent} from "./rfq/rfq.component";
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -11,7 +10,7 @@ import {RfqComponent} from "./rfq/rfq.component";
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'rfqs'},
+    {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
 
     // Redirect signed in user to the '/example'
     //
@@ -71,6 +70,23 @@ export const appRoutes: Route[] = [
                 path: 'unlock-session',
                 loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.module').then(m => m.AuthUnlockSessionModule)
             }
+        ]
+    },
+
+    // Landing routes
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'dashboard',
+                loadChildren: () => import('app/dashboard/dashboard.module').then(m => m.DashboardModule)
+            },
         ]
     },
 

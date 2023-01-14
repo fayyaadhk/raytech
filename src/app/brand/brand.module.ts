@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -36,7 +36,10 @@ const brandRoutes: Route[] = [
     declarations: [
         BrandComponent
     ],
-    imports     : [
+    exports: [
+        BrandComponent
+    ],
+    imports: [
         RouterModule.forChild(brandRoutes),
         MatButtonModule,
         MatCheckboxModule,

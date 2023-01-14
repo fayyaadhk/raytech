@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {SupplierItem} from "../../api/models/supplier-item";
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
@@ -7,6 +7,7 @@ import {PurchaseOrder} from "../../api/models/purchase-order";
 import {PurchaseOrderService} from "../purchase-order.service";
 import {RfqService} from "../../rfq/rfq.service";
 import {Rfq} from "../../rfq/rfq.model";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-purchase-order-detail',
@@ -14,6 +15,8 @@ import {Rfq} from "../../rfq/rfq.model";
   styleUrls: ['./purchase-order-detail.component.scss']
 })
 export class PurchaseOrderDetailComponent {
+    @ViewChild('poItemsTable', {read: MatSort}) poItemsTableMatSort: MatSort;
+
     poId: number;
     purchaseOrder: PurchaseOrder;
     rfq: Rfq;

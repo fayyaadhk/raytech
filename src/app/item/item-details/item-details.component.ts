@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {Subject, takeUntil} from "rxjs";
 import {ItemService} from "../item.service";
@@ -7,6 +7,7 @@ import {Item} from "../../api/models/item";
 import {ItemSupplier} from "../../api/models/item-supplier";
 import {SupplierItem} from "../../api/models/supplier-item";
 import {DetailedItem} from "../../api/models/detailed-item";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-item-details',
@@ -14,6 +15,8 @@ import {DetailedItem} from "../../api/models/detailed-item";
   styleUrls: ['./item-details.component.scss']
 })
 export class ItemDetailsComponent {
+    @ViewChild('rfqItemsTable', {read: MatSort}) rfqItemsTableMatSort: MatSort;
+
     itemId: number;
     item: DetailedItem;
     itemSuppliers: SupplierItem[] = [];
@@ -25,6 +28,9 @@ export class ItemDetailsComponent {
 
     rfqItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
     rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
+
+    poItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+    poItemsTableColumns: string[] = ['poId', 'poNumber', 'poDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
 
     itemSuppliersDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
     itemSuppliersTableColumns: string[] = ['supplierName', 'price', 'dateQuoted', 'actions'];
@@ -56,6 +62,7 @@ export class ItemDetailsComponent {
                 this.item = item;
                 console.log("this.item", this.item)
                 this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
+                this.poItemsDataSource = new MatTableDataSource(this.item.purchaseOrderItems);
                 this.isLoading = false;
             });
     }
@@ -94,7 +101,7 @@ export class ItemDetailsComponent {
      */
     trackByFn(index: number, item: any): any
     {
-        return item.id || index;
+        return item.rfqItemId || index;
     }
     /**
      * Track by function for ngFor loops
