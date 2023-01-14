@@ -23,20 +23,20 @@ export class PurchaseOrderService {
         return this.http.get<PurchaseOrder[]>(apiURL);
     }
 
-    createPurchaseOrder(model: CreateRfqRequest): Observable<PurchaseOrder> {
+    createPurchaseOrder(model: PurchaseOrder): Observable<PurchaseOrder> {
         return this.http.post<PurchaseOrder>(apiURL, model);
     }
 
-    getPurchaseOrder(rfqId: number): Observable<PurchaseOrder> {
-        return this.http.get<PurchaseOrder>(`${apiURL}/${rfqId}/details`);
+    getPurchaseOrder(purchaseOrderId: number): Observable<PurchaseOrder> {
+        return this.http.get<PurchaseOrder>(`${apiURL}/${purchaseOrderId}/details`);
     }
 
     getPurchaseOrderDetails(purchaseOrderId: number): Observable<PurchaseOrder> {
         return this.http.get<PurchaseOrder>(`${apiURL}/${purchaseOrderId}/details`);
     }
 
-    updatePurchaseOrder(model: PurchaseOrder, rfqId: number): Observable<PurchaseOrder> {
-        return this.http.put<PurchaseOrder>(`${apiURL}/${rfqId}`, model);
+    updatePurchaseOrder(model: PurchaseOrder, purchaseOrderId: number): Observable<PurchaseOrder> {
+        return this.http.put<PurchaseOrder>(`${apiURL}/${purchaseOrderId}`, model);
     }
 
     deletePurchaseOrder(purchaseOrderId: number): Observable<any> {

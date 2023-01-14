@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { RfqItem } from './rfq-item';
 import {PurchaseOrderItem} from "./purchase-order-item";
-export interface PurchaseOrder {
+export class PurchaseOrder {
     buyerId?: null | number;
     created?: string;
     dateReceived?: string;

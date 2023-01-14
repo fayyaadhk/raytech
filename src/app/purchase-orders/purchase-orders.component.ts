@@ -49,7 +49,7 @@ export class PurchaseOrdersComponent {
         this._getPurchaseOrders();
     }
 
-    createItem(){
+    createPurchaseOrders(){
         this.router.navigateByUrl('purchase-orders/form');
     }
 
