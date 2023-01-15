@@ -1,24 +1,25 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {Rfq} from "../../rfq/rfq.model";
+import {Client} from "../../api/models/client";
 import {BehaviorSubject, combineLatest, Subject, takeUntil} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Client} from "../../api/models/client";
-import {Rfq} from "../../rfq/rfq.model";
 import {RfqService} from "../../rfq/rfq.service";
 import {ClientService} from "../../client/client.service";
 import {MatSelectChange} from "@angular/material/select";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {PurchaseOrder} from "../../api/models/purchase-order";
 
 @Component({
-    selector: 'app-job-tracker',
-    templateUrl: './job-tracker.component.html',
-    styleUrls: ['./job-tracker.component.scss']
+  selector: 'app-po-job-tracker',
+  templateUrl: './po-job-tracker.component.html',
+  styleUrls: ['./po-job-tracker.component.scss']
 })
-export class JobTrackerComponent {
+export class PoJobTrackerComponent implements OnInit {
 
-    @Input() rfqs: Rfq[];
+    @Input() purchaseOrders: PurchaseOrder[];
 
     clients: Client[];
-    filteredRfqs: Rfq[];
+    filteredPurhcaseOrders: PurchaseOrder[];
     filters: {
         clientId$: BehaviorSubject<number>;
         query$: BehaviorSubject<string>;
@@ -62,7 +63,7 @@ export class JobTrackerComponent {
             });
 
 
-        this.rfqs = this.filteredRfqs = this.rfqs;
+        this.purchaseOrders = this.filteredPurhcaseOrders = this.purchaseOrders;
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -72,23 +73,23 @@ export class JobTrackerComponent {
             .subscribe(([clientSlug, query, hideCompleted]) => {
 
                 // Reset the filtered courses
-                this.filteredRfqs = this.rfqs;
+                this.filteredPurhcaseOrders = this.purchaseOrders;
 
                 // Filter by category
                 if (clientSlug !== 0) {
-                    this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.clientId === clientSlug);
+                    this.filteredPurhcaseOrders = this.filteredPurhcaseOrders.filter(po => po.clientId === clientSlug);
                 }
 
                 // Filter by search query
                 if (query !== '') {
-                    this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.rfqNumber.toLowerCase().includes(query.toLowerCase())
-                        || rfq.description.toLowerCase().includes(query.toLowerCase())
-                        || rfq.status.toLowerCase().includes(query.toLowerCase()));
+                    this.filteredPurhcaseOrders = this.filteredPurhcaseOrders.filter(po => po.poNumber.toLowerCase().includes(query.toLowerCase())
+                        || po.description.toLowerCase().includes(query.toLowerCase())
+                        || po.status.toLowerCase().includes(query.toLowerCase()));
                 }
 
                 // Filter by completed
                 if (hideCompleted) {
-                    this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.status !== 'ISSUED');
+                    this.filteredPurhcaseOrders = this.filteredPurhcaseOrders.filter(rfq => rfq.status !== 'ISSUED');
                 }
             });
     }
@@ -143,9 +144,8 @@ export class JobTrackerComponent {
         return item.id || index;
     }
 
-    getCountIncompleteRfqItems(rfq: Rfq): number {
-        console.log(">>> rfq.items.filter(y => y.status != \"QUOTE RECEIVED\")", rfq.items.filter(y => y.status != "QUOTE RECEIVED"))
-        return rfq.items.filter(y => y.status === "QUOTATION RECEIVED").length;
+    getCountIncompleteRfqItems(po: PurchaseOrder): number {
+        console.log(">>> rfq.po.filter(y => y.status != \"QUOTE RECEIVED\")", po.items.filter(y => y.status != "QUOTE RECEIVED"))
+        return po.items.filter(y => y.status === "QUOTATION RECEIVED").length;
     }
-
 }

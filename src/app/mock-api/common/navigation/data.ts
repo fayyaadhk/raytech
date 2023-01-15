@@ -13,14 +13,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'dashboards.rfqDashboard',
                 title: 'RFQ Dashboard',
                 type : 'basic',
-                icon : 'heroicons_outline:speakerphone',
+                icon : 'heroicons_outline:document-text',
                 link : '/dashboard/rfqs'
             },
             {
                 id   : 'dashboards.poDashboard',
                 title: 'PO Dashboard',
                 type : 'basic',
-                icon : 'heroicons_outline:book-open',
+                icon : 'heroicons_outline:shopping-cart',
                 link : '/dashboard/purchase-orders'
             }
         ]
@@ -36,7 +36,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'suppliers',
                 title: 'Suppliers',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:user',
                 children: [
                     {
                         id: 'suppliers.view',
@@ -65,7 +65,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'clients',
                 title: 'Clients',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:users',
                 children: [
                     {
                         id: 'clients.view',
@@ -85,7 +85,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'rfq',
                 title: 'RFQs',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:document-text',
                 children: [
                     {
                         id: 'rfqs.view',
@@ -105,7 +105,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'purchase.orders',
                 title: 'Purchase Orders',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'heroicons_outline:shopping-cart',
                 children: [
                     {
                         id: 'po.view',
@@ -128,13 +128,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Inventory',
         subtitle: 'Stock Management',
         type: 'group',
-        icon: 'heroicons_outline:chart-pie',
         children: [
             {
                 id: 'items',
                 title: 'Items',
                 type: 'collapsable',
-                icon: 'heroicons_outline:archive',
+                icon: 'feather:box',
                 children: [
                     {
                         id: 'items.view',
@@ -175,7 +174,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'commodities',
                 title: 'Commodities',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'mat_outline:apps',
                 link: '/commodities',
                 children: [
                     {
@@ -196,7 +195,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'brands',
                 title: 'Brands',
                 type: 'collapsable',
-                icon: 'heroicons_outline:chart-pie',
+                icon: 'mat_outline:10k',
                 link: '/brands',
                 children: [
                     {

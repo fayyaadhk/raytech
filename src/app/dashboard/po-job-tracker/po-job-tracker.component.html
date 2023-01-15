@@ -22,7 +22,7 @@
                     [svgIcon]="'heroicons_solid:search'"></mat-icon>
                 <input
                     (input)="filterByQuery(query.value)"
-                    placeholder="Search RFQ's"
+                    placeholder="Search Purchase Orders"
                     matInput
                     #query>
             </mat-form-field>
@@ -35,15 +35,15 @@
         </div>
 
         <!-- Rfqs -->
-        <ng-container *ngIf="this.filteredRfqs.length; else noRfqs">
+        <ng-container *ngIf="this.filteredPurhcaseOrders.length; else noPOs">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 sm:mt-10">
-                <ng-container *ngFor="let rfq of filteredRfqs; trackBy: trackByFn">
+                <ng-container *ngFor="let po of filteredPurhcaseOrders; trackBy: trackByFn">
                     <!-- Course -->
                     <div class="flex flex-col h-96 shadow rounded-2xl overflow-hidden bg-card">
                         <div class="flex flex-col p-6">
                             <div class="flex items-center justify-between">
                                 <!-- Course category -->
-                                <ng-container *ngIf="(rfq.clientId | fuseFindByKey:'id': clients) as client">
+                                <ng-container *ngIf="(po.clientId | fuseFindByKey:'id': clients) as client">
                                     <div
                                         class="py-0.5 px-3 rounded-full text-sm font-semibold"
                                         [ngClass]="{'text-blue-800 bg-blue-100 dark:text-blue-50 dark:bg-blue-500': client.id % 1 ===  0,
@@ -55,7 +55,7 @@
                                 </ng-container>
                                 <!-- Completed at least once -->
                                 <div class="flex items-center">
-                                    <ng-container *ngIf="rfq.status === 'Completed'">
+                                    <ng-container *ngIf="po.status === 'Completed'">
                                         <mat-icon
                                             class="icon-size-5 text-green-600"
                                             [svgIcon]="'heroicons_solid:badge-check'"
@@ -64,26 +64,29 @@
                                 </div>
                             </div>
                             <!-- Course title & description -->
-                            <div class="mt-4 text-lg font-medium">{{rfq.rfqNumber}}</div>
-                            <div class="mt-0.5 line-clamp-2 text-secondary">{{rfq.due | date: 'medium'}}</div>
-                            <div class="mt-0.5 line-clamp-2 text-secondary">{{rfq.status }}</div>
+                            <div class="mt-4 text-lg font-medium">{{po.poNumber}}</div>
+                            <div class="mt-0.5 line-clamp-2 text-secondary">{{po.due | date: 'medium'}}</div>
+                            <div class="mt-0.5 line-clamp-2 text-secondary">{{po.status }}</div>
                             <div class="w-12 h-1 my-6 border-t-2"></div>
 
                             <!-- RfqItems -->
-                            <ng-container *ngFor="let rfqItem of rfq.items">
+                            <ng-container *ngFor="let poItem of po.items">
                                 <div class="flex items-center leading-5 text-md text-secondary ">
 
-                                    <div class="ml-1.5">{{rfqItem.quantity}} x {{rfqItem.item.name | slice:0:50}} </div>
-                                    <mat-icon  *ngIf="rfqItem.status === 'SOURCING'"
-                                              class="text-blue-800 icon-size-5 text-hint mx-2" [matTooltip]="rfqItem.status"
-                                              [svgIcon]="'mat_outline:location_searching'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'COULD NOT SOURCE'" [matTooltip]="rfqItem.status"
-                                              class="text-red-800 icon-size-5 text-hint mx-2"
-                                              [svgIcon]="'mat_outline:search_off'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'AWAITING QUOTATION'" [matTooltip]="rfqItem.status"
+                                    <div class="ml-1.5">{{poItem.quantity}} x {{poItem.item.name | slice:0:50}} </div>
+                                    <mat-icon *ngIf="poItem.status === 'PENDING ORDER PLACEMENT'" [matTooltip]="poItem.status"
                                               class="text-orange-600 icon-size-5 text-hint mx-2"
                                               [svgIcon]="'mat_outline:access_time'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'QUOTATION RECEIVED'" [matTooltip]="rfqItem.status"
+                                    <mat-icon  *ngIf="poItem.status === 'ORDER PLACED'"
+                                               class="text-blue-800 icon-size-5 text-hint mx-2" [matTooltip]="poItem.status"
+                                               [svgIcon]="'heroicons_outline:user'"></mat-icon>
+                                    <mat-icon *ngIf="poItem.status === 'PENDING PAYMENT'" [matTooltip]="poItem.status"
+                                              class="text-red-800 icon-size-5 text-hint mx-2"
+                                              [svgIcon]="'mat_outline:money'"></mat-icon>
+                                    <mat-icon *ngIf="poItem.status === 'PENDING DELIVERY'" [matTooltip]="poItem.status"
+                                              class="text-green-800 icon-size-5 text-hint mx-2"
+                                              [svgIcon]="'heroicons_outline:truck'"></mat-icon>
+                                    <mat-icon *ngIf="poItem.status === 'DELIVERED'" [matTooltip]="poItem.status"
                                               class="text-green-800 icon-size-5 text-hint mx-2"
                                               [svgIcon]="'mat_outline:check_circle'"></mat-icon>
                                 </div>
@@ -97,25 +100,25 @@
                             <div class="relative h-0.5">
                                 <div
                                     class="z-10 absolute inset-x-0 h-6 -mt-3"
-                                    [matTooltip]="this.getCountIncompleteRfqItems(rfq) / rfq.items.length | percent"
+                                    [matTooltip]="this.getCountIncompleteRfqItems(po) / po.items.length | percent"
                                     [matTooltipPosition]="'above'"
                                     [matTooltipClass]="'-mb-0.5'"></div>
                                 <mat-progress-bar
                                     class="h-0.5"
-                                    [value]="(100 * this.getCountIncompleteRfqItems(rfq)) / rfq.items.length"></mat-progress-bar>
+                                    [value]="(100 * this.getCountIncompleteRfqItems(po)) / po.items.length"></mat-progress-bar>
                             </div>
 
                             <!-- Course launch button -->
                             <div class="px-6 py-4 text-right bg-gray-50 dark:bg-transparent">
                                 <a
                                     mat-stroked-button
-                                    routerLink="/rfqs/details/{{rfq.id}}">
+                                    routerLink="/purchase-orders/details/{{po.id}}">
                                         <span class="inline-flex items-center">
 
 
                                             <!-- Started -->
                                             <ng-container>
-                                                <span>View RFQ Details</span>
+                                                <span>View Purchase Order Details</span>
                                             </ng-container>
 
                                             <mat-icon
@@ -131,12 +134,12 @@
         </ng-container>
 
         <!-- No courses -->
-        <ng-template #noRfqs>
+        <ng-template #noPOs>
             <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
                 <mat-icon
                     class="icon-size-24"
                     [svgIcon]="'heroicons_outline:document-search'"></mat-icon>
-                <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">No Rfqs found!</div>
+                <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">No Purchase Orders found!</div>
             </div>
         </ng-template>
     </div>

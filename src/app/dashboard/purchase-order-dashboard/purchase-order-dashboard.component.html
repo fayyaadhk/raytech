@@ -1,0 +1,28 @@
+<div class="flex flex-col flex-auto w-full">
+
+    <div class="w-full max-w-screen-xl mx-auto p-6 md:p-8">
+
+        <!-- Title and action buttons -->
+        <!-- <div class="flex items-center justify-between w-full mb-8">
+             <div>
+                 <h2 class="text-3xl font-semibold tracking-tight leading-8">Dashboard</h2>
+                 <div class="font-medium tracking-tight text-secondary">Keep track of your financial status</div>
+             </div>
+         </div>-->
+
+        <div *ngIf="!this.isLoading">
+            <app-purchase-order-summary [issuedPOs]="dashboardSummary.issuedPOs"
+                                        [completedPOs]="dashboardSummary.completedPOs"
+                                        [inProgressPOs]="dashboardSummary.inProgressPOs"
+                                        [invoicedPOs]="dashboardSummary.invoicedPOs"
+                                        [pendingDeliveryPOs]="dashboardSummary.pendingDeliveryPOs">
+            </app-purchase-order-summary>
+        </div>
+
+        <div *ngIf="!this.isLoading">
+            <app-po-job-tracker
+                [purchaseOrders]="dashboardSummary.issuedPOs.concat(dashboardSummary.inProgressPOs)"></app-po-job-tracker>
+        </div>
+
+    </div>
+</div>

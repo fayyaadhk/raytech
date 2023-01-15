@@ -8,23 +8,19 @@
                  <h2 class="text-3xl font-semibold tracking-tight leading-8">Dashboard</h2>
                  <div class="font-medium tracking-tight text-secondary">Keep track of your financial status</div>
              </div>
-
          </div>-->
+
         <div *ngIf="!this.isLoading">
             <app-rfq-summary [issuedRFQs]="dashboardSummary.issuedRFQs"
                              [closingSoonRFQs]="dashboardSummary.closingSoonRFQs"
                              [inProgressRFQs]="dashboardSummary.inProgressRFQs"
-                             [pendingSubmissionRFQs]="dashboardSummary.pendingSubmissionRFQs"
-            >
-
+                             [pendingSubmissionRFQs]="dashboardSummary.pendingSubmissionRFQs">
             </app-rfq-summary>
         </div>
-        <div *ngIf="!this.isLoading">
 
+        <div *ngIf="!this.isLoading">
             <app-job-tracker [rfqs]="dashboardSummary.issuedRFQs.concat(dashboardSummary.inProgressRFQs)"></app-job-tracker>
         </div>
 
-
     </div>
-
 </div>
