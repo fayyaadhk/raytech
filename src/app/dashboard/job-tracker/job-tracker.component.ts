@@ -88,7 +88,7 @@ export class JobTrackerComponent {
 
                 // Filter by completed
                 if (hideCompleted) {
-                    this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.status === 'COMPLETED');
+                    this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.status !== 'ISSUED');
                 }
             });
     }

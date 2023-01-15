@@ -22,7 +22,7 @@
                     [svgIcon]="'heroicons_solid:search'"></mat-icon>
                 <input
                     (input)="filterByQuery(query.value)"
-                    placeholder="Search by title or description"
+                    placeholder="Search RFQ's"
                     matInput
                     #query>
             </mat-form-field>
@@ -30,7 +30,7 @@
                 class="mt-8 sm:mt-0 sm:ml-auto"
                 [color]="'primary'"
                 (change)="toggleCompleted($event)">
-                Hide completed
+                Hide issued
             </mat-slide-toggle>
         </div>
 
@@ -74,16 +74,16 @@
                                 <div class="flex items-center leading-5 text-md text-secondary ">
 
                                     <div class="ml-1.5">{{rfqItem.quantity}} x {{rfqItem.item.name | slice:0:50}} </div>
-                                    <mat-icon *ngIf="rfqItem.status === 'SOURCING'"
-                                              class="text-blue-800 icon-size-5 text-hint mx-2"
+                                    <mat-icon  *ngIf="rfqItem.status === 'SOURCING'"
+                                              class="text-blue-800 icon-size-5 text-hint mx-2" [matTooltip]="rfqItem.status"
                                               [svgIcon]="'mat_outline:location_searching'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'COULD NOT SOURCE'"
+                                    <mat-icon *ngIf="rfqItem.status === 'COULD NOT SOURCE'" [matTooltip]="rfqItem.status"
                                               class="text-red-800 icon-size-5 text-hint mx-2"
                                               [svgIcon]="'mat_outline:search_off'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'AWAITING QUOTATION'"
+                                    <mat-icon *ngIf="rfqItem.status === 'AWAITING QUOTATION'" [matTooltip]="rfqItem.status"
                                               class="text-orange-600 icon-size-5 text-hint mx-2"
                                               [svgIcon]="'mat_outline:access_time'"></mat-icon>
-                                    <mat-icon *ngIf="rfqItem.status === 'QUOTATION RECEIVED'"
+                                    <mat-icon *ngIf="rfqItem.status === 'QUOTATION RECEIVED'" [matTooltip]="rfqItem.status"
                                               class="text-green-800 icon-size-5 text-hint mx-2"
                                               [svgIcon]="'mat_outline:check_circle'"></mat-icon>
                                 </div>
