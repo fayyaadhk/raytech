@@ -9,9 +9,9 @@ import {MatSelectChange} from "@angular/material/select";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 
 @Component({
-  selector: 'app-job-tracker',
-  templateUrl: './job-tracker.component.html',
-  styleUrls: ['./job-tracker.component.scss']
+    selector: 'app-job-tracker',
+    templateUrl: './job-tracker.component.html',
+    styleUrls: ['./job-tracker.component.scss']
 })
 export class JobTrackerComponent {
 
@@ -24,8 +24,8 @@ export class JobTrackerComponent {
         query$: BehaviorSubject<string>;
         hideCompleted$: BehaviorSubject<boolean>;
     } = {
-        clientId$ : new BehaviorSubject(0),
-        query$        : new BehaviorSubject(''),
+        clientId$: new BehaviorSubject(0),
+        query$: new BehaviorSubject(''),
         hideCompleted$: new BehaviorSubject(false)
     };
 
@@ -40,8 +40,7 @@ export class JobTrackerComponent {
         private _router: Router,
         private _rfqService: RfqService,
         private _clientService: ClientService
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -51,8 +50,7 @@ export class JobTrackerComponent {
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Get the categories
         this._clientService.getClients()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -64,7 +62,7 @@ export class JobTrackerComponent {
             });
 
 
-        this.rfqs = this.filteredRfqs = this.rfqs ;
+        this.rfqs = this.filteredRfqs = this.rfqs;
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -77,22 +75,19 @@ export class JobTrackerComponent {
                 this.filteredRfqs = this.rfqs;
 
                 // Filter by category
-                if ( clientSlug !== 0 )
-                {
+                if (clientSlug !== 0) {
                     this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.clientId === clientSlug);
                 }
 
                 // Filter by search query
-                if ( query !== '' )
-                {
+                if (query !== '') {
                     this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.rfqNumber.toLowerCase().includes(query.toLowerCase())
                         || rfq.description.toLowerCase().includes(query.toLowerCase())
                         || rfq.status.toLowerCase().includes(query.toLowerCase()));
                 }
 
                 // Filter by completed
-                if ( hideCompleted )
-                {
+                if (hideCompleted) {
                     this.filteredRfqs = this.filteredRfqs.filter(rfq => rfq.status === 'COMPLETED');
                 }
             });
@@ -101,8 +96,7 @@ export class JobTrackerComponent {
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -117,8 +111,7 @@ export class JobTrackerComponent {
      *
      * @param query
      */
-    filterByQuery(query: string): void
-    {
+    filterByQuery(query: string): void {
         this.filters.query$.next(query);
     }
 
@@ -127,8 +120,7 @@ export class JobTrackerComponent {
      *
      * @param change
      */
-    filterByClient(change: MatSelectChange): void
-    {
+    filterByClient(change: MatSelectChange): void {
         this.filters.clientId$.next(change.value);
     }
 
@@ -137,8 +129,7 @@ export class JobTrackerComponent {
      *
      * @param change
      */
-    toggleCompleted(change: MatSlideToggleChange): void
-    {
+    toggleCompleted(change: MatSlideToggleChange): void {
         this.filters.hideCompleted$.next(change.checked);
     }
 
@@ -148,9 +139,13 @@ export class JobTrackerComponent {
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    getCountIncompleteRfqItems(rfq: Rfq): number {
+        console.log(">>> rfq.items.filter(y => y.status != \"QUOTE RECEIVED\")", rfq.items.filter(y => y.status != "QUOTE RECEIVED"))
+        return rfq.items.filter(y => y.status === "QUOTATION RECEIVED").length;
     }
 
 }

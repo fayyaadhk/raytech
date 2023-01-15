@@ -97,12 +97,12 @@
                             <div class="relative h-0.5">
                                 <div
                                     class="z-10 absolute inset-x-0 h-6 -mt-3"
-                                    [matTooltip]="rfq.items.length / rfq.items.length | percent"
+                                    [matTooltip]="this.getCountIncompleteRfqItems(rfq) / rfq.items.length | percent"
                                     [matTooltipPosition]="'above'"
                                     [matTooltipClass]="'-mb-0.5'"></div>
                                 <mat-progress-bar
                                     class="h-0.5"
-                                    [value]="(100 * rfq.items.length) / rfq.items.length"></mat-progress-bar>
+                                    [value]="(100 * this.getCountIncompleteRfqItems(rfq)) / rfq.items.length"></mat-progress-bar>
                             </div>
 
                             <!-- Course launch button -->
