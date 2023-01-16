@@ -35,6 +35,7 @@ export class RfqItemComponent implements OnInit {
     keys = Object.keys;
     rfqItemStatus = RFQItemStatus;
     formFieldHelpers: string[] = [''];
+    filteredItems: Observable<any[]>;
 
     ngOnInit() {
         this._initForm();
@@ -49,6 +50,7 @@ export class RfqItemComponent implements OnInit {
                 private dialogRef: MatDialogRef<RfqItemComponent>,
                 @Inject(MAT_DIALOG_DATA) public data) {
     }
+
 
     filterRfqItems(event): void {
         // Get the value
@@ -70,12 +72,31 @@ export class RfqItemComponent implements OnInit {
         });
     }
 
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+
+    selectedItem(event) {
+        console.log(event.option.value);
+    }
+
+    displayItem(itemId: any) {
+        // return item ? item.name : '';
+        return this.items.find(item => item.id === itemId)?.name;
+    }
+
     private _getItems() {
         this.itemService
             .getItems()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
+                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }
