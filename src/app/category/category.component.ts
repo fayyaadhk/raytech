@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {CategoryService} from './category.service';
 import {MatTableDataSource} from "@angular/material/table";
 import {Category} from "../api/models/category";
+import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 
 @Component({
   selector: 'app-category',
@@ -33,10 +34,11 @@ export class CategoryComponent implements OnInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Category>;
-    displayedColumns = ['name'];
+    displayedColumns = ['id', 'name', 'actions'];
 
     constructor(private cateogryService: CategoryService,
-                private router: Router,) {
+                private router: Router,
+                private fuseConfirmationService: FuseConfirmationService) {
 
     }
 
@@ -54,9 +56,26 @@ export class CategoryComponent implements OnInit {
     }
 
     deleteCategory(categoryId: string){
-        this.cateogryService.deleteCategory(categoryId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-            this._getCategories();
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete category',
+            message: 'Are you sure you want to remove this category? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
         });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+            // If the confirm button pressed...
+            if (result === 'confirmed') {
+                this.cateogryService.deleteCategory(categoryId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this._getCategories();
+                });
+            }
+        });
+
     }
 
     applyFilter(filterValue: string) {

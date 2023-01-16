@@ -37,7 +37,7 @@ export class RfqService {
         return this.http.post<CreateRfqItem>(apiURLRfqItems, model);
     }
 
-    getRfqDetails(rfqId: string): Observable<Rfq> {
+    getRfqDetails(rfqId: number): Observable<Rfq> {
         return this.http.get<Rfq>(`${apiURLRfqs}/${rfqId}/details`);
     }
 
@@ -47,6 +47,10 @@ export class RfqService {
 
     updateRfqItem(model: UpdateRfqItem, rfqItemId: number): Observable<UpdateRfqItem> {
         return this.http.put<UpdateRfqItem>(`${apiURLRfqItems}/${rfqItemId}`, model);
+    }
+
+    deleteRfqItem(itemId: number): Observable<any> {
+        return this.http.delete<any>(`${apiURLRfqItems}/${itemId}`);
     }
 
     deleteRfq(rfqId: string): Observable<any> {

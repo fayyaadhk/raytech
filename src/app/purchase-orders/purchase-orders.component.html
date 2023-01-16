@@ -1,7 +1,8 @@
 <div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
 
     <!-- Header -->
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
         <!-- Loader -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -35,62 +36,66 @@
         </div>
     </div>
 
-    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.id}} </mat-cell>
-        </ng-container>
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.id}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="PONumber">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> <a routerLink="details/{{purchaseOrder.id}}">{{purchaseOrder.poNumber}}</a> </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="PONumber">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"><a
+                    routerLink="details/{{purchaseOrder.id}}">{{purchaseOrder.poNumber}}</a></mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="RFQNumber">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.rfqId}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="RFQNumber">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.rfqId}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="DateReceived">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Date Received </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.dateReceived  | date:'MMM dd, yyyy'}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="DateReceived">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Date Received</mat-header-cell>
+                <mat-cell
+                    *matCellDef="let purchaseOrder"> {{purchaseOrder.dateReceived  | date:'MMM dd, yyyy'}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="DateDue">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Date Due </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.due  | date:'MMM dd, yyyy'}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="DateDue">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Date Due</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.due  | date:'MMM dd, yyyy'}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="itemCount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.items.length}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="itemCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.items.length}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.status }} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.status }} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="editDelete">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let purchaseOrder">
-                <div class="truncate">
-                    <button
-                        (click)="updateItem(purchaseOrder.id)">
-                        <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+            <ng-container matColumnDef="editDelete">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                <mat-cell *matCellDef="let purchaseOrder">
+                    <div class="truncate">
+                        <button
+                            (click)="updateItem(purchaseOrder.id)">
+                            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
-                    </button>
-                    <button class="ml-4"
-                            (click)="deleteItem(purchaseOrder.id)">
-                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
-                    </button>
+                        </button>
+                        <button class="ml-4"
+                                (click)="deleteItem(purchaseOrder.id)">
+                            <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                        </button>
 
-                </div>
-            </mat-cell>
-        </ng-container>
+                    </div>
+                </mat-cell>
+            </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+    </div>
 </div>

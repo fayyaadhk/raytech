@@ -53,12 +53,12 @@
             <!-- Main -->
             <div class="flex-auto p-6 sm:p-10">
 
-                <div class="max-w-3xl">
+                <div class="max-w-5xl">
 
                     <div class="prose prose-sm max-w-3xl">
-                        <h2>New RFQ Details</h2>
+                        <h2>Add New RFQ</h2>
                         <p>
-                            Here's a very simple form layout to showcase the form fields.
+                            Create a new RFQ. Please fill in the form details.
                         </p>
                     </div>
 
@@ -145,8 +145,7 @@
                                             name="status"
                                             formControlName="status"
                                             [placeholder]="'Status'">
-                                            <mat-option *ngFor="let status of statuses"
-                                                        [value]="status.name">{{status.name}}</mat-option>
+                                            <mat-option *ngFor="let status of keys(rfqStatus)" [value]="status">{{rfqStatus[status]}}</mat-option>
                                         </mat-select>
                                         <mat-icon
                                             class="icon-size-5"
@@ -274,26 +273,31 @@
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="name">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let rfqItems"> {{rfqItems.name}} </mat-cell>
                                                 </ng-container>
 
+                                                <ng-container matColumnDef="supplierName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.supplierName}} </mat-cell>
+                                                </ng-container>
+
                                                 <ng-container matColumnDef="quantity">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
                                                     <mat-cell *matCellDef="let rfqItems"> {{rfqItems.quantity}} </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="price">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.price}} </mat-cell>
+                                                <ng-container matColumnDef="priceQuoted">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.priceQuoted}} </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="actions">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                                     <mat-cell *matCellDef="let rfqItems; let i = index">
                                                         <div class="truncate">
                                                             <button
-                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
+                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
                                                                 <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                             </button>

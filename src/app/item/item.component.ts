@@ -59,8 +59,8 @@ export class ItemComponent implements OnInit {
 
     deleteItem(itemId: string) {
         const confirmation = this.fuseConfirmationService.open({
-            title: 'Delete client',
-            message: 'Are you sure you want to remove this client? This action cannot be undone!',
+            title: 'Delete item',
+            message: 'Are you sure you want to remove this item? This action cannot be undone!',
             actions: {
                 confirm: {
                     label: 'Delete'

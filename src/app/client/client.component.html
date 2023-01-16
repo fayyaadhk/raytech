@@ -1,7 +1,8 @@
 <div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
 
     <!-- Header -->
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
         <!-- Loader -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -36,24 +37,25 @@
     </div>
 
     <!-- Main -->
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
         <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
                 <mat-cell *matCellDef="let client"> {{client.id}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>  Name </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
                 <mat-cell *matCellDef="let client"><a routerLink="details/{{client.id}}">{{client.name}}</a></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="buyer">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Buyer </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Buyer</mat-header-cell>
                 <mat-cell *matCellDef="let client"> {{client.buyer?.firstName + client.buyer?.lastName}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="editDelete">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
                 <mat-cell *matCellDef="let client">
                     <div class="truncate">
                         <button
@@ -62,7 +64,7 @@
 
                         </button>
                         <button class="ml-4"
-                            (click)="deleteClient(client.id)">
+                                (click)="deleteClient(client.id)">
                             <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
                         </button>
 
@@ -74,4 +76,5 @@
 
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
+    </div>
 </div>

@@ -36,52 +36,54 @@
         </div>
     </div>
 
-    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="rfqId">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ ID</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs"> {{rfqs.id}} </mat-cell>
-        </ng-container>
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="rfqId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ ID</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs"> {{rfqs.id}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="rfqNo">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs"> <a routerLink="details/{{rfqs.id}}"> {{rfqs.rfqNumber}} </a></mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="rfqNo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs"><a routerLink="details/{{rfqs.id}}"> {{rfqs.rfqNumber}} </a></mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs"> {{rfqs.status}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs"> {{rfqs.status}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="due">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs">{{rfqs.due | date: 'medium'}}</mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="due">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs">{{rfqs.due | date: 'medium'}}</mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="itemCount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count </mat-header-cell>
-            <mat-cell *matCellDef="let rfqs">
-                {{rfqs.items.length}}
-            </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="itemCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs">
+                    {{rfqs.items.length}}
+                </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="editDelete">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
-            <mat-cell *matCellDef="let rfqs">
-                <div class="truncate">
-                    <button
-                        (click)="updateRfq(rfqs.id)">
-                        <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+            <ng-container matColumnDef="editDelete">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs">
+                    <div class="truncate">
+                        <button
+                            (click)="updateRfq(rfqs.id)">
+                            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
-                    </button>
-                    <button
-                        (click)="deleteRfq(rfqs.id)">
-                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
-                    </button>
-                </div>
-            </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        </button>
+                        <button
+                            (click)="deleteRfq(rfqs.id)">
+                            <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+    </div>
 </div>

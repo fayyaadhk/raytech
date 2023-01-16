@@ -24,8 +24,8 @@ import {ItemDetailsComponent} from "../item/item-details/item-details.component"
 import {RfqDetailsComponent} from "./rfq-details/rfq-details.component";
 import {AddRfqComponent} from "./add-rfq/add-rfq.component";
 import {MatDialogModule} from "@angular/material/dialog";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+
 
 const rfqRoutes: Route[] = [
     {
