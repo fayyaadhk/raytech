@@ -10,6 +10,7 @@ import {MatSort} from "@angular/material/sort";
 import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditRFQItemComponent} from "../edit-rfqitem/edit-rfqitem.component";
+import {CreatePOFromRFQComponent} from "./create-pofrom-rfq/create-pofrom-rfq.component";
 
 @Component({
     selector: 'app-rfq-details',
@@ -146,6 +147,25 @@ export class RfqDetailsComponent implements OnInit {
         })
     }
 
+    openPODialog() {
+        console.log("this.rfqs on open dialog", this.rfqs)
+
+        const dialogRef = this.dialog.open(CreatePOFromRFQComponent, {
+            width: '600px',
+            data: this.rfqs,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            console.log(">>> res", res);
+
+            // received data from dialog-component
+            if (res.updated) {
+                console.log("calling this._getRfqDetails()")
+                this._getRfqDetails();
+            }
+        })
+    }
+
     deleteRfqItem(id: number) {
 
     }
@@ -205,9 +225,6 @@ export class RfqDetailsComponent implements OnInit {
                         }
                         console.log(">>>> this.items", this.items);
                         this.dataSource = new MatTableDataSource(this.items);
-                        //this.clientForm.contactInformation.setValue(this.contactInfo);
-                        //this.clientForm.thumbnail.setValidators([]);
-                        //this.clientForm.thumbnail.updateValueAndValidity();
                     });
             }
         });
