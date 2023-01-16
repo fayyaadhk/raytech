@@ -144,7 +144,6 @@ export class JobTrackerComponent {
     }
 
     getCountIncompleteRfqItems(rfq: Rfq): number {
-        console.log(">>> rfq.items.filter(y => y.status != \"QUOTE RECEIVED\")", rfq.items.filter(y => y.status != "QUOTE RECEIVED"))
         return rfq.items.filter(y => y.status === "QUOTATION RECEIVED").length;
     }
 
