@@ -13,7 +13,8 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">Issued</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{issuedRFQs.length}}</div>
+            <div
+                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{issuedRFQs.length}}</div>
             <div class="text-lg font-medium text-blue-600 dark:text-blue-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Created / Unactioned</div>
@@ -26,7 +27,8 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">Closing Soon</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{closingSoonRFQs.length}}</div>
+            <div
+                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{closingSoonRFQs.length}}</div>
             <div class="text-lg font-medium text-red-600 dark:text-red-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Closing within 6 hours</div>
@@ -39,7 +41,8 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">In Progress</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{inProgressRFQs.length}}</div>
+            <div
+                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{inProgressRFQs.length}}</div>
             <div class="text-lg font-medium text-amber-600 dark:text-amber-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Sourcing in progress</div>
@@ -53,7 +56,8 @@
             <div class="text-lg font-medium tracking-tight leading-6 truncate">Pending Submission</div>
         </div>
         <div class="flex flex-col items-center mt-2">
-            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{pendingSubmissionRFQs.length}}</div>
+            <div
+                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{pendingSubmissionRFQs.length}}</div>
             <div class="text-lg font-medium text-green-600 dark:text-green-500">RFQ's</div>
             <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                 <div class="text-md font-medium truncate">Need uploading in VCM</div>
@@ -104,7 +108,7 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    {{transaction.rfqNumber}}
+                                    <a routerLink="/rfqs/details/{{transaction.id}}"> {{transaction.rfqNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>
@@ -204,7 +208,7 @@
                         mat-footer-cell
                         *matFooterCellDef
                         colspan="6">
-                        <button mat-stroked-button>See all transactions</button>
+                        <button routerLink="/purchase-orders" mat-stroked-button>See all RFQ's</button>
                     </td>
                 </ng-container>
 
@@ -385,7 +389,6 @@
             </table>
         </div>
     </div>
-
 
 
 </div>

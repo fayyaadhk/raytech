@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import {RfqItem} from '../api/models/rfq-item';
 import { CreateClientRequest } from '../api/models/create-client-request';
+import {UpdateRfqItem} from "../api/models/update-rfq-item";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLRfqItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqitems';
@@ -28,11 +29,12 @@ export class RfqItemService {
         return this.http.post<RfqItem>(apiURLRfqItems, model);
     }
 
-    getRfqItem(rfqItemId: string): Observable<RfqItem> {
+    getRfqItem(rfqItemId: number): Observable<RfqItem> {
         return this.http.get<RfqItem>(`${apiURLRfqItems}/${rfqItemId}`);
     }
 
-    updateRfqItem(model: RfqItem, rfqItemId: string): Observable<RfqItem> {
+    updateRfqItem(model: UpdateRfqItem, rfqItemId: number): Observable<RfqItem> {
+        console.log(">>> request", model);
         return this.http.put<RfqItem>(`${apiURLRfqItems}/${rfqItemId}`, model);
     }
 
