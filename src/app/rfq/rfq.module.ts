@@ -19,13 +19,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 import {SharedModule} from '../shared/shared.module';
 import {RfqComponent} from './rfq.component';
-import {ItemComponent} from "../item/item.component";
-import {ItemDetailsComponent} from "../item/item-details/item-details.component";
 import {RfqDetailsComponent} from "./rfq-details/rfq-details.component";
 import {AddRfqComponent} from "./add-rfq/add-rfq.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { EditRFQItemComponent } from './edit-rfqitem/edit-rfqitem.component';
 
 const rfqRoutes: Route[] = [
     {
@@ -46,7 +45,8 @@ const rfqRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        RfqComponent
+        RfqComponent,
+        EditRFQItemComponent
     ],
     imports     : [
         RouterModule.forChild(rfqRoutes),

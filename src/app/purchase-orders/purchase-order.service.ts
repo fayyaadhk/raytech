@@ -11,6 +11,7 @@ import {PurchaseOrder} from "../api/models/purchase-order";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrders';
+const poItemsApiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrderItems';
 
 @Injectable({ providedIn: 'root' })
 export class PurchaseOrderService {

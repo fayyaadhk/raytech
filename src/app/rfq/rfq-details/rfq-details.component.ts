@@ -7,6 +7,9 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {RfqItem} from "../../api/models/rfq-item";
 import {MatSort} from "@angular/material/sort";
+import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
+import {MatDialog} from "@angular/material/dialog";
+import {EditRFQItemComponent} from "../edit-rfqitem/edit-rfqitem.component";
 
 @Component({
     selector: 'app-rfq-details',
@@ -26,7 +29,7 @@ export class RfqDetailsComponent implements OnInit {
     formFieldHelpers: string[] = [''];
     form: FormGroup;
     dataSource: MatTableDataSource<RfqItem>;
-    displayedColumns = ['rfqItemId', 'id', 'name', 'sku', 'quantity', 'price', 'status'];
+    displayedColumns = ['rfqItemId', 'id', 'name', 'sku', 'quantity', 'price', 'status', 'actions'];
     quoteDocumentPreview: string;
     purchaseOrderDocumentPreview: string;
     items = [];
@@ -58,6 +61,7 @@ export class RfqDetailsComponent implements OnInit {
     constructor(private rfqService: RfqService,
                 private route: ActivatedRoute,
                 private clientService: ClientService,
+                private dialog: MatDialog,
                 private formBuilder: FormBuilder) {
     }
 
@@ -67,74 +71,12 @@ export class RfqDetailsComponent implements OnInit {
         this._initForm();
     }
 
-    private _initForm() {
-        // Vertical stepper form
-        this.form = this.formBuilder.group({
-            quoteDocumentUrl: [''],
-            quoteSentDate: [''],
-            purchaseOrderDocumentUrl: [''],
-            purchaseOrderDueDate: [''],
-            purchaseOrderReceivedDate: [''],
-            purchaseOrderOutcome: [''],
-            purchaseOrderStatus: [''],
-        });
-    }
-
-    onSubmitPurchaseOrder(rfqId: string){
+    onSubmitPurchaseOrder(rfqId: string) {
 
     }
 
-    onSubmitQuotation(rfqId: string){
+    onSubmitQuotation(rfqId: string) {
 
-    }
-
-    private _getRfqDetails() {
-        console.log("HERE");
-        this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
-            console.log(params);
-            if (params.id) {
-                this.currentRfqId = params.id;
-                console.log('>>>>>>', this.currentRfqId)
-                this.rfqService
-                    .getRfqDetails(this.currentRfqId)
-                    .pipe(takeUntil(this.endsubs$))
-                    .subscribe((rfq) => {
-                        this.rfqs = rfq;
-                        console.log("this.rfq", this.rfqs);
-
-                        console.log("this.rfq.items", this.rfqs.items);
-                        if (this.rfqs.quoteDocumentUrl) {
-                            this.hasQuote = true;
-                        }
-                        if (this.rfqs.purchaseOrderDocumentUrl) {
-                            this.hasPurchaseOrder = true;
-                        }
-                        this.clientService.getClient(rfq.clientId.toString()).pipe(takeUntil(this.endsubs$))
-                            .subscribe((client) => {
-                                this.client = client;
-                                console.log(this.client);
-                                this.isLoading = false;
-                            });
-
-                        for(let i = 0; i < this.rfqs.items.length; i++){
-                            this.items.push({
-                                rfqItemId: this.rfqs.items[i].id,
-                                id: this.rfqs.items[i].item.id,
-                                name: this.rfqs.items[i].item.name,
-                                sku: this.rfqs.items[i].item.sku,
-                                quantity: this.rfqs.items[i].quantity,
-                                price: this.rfqs.items[i].priceQuoted,
-                                status: this.rfqs.items[i].status
-                            });
-                        }
-                        console.log(">>>> this.items", this.items);
-                        this.dataSource = new MatTableDataSource(this.items);
-                        //this.clientForm.contactInformation.setValue(this.contactInfo);
-                        //this.clientForm.thumbnail.setValidators([]);
-                        //this.clientForm.thumbnail.updateValueAndValidity();
-                    });
-            }
-        });
     }
 
     uploadQuotation(event) {
@@ -165,11 +107,111 @@ export class RfqDetailsComponent implements OnInit {
         reader.readAsDataURL(file);
     }
 
-    getPOItemValue(){
-        const result = this.rfqs.purchaseOrder.items.map(a => a.priceQuoted).reduce(function(a, b){
+    getPOItemValue() {
+        const result = this.rfqs.purchaseOrder.items.map(a => a.priceQuoted).reduce(function (a, b) {
             return a + b;
         });
         return result;
     }
+
+    openDialog(rfqItem) {
+
+        console.log(">> rfqItem before rfqItemToUpdate", rfqItem);
+
+        const rfqItemToUpdate: RfqItem = {
+            RfqId: rfqItem.rfqId,
+            id: rfqItem.rfqItemId,
+            priceQuoted: rfqItem.price,
+            status: rfqItem.status,
+            quantity: rfqItem.quantity,
+            expectedArrivalDate: rfqItem.expectedArrivalDate,
+            supplier: rfqItem.supplier,
+            item: rfqItem.item
+        }
+        console.log(">> rfqItemToUpdate", rfqItemToUpdate);
+
+        const dialogRef = this.dialog.open(EditRFQItemComponent, {
+            width: '600px',
+            data: rfqItemToUpdate,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            console.log(">>> res", res);
+
+            // received data from dialog-component
+            if (res.updated) {
+                console.log("calling this._getRfqDetails()")
+                this._getRfqDetails();
+            }
+        })
+    }
+
+    deleteRfqItem(id: number) {
+
+    }
+
+    private _initForm() {
+        // Vertical stepper form
+        this.form = this.formBuilder.group({
+            quoteDocumentUrl: [''],
+            quoteSentDate: [''],
+            purchaseOrderDocumentUrl: [''],
+            purchaseOrderDueDate: [''],
+            purchaseOrderReceivedDate: [''],
+            purchaseOrderOutcome: [''],
+            purchaseOrderStatus: [''],
+        });
+    }
+
+    private _getRfqDetails() {
+        console.log("HERE");
+        this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
+            console.log(params);
+            if (params.id) {
+                this.currentRfqId = params.id;
+                this.rfqService
+                    .getRfqDetails(this.currentRfqId)
+                    .pipe(takeUntil(this.endsubs$))
+                    .subscribe((rfq) => {
+                        this.rfqs = rfq;
+
+                        if (this.rfqs.quoteDocumentUrl) {
+                            this.hasQuote = true;
+                        }
+                        if (this.rfqs.purchaseOrderDocumentUrl) {
+                            this.hasPurchaseOrder = true;
+                        }
+                        this.clientService.getClient(rfq.clientId.toString()).pipe(takeUntil(this.endsubs$))
+                            .subscribe((client) => {
+                                this.client = client;
+                                console.log(this.client);
+                                this.isLoading = false;
+                            });
+
+                        this.items = [];
+                        this.rfqs.items.forEach(item => {
+                            this.items.push({
+                                rfqItemId: item.id,
+                                id: item.item.id,
+                                name: item.item.name,
+                                sku: item.item.sku,
+                                quantity: item.quantity,
+                                price: item.priceQuoted,
+                                status: item.status
+                            });
+                        })
+                        for (let i = 0; i < this.rfqs.items.length; i++) {
+
+                        }
+                        console.log(">>>> this.items", this.items);
+                        this.dataSource = new MatTableDataSource(this.items);
+                        //this.clientForm.contactInformation.setValue(this.contactInfo);
+                        //this.clientForm.thumbnail.setValidators([]);
+                        //this.clientForm.thumbnail.updateValueAndValidity();
+                    });
+            }
+        });
+    }
+
 
 }

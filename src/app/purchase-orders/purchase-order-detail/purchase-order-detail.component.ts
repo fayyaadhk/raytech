@@ -8,6 +8,10 @@ import {PurchaseOrderService} from "../purchase-order.service";
 import {RfqService} from "../../rfq/rfq.service";
 import {Rfq} from "../../rfq/rfq.model";
 import {MatSort} from "@angular/material/sort";
+import {RfqItem} from "../../api/models/rfq-item";
+import {EditRFQItemComponent} from "../../rfq/edit-rfqitem/edit-rfqitem.component";
+import {MatDialog} from "@angular/material/dialog";
+import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
 
 @Component({
   selector: 'app-purchase-order-detail',
@@ -28,14 +32,14 @@ export class PurchaseOrderDetailComponent {
     isLoading: boolean = false;
 
     purchaseOrderItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    purchaseOrderItemsTableColumns: string[] = ['poItemId', 'id', 'name', 'sku', 'quantity', 'price', 'supplier', 'status'];
+    purchaseOrderItemsTableColumns: string[] = ['poItemId', 'id', 'name', 'sku', 'quantity', 'price', 'supplier', 'status', 'actions'];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
-    constructor(private route: ActivatedRoute, private purchaseOrderService: PurchaseOrderService, private rfqService: RfqService)
+    constructor(private dialog: MatDialog, private route: ActivatedRoute, private purchaseOrderService: PurchaseOrderService, private rfqService: RfqService)
     {
     }
 
@@ -106,5 +110,42 @@ export class PurchaseOrderDetailComponent {
     trackByFnIS(index: number, item: any): any
     {
         return item.id || index;
+    }
+
+    openDialog(poItem) {
+
+        console.log(">> poItem before poItemToUpdate", poItem);
+
+        const poItemToUpdate: PurchaseOrderItem = {
+            purchaseOrderId: poItem.purchaseOrderId,
+            id: poItem.id,
+            priceQuoted: poItem.price,
+            status: poItem.status,
+            quantity: poItem.quantity,
+            expectedArrivalDate: poItem.expectedArrivalDate,
+            supplier: poItem.supplier,
+            item: poItem.item
+        }
+        console.log(">> poItemToUpdate", poItemToUpdate);
+
+        const dialogRef = this.dialog.open(EditRFQItemComponent, {
+            width: '600px',
+            data: poItemToUpdate,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            console.log(">>> res", res);
+
+            // received data from dialog-component
+            if (res.updated) {
+                console.log("calling this._getPurchaseOrder()")
+                this._getPurchaseOrder();
+            }
+        })
+    }
+
+
+    deletePOItem(id: number) {
+
     }
 }
