@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export class UpdateRfqItem {
-    // expectedArrivalDate?: string;
+    expectedArrivalDate?: string;
     rfqItemId: number;
     itemId: number;
     priceQuoted?: number;
     quantity?: number;
     status?: null | string;
-    //supplierId: number;
+    supplierId: number;
 }

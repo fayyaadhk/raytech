@@ -27,8 +27,8 @@ export class BrandService {
         return this.http.get<Brand>(`${apiURLBrands}/${brandId}`);
     }
 
-    updateBrand(brandData: FormData, brandId: string): Observable<Brand> {
-        return this.http.put<Brand>(`${apiURLBrands}/${brandId}`, brandData);
+    updateBrand(model: Brand, brandId: string): Observable<Brand> {
+        return this.http.put<Brand>(`${apiURLBrands}/${brandId}`, model);
     }
 
     deleteBrand(brandId: string): Observable<any> {

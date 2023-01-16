@@ -196,8 +196,10 @@ export class AddPurchaseOrdersComponent {
                     const updateRfqItem: UpdateRfqItem = {
                         rfqItemId: this.purchaseOrders.items[r].id,
                         itemId: this.purchaseOrderItems[r].itemId,
+                        supplierId: this.purchaseOrderItems[r].supplier,
                         quantity: this.purchaseOrderItems[r].quantity,
                         priceQuoted: this.purchaseOrderItems[r].price,
+                        expectedArrivalDate: this.purchaseOrderItems[r].expectedArrivalDate,
                         status: this.purchaseOrderItems[r].status
                     };
                     console.log('UPDATE RFQ ITEMS ', updateRfqItem);
@@ -216,8 +218,10 @@ export class AddPurchaseOrdersComponent {
                     const addRfqItem: CreateRfqItem = {
                         rfqId: this.currentPurchaseOrderId,
                         itemId: this.purchaseOrderItems[r].itemId,
+                        supplierId: this.purchaseOrderItems[r].supplier,
                         quantity: this.purchaseOrderItems[r].quantity,
                         priceQuoted: this.purchaseOrderItems[r].price,
+                        expectedArrivalDate: this.purchaseOrderItems[r].expectedArrivalDate,
                         status: this.purchaseOrderItems[r].status
                     };
                     console.log('ADD RFQ ITEM', addRfqItem);

@@ -1,4 +1,4 @@
-export enum POStatus {
+export enum RfqStatus {
     ISSUED = "ISSUED",
     SOURCING = "SOURCING",
     COULD_NOT_SOURCE = "COULD NOT SOURCE",

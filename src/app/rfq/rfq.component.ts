@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {RfqService} from './rfq.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {Rfq} from '../api/models/rfq';
+import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 
 @Component({
     selector: 'app-rfq',
@@ -36,7 +37,8 @@ export class RfqComponent implements OnInit {
     displayedColumns = ['rfqId', 'rfqNo', 'status', 'due', 'itemCount', 'editDelete'];
 
     constructor(private rfqService: RfqService,
-                private router: Router,) {
+                private router: Router,
+                private fuseConfirmationService: FuseConfirmationService) {
 
     }
 
@@ -58,8 +60,24 @@ export class RfqComponent implements OnInit {
     }
 
     deleteRfq(rfqId: string) {
-        this.rfqService.deleteRfq(rfqId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-            this._getRfqs();
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete RFQ',
+            message: 'Are you sure you want to remove this RFQ? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+            // If the confirm button pressed...
+            if (result === 'confirmed') {
+                this.rfqService.deleteRfq(rfqId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this._getRfqs();
+                });
+            }
         });
     }
 

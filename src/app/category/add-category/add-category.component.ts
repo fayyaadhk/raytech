@@ -4,9 +4,10 @@ import {Subject, takeUntil} from 'rxjs';
 import {CategoryService} from '../category.service';
 import {FuseConfirmationService} from '../../../@fuse/services/confirmation';
 import {Location} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Category} from '../../api/models/category';
 import {CommodityService} from "../../commodity/commodity.service";
+import {Commodity} from "../../commodity/commodity.model";
 
 @Component({
   selector: 'app-add-category',
@@ -49,7 +50,8 @@ export class AddCategoryComponent {
                 private _fuseConfirmationService: FuseConfirmationService,
                 private commodityService: CommodityService,
                 private location: Location,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -66,7 +68,7 @@ export class AddCategoryComponent {
     private _initForm() {
         this.form = this.formBuilder.group({
             name: ['', Validators.required],
-            commodity: ['', Validators.required]
+            commodityId: ['', Validators.required]
         });
     }
 
@@ -75,18 +77,17 @@ export class AddCategoryComponent {
         this.isLoading = true;
 
         if (this.form.invalid) {return;}
-        const categoryFormData = new FormData();
-        Object.keys(this.categoryForm).map((key) => {
-            categoryFormData.append(key, this.categoryForm[key].value);
-        });
+        const updateCategory: Category = new Category();
+        updateCategory.name = this.form.get('name').value;
+        updateCategory.commodityId = this.form.get('commodityId').value;
         if (this.editmode) {
-            this._updateCategory(categoryFormData);
-            this.isLoading = false;
-            // this.location.back();
-        } else {
-            this._addCategory(categoryFormData);
+            this._updateCategory(updateCategory);
             this.isLoading = false;
             this.location.back();
+        } else {
+            this._addCategory();
+            this.isLoading = false;
+            this.router.navigateByUrl('categories');
         }
     }
     onCancle() {
@@ -98,37 +99,37 @@ export class AddCategoryComponent {
             .getCommodities()
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
-                (commodity) => {
-                    this.addSuccess = true;
-                    console.log(commodity);
+                (commodities) => {
+                    this.commodities = commodities;
                 },
-                () => {
-                    this.addSuccess = false;
+                (error) => {
+                    console.log(error);
                 }
             );
     }
 
-    private _addCategory(categoryData: FormData) {
+    private _addCategory() {
         console.log('>>> GOT INTO ADD');
-        const categoryForm: Category = new Category();
-        this.categoryForm.name = this.form.get(['name']).value;
-        this.categoryForm.commodity = this.form.get(['commodity']).value;
+        const categoryForm: Category = {
+            name: this.form.get('name').value,
+            commodityId: this.form.get('commodityId').value
+        };
             this.categoryService
                 .createCategory(categoryForm)
                 .pipe(takeUntil(this.endsubs$))
                 .subscribe(
-                    (client) => {
+                    (category) => {
                         this.addSuccess = true;
-                        console.log(client);
                         this.form.reset();
                     },
-                    () => {
+                    (error) => {
+                        console.log(error)
                         this.addSuccess = false;
                     }
                 );
     }
 
-    private _updateCategory(categoryData: FormData) {
+    private _updateCategory(categoryData: Category) {
         this.categoryService
             .updateCategory(categoryData, this.currentCategoryId)
             .pipe(takeUntil(this.endsubs$))
@@ -154,6 +155,7 @@ export class AddCategoryComponent {
                     .subscribe((category) => {
                         this.category = category;
                         this.categoryForm.name.setValue(category.name);
+                        this.categoryForm.commodityId.setValue(category.commodityId);
                         // this.clientForm.buyer.setValue(client.buyer);
                         console.log('HERE1', this.category);
                     });

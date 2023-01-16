@@ -20,6 +20,8 @@ import {UpdateRfqItem} from "../../api/models/update-rfq-item";
 import {CreateRfqItem} from "../../api/models/create-rfq-item";
 import {CategoryService} from "../../category/category.service";
 import {BrandService} from "../../brand/brand.service";
+import {POStatus} from "../../data/purchase-order-status";
+import {RfqStatus} from "../../data/rfq-status";
 
 @Component({
     selector: 'app-add-rfq',
@@ -70,18 +72,9 @@ export class AddRfqComponent implements OnInit {
     currentRfqId: number;
     sub: Subscription;
     dataSource: MatTableDataSource<RfqItem>;
-    displayedColumns = ['id', 'name', 'quantity', 'price', 'actions'];
-    statuses: any = [
-        {id: 1, name: 'Issued'},
-        {id: 2, name: 'Sourcing'},
-        {id: 3, name: 'Could not source'},
-        {id: 4, name: 'In progress'},
-        {id: 5, name: 'Pending submission'},
-        {id: 6, name: 'Quotation sent'},
-        {id: 7, name: 'Successful'},
-        {id: 8, name: 'Unsuccessful'},
-        {id: 9, name: 'Cancelled'},
-    ];
+    displayedColumns = ['id', 'name', 'supplierName', 'quantity', 'priceQuoted', 'actions'];
+    keys = Object.keys;
+    rfqStatus = RfqStatus;
 
     constructor(private location: Location,
                 private formBuilder: FormBuilder,
@@ -106,14 +99,16 @@ export class AddRfqComponent implements OnInit {
             // received data from dialog-component
             if (res) {
                 this.rfqItems.push(res);
+
+                console.log(">>> Adding an item - this.rfq.items ", this.rfqItems);
+
                 this.dataSource = new MatTableDataSource(this.rfqItems);
-                console.log(res.data);
-                console.log(this.rfqItems);
+
             }
         })
     }
 
-    updateRfqItem(rfqItemId: number, rfqId: number, quantity: string, price: number, status: string) {
+    updateRfqItem(rfqItemId: number, rfqId: number, supplierId: number, quantity: string, price: number, status: string) {
 
         const dialogRef = this.dialog.open(RfqItemComponent, {
             width: '600px',
@@ -121,19 +116,18 @@ export class AddRfqComponent implements OnInit {
                 rfqItemId: rfqItemId,
                 itemId: rfqId,
                 quantity: quantity,
-                price: price,
+                supplierId: supplierId,
+                priceQuoted: price,
                 status: status
             },
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            console.log(">>> res", res);
             if (res.editMode) {
 
                 this.rfqItems[res.rfqItemId] = res;
 
                 this.dataSource = new MatTableDataSource(this.rfqItems);
-                console.log(this.rfqItems);
             } else {
                 this.rfqItems.push(res);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
@@ -154,6 +148,8 @@ export class AddRfqComponent implements OnInit {
         this._checkEditMode();
         this._getCategories();
         this._getBrands();
+
+        console.log(">>> Init -  this.rfqItems", this.rfqItems);
     }
 
     private _initForm() {
@@ -176,6 +172,8 @@ export class AddRfqComponent implements OnInit {
                 rfqItems: new FormArray([]),
                 quantity: [null],
                 status: [''],
+                supplierId: [''],
+                expectedArrivalDate: [''],
                 price: [null],
                 itemForm: this.formBuilder.group({
                     name: ['',],
@@ -228,8 +226,6 @@ export class AddRfqComponent implements OnInit {
         }
 
         if (this.editmode) {
-            console.log(this.rfqItems);
-
             const updateRfq: Rfq = {
                 items: this.rfqItems,
                 description: this.verticalStepperForm.get('step1.description').value,
@@ -242,21 +238,21 @@ export class AddRfqComponent implements OnInit {
             };
             this._updateRfq(updateRfq);
 
-            console.log('RFQS >>> ', this.rfqs);
             for (let r = 0; r < this.rfqItems.length; r++) {
-                console.log(this.rfqItems);
-                console.log('edit mode ',this.rfqItems[r].editMode);
+
                     if (this.rfqItems[r].editMode === true) {
                         const updateRfqItem: UpdateRfqItem = {
                             rfqItemId: this.rfqs.items[r].id,
                             itemId: this.rfqItems[r].itemId,
                             quantity: this.rfqItems[r].quantity,
-                            priceQuoted: this.rfqItems[r].price,
+                            supplierId: this.rfqItems[r].supplier,
+                            expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
+                            priceQuoted: this.rfqItems[r].priceQuoted,
                             status: this.rfqItems[r].status
                         };
-                        console.log('UPDATE RFQ ITEMS ', updateRfqItem);
                         this.rfqService
                             .updateRfqItem(updateRfqItem, this.rfqs.items[r].id)
+                            .pipe(takeUntil(this.endsubs$))
                             .pipe(takeUntil(this.endsubs$))
                             .subscribe(
                                 (rfq: RfqModule) => {
@@ -271,10 +267,11 @@ export class AddRfqComponent implements OnInit {
                             rfqId: this.currentRfqId,
                             itemId: this.rfqItems[r].itemId,
                             quantity: this.rfqItems[r].quantity,
-                            priceQuoted: this.rfqItems[r].price,
+                            supplierId: this.rfqItems[r].supplier,
+                            expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
+                            priceQuoted: this.rfqItems[r].priceQuoted,
                             status: this.rfqItems[r].status
                         };
-                        console.log('ADD RFQ ITEM', addRfqItem);
                         this.rfqService
                             .createRfqItem(addRfqItem)
                             .pipe(takeUntil(this.endsubs$))
@@ -290,25 +287,24 @@ export class AddRfqComponent implements OnInit {
             }
             this.isLoading = false;
             this.updateSuccess = true;
-            this.router.navigateByUrl('rfqs');
+            this.onCancle();
         } else {
             this._addRfq();
             this.isLoading = false;
             this.verticalStepperForm.reset();
-            this.router.navigateByUrl('rfqs');
             this.addSuccess = true;
+            this.onCancle();
         }
     }
 
     onCancle() {
+        this.isLoading = true;
         this.location.back();
     }
 
     addItem() {
         const newItem: ItemClass = new ItemClass();
-        console.log(this.verticalStepperForm.get('step3.itemForm.name').value);
         newItem.name = this.verticalStepperForm.get('step3.itemForm.name').value;
-        console.log(this.verticalStepperForm.get('step3.itemForm.shortDescription').value)
         newItem.shortDescription = this.verticalStepperForm.get('step3.itemForm.shortDescription').value;
         newItem.description = this.verticalStepperForm.get('step3.itemForm.description').value;
         newItem.sku = this.verticalStepperForm.get('step3.itemForm.sku').value;
@@ -316,14 +312,12 @@ export class AddRfqComponent implements OnInit {
         newItem.thumbnail = this.verticalStepperForm.get('step3.itemForm.thumbnail').value;
         newItem.categoryId = this.verticalStepperForm.get('step3.itemForm.category').value;
         newItem.brandId = this.verticalStepperForm.get('step3.itemForm.brand').value;
-        console.log('>>> get values from controller', newItem);
         this.itemService
             .addItem(newItem)
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
                 (client) => {
                     this.addSuccess = true;
-                    console.log(client);
                     // this.verticalStepperForm.step3.itemForm.reset();
                     this.verticalStepperForm['step3.itemForm'].reset();
                 },
@@ -375,8 +369,6 @@ export class AddRfqComponent implements OnInit {
     }
 
     private _addRfq() {
-        console.log('>>> GOT INTO ADD');
-        // @ts-ignore
         const newRfq: CreateRfqRequest = {
             items: this.rfqItems,
             description: this.verticalStepperForm.get('step1.description').value,
@@ -447,7 +439,6 @@ export class AddRfqComponent implements OnInit {
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((rfq) => {
                         this.rfqs = rfq;
-                        console.log("--- rfqs ", this.rfqs);
                         if (this.rfqs) {
                             this.rfqDetails = {
                                 rfqNumber: this.rfqs.rfqNumber,
@@ -459,18 +450,20 @@ export class AddRfqComponent implements OnInit {
                                 status: this.rfqs.status
                             };
                         }
-
+                        console.log(this.rfqs);
 
                         for (let r = 0; r < this.rfqs.items.length; r++) {
-                            console.log(">>>this.rfqs.items", this.rfqs.items);
                             // this.rfqItems = this.rfqs.items;
                             this.rfqItemDetails.push({
                                 rfqItemId: this.rfqs.items[r].id,
                                 itemId: this.rfqs.items[r].item.id,
                                 name: this.rfqs.items[r].item.name,
                                 quantity: this.rfqs.items[r].quantity,
+                                supplierId: this.rfqs.items[r].supplier?.id,
+                                expectedArrivalDate: this.rfqs.items[r].expectedArrivalDate,
+                                supplierName: this.rfqs.items[r].supplier?.name,
                                 status: this.rfqs.items[r].status,
-                                price: this.rfqs.items[r].priceQuoted,
+                                priceQuoted: this.rfqs.items[r].priceQuoted,
                             });
                             //
                             // console.log('rfqItemDetails before step 3', this.rfqItemDetails)
@@ -486,9 +479,9 @@ export class AddRfqComponent implements OnInit {
 
                         this.rfqItems = this.rfqItemDetails;
                         //     //this.rfqItems = this.rfqs.items;
-                        console.log("this.rfqItems", this.rfqItems);
                         this.rfqForm.step1.setValue(this.rfqDetails);
                         //this.rfqForm.step3.setValue(this.setStep3);
+                        console.log(">>> checkEdit - this.rfqItems", this.rfqItems);
                         this.dataSource = new MatTableDataSource(this.rfqItems);
                         //this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
                         // this.rfqForm['step3']['status'].setValue(this.rfqs.items.status);

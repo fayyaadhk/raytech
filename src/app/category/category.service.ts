@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 
 import {Category} from '../api/models/category';
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLCategories = 'http://raytechholdings-001-site1.etempurl.com/api/' + 'categories';
 
 @Injectable({ providedIn: 'root' })
@@ -27,8 +26,8 @@ export class CategoryService {
         return this.http.get<Category>(`${apiURLCategories}/${categoryId}`);
     }
 
-    updateCategory(categoryData: FormData, categoryId: string): Observable<Category> {
-        return this.http.put<Category>(`${apiURLCategories}/${categoryId}`, categoryData);
+    updateCategory(model: Category, categoryId: string): Observable<Category> {
+        return this.http.put<Category>(`${apiURLCategories}/${categoryId}`, model);
     }
 
     deleteCategory(categoryId: string): Observable<any> {

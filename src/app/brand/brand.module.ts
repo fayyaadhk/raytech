@@ -16,9 +16,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
+import {MatDividerModule} from '@angular/material/divider';
 import {SharedModule} from '../shared/shared.module';
 import {BrandComponent} from "./brand.component";
-import {ItemDetailsComponent} from "../item/item-details/item-details.component";
+import { AddBrandComponent } from './add-brand/add-brand.component';
 
 const brandRoutes: Route[] = [
     {
@@ -27,14 +28,20 @@ const brandRoutes: Route[] = [
     },
     {
         path     : 'form',
-        component: ItemDetailsComponent,
+        component: AddBrandComponent,
+
+    },
+    {
+        path     : 'form/:id',
+        component: AddBrandComponent,
 
     }
 ];
 
 @NgModule({
     declarations: [
-        BrandComponent
+        BrandComponent,
+        AddBrandComponent
     ],
     exports: [
         BrandComponent
@@ -57,6 +64,7 @@ const brandRoutes: Route[] = [
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatTableModule,
+        MatDividerModule,
         SharedModule
     ]
 })

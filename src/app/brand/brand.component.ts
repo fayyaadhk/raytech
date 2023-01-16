@@ -6,6 +6,7 @@ import {CategoryService} from "../category/category.service";
 import {Router} from "@angular/router";
 import {Brand} from "../api/models/brand";
 import {BrandService} from "./brand.service";
+import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 
 @Component({
     selector: 'app-brand',
@@ -38,7 +39,8 @@ export class BrandComponent {
     displayedColumns = ['id', 'name', 'editDelete'];
 
     constructor(private brandService: BrandService,
-                private router: Router,) {
+                private router: Router,
+                private fuseConfirmationService: FuseConfirmationService,) {
 
     }
 
@@ -55,10 +57,27 @@ export class BrandComponent {
         this.router.navigateByUrl(`brands/form/${brandId}`);
     }
 
-    deleteBrand(categoryId: string) {
-        this.brandService.deleteBrand(categoryId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-            this._getBrands();
+    deleteBrand(brandId: string) {
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete brand',
+            message: 'Are you sure you want to remove this brand? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
         });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+            // If the confirm button pressed...
+            if (result === 'confirmed') {
+                this.brandService.deleteBrand(brandId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this._getBrands();
+                });
+            }
+        });
+
     }
 
     applyFilter(filterValue: string) {

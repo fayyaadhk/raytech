@@ -1,10 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Commodity } from './commodity';
+import {Item} from "./item";
 export class Category {
-  commodity?: Commodity;
+  commodityId?: number;
   id?: number;
   name?: null | string;
-  parentCategory?: Category;
-  subcategories?: null | Array<Category>;
+  parentCategoryId?: number;
+  item?: Item;
 }

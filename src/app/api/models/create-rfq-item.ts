@@ -8,5 +8,6 @@ export class CreateRfqItem {
     priceQuoted?: number;
     quantity?: number;
     status?: null | string;
-    //supplierId: number;
+    supplierId: number;
+    expectedArrivalDate?: string;
 }

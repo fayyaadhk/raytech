@@ -251,7 +251,36 @@ export const appRoutes: Route[] = [
             },
         ]
     },
-
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'brands/form',
+                loadChildren: () => import('app/brand/brand.module').then(m => m.BrandModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'brands/form/:id',
+                loadChildren: () => import('app/brand/brand.module').then(m => m.BrandModule)
+            },
+        ]
+    },
     {
         path: '',
         canActivate: [AuthGuard],
@@ -278,6 +307,21 @@ export const appRoutes: Route[] = [
         children: [
             {
                 path: 'categories/form',
+                loadChildren: () => import('app/category/add-category/add-category.module').then(m => m.AddCategoryModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'categories/form/:id',
                 loadChildren: () => import('app/category/add-category/add-category.module').then(m => m.AddCategoryModule)
             },
         ]

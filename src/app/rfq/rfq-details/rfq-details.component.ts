@@ -22,7 +22,7 @@ export class RfqDetailsComponent implements OnInit {
     rfqs: any;
     endsubs$: Subject<any> = new Subject();
     isLoading: boolean = false;
-    currentRfqId: string;
+    currentRfqId: number;
     client: any;
     hasQuote: boolean = false;
     hasPurchaseOrder: boolean = false;
