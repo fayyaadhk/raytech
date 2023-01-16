@@ -156,13 +156,7 @@
 
                                     <mat-label>RFQ Document</mat-label>
 
-                                    <!-- Image Preview -->
-                                    <div class="form-group">
-                                        <div class="preview" *ngIf="rfqDocumentPreview && rfqDocumentPreview !== null">
-                                            <img [src]="rfqDocumentPreview" [alt]="verticalStepperForm.value.name">
-                                        </div>
-                                    </div>
-                                    <input type="file" (change)="uploadRFQDocument($event)">
+                                    <input formControlName="rfqDocument" type="file" (change)="uploadRFQDocument($event)">
 
 
                                 </div>

@@ -1,9 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {CreateClientRequest} from "../../api/models/create-client-request";
 import {Subject, Subscription, takeUntil} from "rxjs";
-import {Client} from "../../client/client.model";
 import {RfqService} from "../rfq.service";
 import {RfqModule} from "../rfq.module";
 import {Rfq} from "../rfq.model";
@@ -20,8 +18,8 @@ import {UpdateRfqItem} from "../../api/models/update-rfq-item";
 import {CreateRfqItem} from "../../api/models/create-rfq-item";
 import {CategoryService} from "../../category/category.service";
 import {BrandService} from "../../brand/brand.service";
-import {POStatus} from "../../data/purchase-order-status";
 import {RfqStatus} from "../../data/rfq-status";
+import {FileUploadService} from "../../shared/file-upload.service";
 
 @Component({
     selector: 'app-add-rfq',
@@ -67,8 +65,6 @@ export class AddRfqComponent implements OnInit {
     brands: any = [];
     public rfqDetails: any = {};
     public rfqItemDetails: any = [];
-    setStep3: any = [];
-    createNew: boolean = false;
     currentRfqId: number;
     sub: Subscription;
     dataSource: MatTableDataSource<RfqItem>;
@@ -76,9 +72,13 @@ export class AddRfqComponent implements OnInit {
     keys = Object.keys;
     rfqStatus = RfqStatus;
 
+    formData: FormData = new FormData();
+    rfqDocumentFile: File;
+
     constructor(private location: Location,
                 private formBuilder: FormBuilder,
                 private rfqService: RfqService,
+                private fileUploadService: FileUploadService,
                 private route: ActivatedRoute,
                 private clientService: ClientService,
                 private itemService: ItemService,
@@ -86,6 +86,10 @@ export class AddRfqComponent implements OnInit {
                 private router: Router,
                 private categoryService: CategoryService,
                 private brandService: BrandService) {
+    }
+
+    get rfqForm() {
+        return this.verticalStepperForm.controls;
     }
 
     openDialog() {
@@ -99,9 +103,6 @@ export class AddRfqComponent implements OnInit {
             // received data from dialog-component
             if (res) {
                 this.rfqItems.push(res);
-
-                console.log(">>> Adding an item - this.rfq.items ", this.rfqItems);
-
                 this.dataSource = new MatTableDataSource(this.rfqItems);
 
             }
@@ -148,70 +149,7 @@ export class AddRfqComponent implements OnInit {
         this._checkEditMode();
         this._getCategories();
         this._getBrands();
-
-        console.log(">>> Init -  this.rfqItems", this.rfqItems);
     }
-
-    private _initForm() {
-        // Vertical stepper form
-        this.verticalStepperForm = this.formBuilder.group({
-            step1: this.formBuilder.group({
-                rfqNumber: ['', [Validators.required]],
-                dueDate: ['', Validators.required],
-                description: [''],
-                rfqDocument: [''],
-                client: [null, Validators.required],
-                buyer: [null],
-                status: ['', Validators.required],
-            }),
-            step2: this.formBuilder.group({
-                quoteDocument: [''],
-                quoteSentDate: ['']
-            }),
-            step3: this.formBuilder.group({
-                rfqItems: new FormArray([]),
-                quantity: [null],
-                status: [''],
-                supplierId: [''],
-                expectedArrivalDate: [''],
-                price: [null],
-                itemForm: this.formBuilder.group({
-                    name: ['',],
-                    description: [''],
-                    shortDescription: [''],
-                    sku: [''],
-                    rrsp: [''],
-                    thumbnail: [''],
-                    category: [''],
-                    brand: [''],
-                }),
-            }),
-        });
-        //this.addCheckboxes();
-    }
-
-    /* onCheckChange(event) {
-         const formArray: FormArray = this.verticalStepperForm.get('step3.rfqItems') as FormArray;
-         /!* Selected *!/
-         if (event.checked) {
-             // Add a new control in the arrayForm
-             console.log(event.source.value);
-             formArray.push(new FormControl(event.source.value));
-         }
-         else {
-             // find the unselected element
-             let i: number = 0;
-             formArray.controls.forEach((ctrl: FormControl) => {
-                 if (ctrl.value == event.checked) {
-                     // Remove the unselected element from the arrayForm
-                     formArray.removeAt(i);
-                     return;
-                 }
-
-                 i++;
-             });
-         }
-     }*/
 
     ngOnDestroy() {
         this.endsubs$.complete();
@@ -240,50 +178,50 @@ export class AddRfqComponent implements OnInit {
 
             for (let r = 0; r < this.rfqItems.length; r++) {
 
-                    if (this.rfqItems[r].editMode === true) {
-                        const updateRfqItem: UpdateRfqItem = {
-                            rfqItemId: this.rfqs.items[r].id,
-                            itemId: this.rfqItems[r].itemId,
-                            quantity: this.rfqItems[r].quantity,
-                            supplierId: this.rfqItems[r].supplier,
-                            expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
-                            priceQuoted: this.rfqItems[r].priceQuoted,
-                            status: this.rfqItems[r].status
-                        };
-                        this.rfqService
-                            .updateRfqItem(updateRfqItem, this.rfqs.items[r].id)
-                            .pipe(takeUntil(this.endsubs$))
-                            .pipe(takeUntil(this.endsubs$))
-                            .subscribe(
-                                (rfq: RfqModule) => {
-                                    this.updateSuccess = true;
-                                },
-                                () => {
-                                    this.updateSuccess = false;
-                                }
-                            );
-                    } else if(this.rfqItems[r].editMode === false){
-                        const addRfqItem: CreateRfqItem = {
-                            rfqId: this.currentRfqId,
-                            itemId: this.rfqItems[r].itemId,
-                            quantity: this.rfqItems[r].quantity,
-                            supplierId: this.rfqItems[r].supplier,
-                            expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
-                            priceQuoted: this.rfqItems[r].priceQuoted,
-                            status: this.rfqItems[r].status
-                        };
-                        this.rfqService
-                            .createRfqItem(addRfqItem)
-                            .pipe(takeUntil(this.endsubs$))
-                            .subscribe(
-                                (rfq: RfqModule) => {
-                                    this.addSuccess = true;
-                                },
-                                () => {
-                                    this.addSuccess = false;
-                                }
-                            );
-                    }
+                if (this.rfqItems[r].editMode === true) {
+                    const updateRfqItem: UpdateRfqItem = {
+                        rfqItemId: this.rfqs.items[r].id,
+                        itemId: this.rfqItems[r].itemId,
+                        quantity: this.rfqItems[r].quantity,
+                        supplierId: this.rfqItems[r].supplier,
+                        expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
+                        priceQuoted: this.rfqItems[r].priceQuoted,
+                        status: this.rfqItems[r].status
+                    };
+                    this.rfqService
+                        .updateRfqItem(updateRfqItem, this.rfqs.items[r].id)
+                        .pipe(takeUntil(this.endsubs$))
+                        .pipe(takeUntil(this.endsubs$))
+                        .subscribe(
+                            (rfq: RfqModule) => {
+                                this.updateSuccess = true;
+                            },
+                            () => {
+                                this.updateSuccess = false;
+                            }
+                        );
+                } else if (this.rfqItems[r].editMode === false) {
+                    const addRfqItem: CreateRfqItem = {
+                        rfqId: this.currentRfqId,
+                        itemId: this.rfqItems[r].itemId,
+                        quantity: this.rfqItems[r].quantity,
+                        supplierId: this.rfqItems[r].supplier,
+                        expectedArrivalDate: this.rfqItems[r].expectedArrivalDate,
+                        priceQuoted: this.rfqItems[r].priceQuoted,
+                        status: this.rfqItems[r].status
+                    };
+                    this.rfqService
+                        .createRfqItem(addRfqItem)
+                        .pipe(takeUntil(this.endsubs$))
+                        .subscribe(
+                            (rfq: RfqModule) => {
+                                this.addSuccess = true;
+                            },
+                            () => {
+                                this.addSuccess = false;
+                            }
+                        );
+                }
             }
             this.isLoading = false;
             this.updateSuccess = true;
@@ -326,6 +264,52 @@ export class AddRfqComponent implements OnInit {
                     console.log(error);
                 }
             );
+    }
+
+    // Image Preview
+    uploadRFQDocument(event) {
+        if (event.target.files.length > 0) {
+
+            const file = event.target.files[0];
+            this.rfqDocumentFile = file;
+        }
+    }
+
+    private _initForm() {
+        // Vertical stepper form
+        this.verticalStepperForm = this.formBuilder.group({
+            step1: this.formBuilder.group({
+                rfqNumber: ['', [Validators.required]],
+                dueDate: ['', Validators.required],
+                description: [''],
+                rfqDocument: [''],
+                client: [null, Validators.required],
+                buyer: [null],
+                status: ['', Validators.required],
+            }),
+            step2: this.formBuilder.group({
+                quoteDocument: [''],
+                quoteSentDate: ['']
+            }),
+            step3: this.formBuilder.group({
+                rfqItems: new FormArray([]),
+                quantity: [null],
+                status: [''],
+                supplierId: [''],
+                expectedArrivalDate: [''],
+                price: [null],
+                itemForm: this.formBuilder.group({
+                    name: ['',],
+                    description: [''],
+                    shortDescription: [''],
+                    sku: [''],
+                    rrsp: [''],
+                    thumbnail: [''],
+                    category: [''],
+                    brand: [''],
+                }),
+            }),
+        });
     }
 
     private _getClients() {
@@ -389,6 +373,9 @@ export class AddRfqComponent implements OnInit {
                     (rfq) => {
                         this.addSuccess = true;
                         console.log(rfq);
+
+                        this._uploadRfqDocument(rfq.id.toString().concat('_').concat(rfq.rfqNumber).concat('.pdf'));
+
                         this.verticalStepperForm.reset();
                     },
                     (error) => {
@@ -415,18 +402,19 @@ export class AddRfqComponent implements OnInit {
             );
     }
 
-    private _updateRfqItem(rfqItemData: UpdateRfqItem) {
-        this.rfqService
-            .updateRfqItem(rfqItemData, this.currentRfqId)
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe(
-                (rfq: RfqModule) => {
-                    this.updateSuccess = true;
-                },
-                () => {
-                    this.updateSuccess = false;
-                }
-            );
+    private _uploadRfqDocument(filename: string) {
+        console.log(">>> this.rfqDocumentFile", this.rfqDocumentFile);
+        if (this.rfqDocumentFile) {
+
+            this.formData.append('file', this.rfqDocumentFile);
+            this.formData.append('directory', "RFQs");
+            this.formData.append('filename', filename);
+
+            this.fileUploadService
+                .uploadRfqDocument(this.formData)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe();
+        }
     }
 
     private _checkEditMode() {
@@ -453,7 +441,6 @@ export class AddRfqComponent implements OnInit {
                         console.log(this.rfqs);
 
                         for (let r = 0; r < this.rfqs.items.length; r++) {
-                            // this.rfqItems = this.rfqs.items;
                             this.rfqItemDetails.push({
                                 rfqItemId: this.rfqs.items[r].id,
                                 itemId: this.rfqs.items[r].item.id,
@@ -465,64 +452,17 @@ export class AddRfqComponent implements OnInit {
                                 status: this.rfqs.items[r].status,
                                 priceQuoted: this.rfqs.items[r].priceQuoted,
                             });
-                            //
-                            // console.log('rfqItemDetails before step 3', this.rfqItemDetails)
-                            //
-                            // this.setStep3 = {
-                            //     rfqItems: this.rfqItemDetails[r],
-                            //     quantity: this.rfqs.items[r].quantity,
-                            //     status: this.rfqs.items[r].status,
-                            //     price: this.rfqs.items[r].priceQuoted,
-                            //     itemForm: null
-                            // };
                         }
 
                         this.rfqItems = this.rfqItemDetails;
-                        //     //this.rfqItems = this.rfqs.items;
+
                         this.rfqForm.step1.setValue(this.rfqDetails);
-                        //this.rfqForm.step3.setValue(this.setStep3);
+
                         console.log(">>> checkEdit - this.rfqItems", this.rfqItems);
                         this.dataSource = new MatTableDataSource(this.rfqItems);
-                        //this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
-                        // this.rfqForm['step3']['status'].setValue(this.rfqs.items.status);
-                        // this.rfqForm['step3']['price'].setValue(this.rfqs.priceQuoted);
-                        // this.rfqForm['step3']['itemForm'].setValue(null);
                     });
             }
         });
     }
 
-    get rfqForm() {
-        return this.verticalStepperForm.controls;
-    }
-
-    // Image Preview
-    uploadRFQDocument(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.verticalStepperForm.patchValue({
-            rfqDocument: file
-        });
-        this.verticalStepperForm.get('rfqDocument').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.rfqDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // Image Preview
-    uploadQuotation(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.verticalStepperForm.patchValue({
-            quoteDocument: file
-        });
-        this.verticalStepperForm.get('quoteDocument').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.quoteDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
 }
