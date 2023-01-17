@@ -118,10 +118,18 @@
                                     <div
                                         class="mt-2 font-medium text-3xl leading-none">{{rfq.status }}</div>
                                 </div>
-
-                                <!--                        <div class="flex flex-col mx-6 my-3">-->
-                                <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
-                                <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
+                                <div class="flex flex-row flex-wrap -mx-6">
+                                    <div class="flex flex-col mx-6 my-3">
+                                        <button
+                                            class="px-8"
+                                            mat-flat-button
+                                            [color]="'primary'"
+                                            type="reset"
+                                            routerLink="/rfqs/details/{{rfq.id}}">
+                                            View RFQ
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
