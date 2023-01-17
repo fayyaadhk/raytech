@@ -109,7 +109,7 @@ export class RfqDetailsComponent implements OnInit {
     }
 
     getPOItemValue() {
-        const result = this.rfqs.purchaseOrder.items.map(a => a.priceQuoted).reduce(function (a, b) {
+        const result = this.rfqs.purchaseOrder?.items.map(a => a.priceQuoted).reduce(function (a, b) {
             return a + b;
         });
         return result;

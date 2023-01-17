@@ -10,6 +10,8 @@ import {SupplierService} from "../../suppliers/suppliers.service";
 import {RfqItemService} from "../../rfq-item/rfq-item.service";
 import {UpdateRfqItemRequest} from "../../api/models/requests/update-rfq-item-request";
 import {RfqModule} from "../rfq.module";
+import {POItemStatus} from "../../data/purchase-order-item-status";
+import {RFQItemStatus} from "../../data/rfq-item-status";
 
 @Component({
     selector: 'app-edit-rfqitem',
@@ -29,6 +31,8 @@ export class EditRFQItemComponent implements OnInit {
     addSuccess: boolean = false;
     isLoading: boolean = true;
     updateSuccess: boolean = true;
+    keys = Object.keys;
+    rfqItemStatus = RFQItemStatus;
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: RfqItem,
                 private dialogRef: MatDialogRef<EditRFQItemComponent>,

@@ -169,6 +169,7 @@
                                                 <img [src]="poDocumentPreview" [alt]="form.value.name">
                                             </div>
                                         </div>
+                                        <mat-label>Purchase Order Document</mat-label>
                                         <input type="file" (change)="uploadPODocument($event)">
                                     </div>
                                     <br>
@@ -207,7 +208,7 @@
                                             <ng-container matColumnDef="supplier">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier</mat-header-cell>
                                                 <mat-cell
-                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.supplier}} </mat-cell>
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.supplierId}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="quantity">
@@ -219,7 +220,13 @@
                                             <ng-container matColumnDef="price">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
                                                 <mat-cell
-                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.price}} </mat-cell>
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.priceQuoted}} </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="expectedArrivalDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Expected Arrival Date</mat-header-cell>
+                                                <mat-cell
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.expectedArrivalDate}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="actions">
@@ -227,7 +234,7 @@
                                                 <mat-cell *matCellDef="let purchaseOrderItems; let i = index">
                                                     <div class="truncate">
                                                         <button
-                                                            (click)="updatePurchaseOrderItem(i, purchaseOrderItems.itemId, purchaseOrderItems.supplier, purchaseOrderItems.quantity, purchaseOrderItems.price, purchaseOrderItems.status)">
+                                                            (click)="updatePurchaseOrderItem(i, purchaseOrderItems.itemId, purchaseOrderItems.supplier, purchaseOrderItems.quantity, purchaseOrderItems.price, purchaseOrderItems.expectedArrivalDate, purchaseOrderItems.status)">
                                                             <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                         </button>

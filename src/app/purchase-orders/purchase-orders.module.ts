@@ -22,6 +22,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatDividerModule} from "@angular/material/divider";
 import {SharedModule} from "../shared/shared.module";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AddPurchaseOrdersComponent} from './add-purchase-orders/add-purchase-orders.component';
 import {PurchaseOrdersItemComponent} from './purchase-orders-item/purchase-orders-item.component';
 import {EditPurchaseOrderItemComponent} from './edit-purchase-order-item/edit-purchase-order-item.component';
@@ -74,6 +75,7 @@ const purchaseOrderRoutes: Route[] = [
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatTableModule,
+        MatAutocompleteModule,
         MatDividerModule,
         SharedModule
     ]
