@@ -44,7 +44,7 @@
 
                         <div class="flex flex-auto flex-wrap">
                             <!-- Name, SKU & etc. -->
-                            <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+                            <div class="flex flex-col w-full lg:w-2/3 sm:pl-8">
                                 <p class="text-lg font-medium">Add Purchase Order</p>
                                 <p class="text-secondary mb-6">
                                     Purchase Order
@@ -163,15 +163,9 @@
                                                 [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
                                         </mat-form-field>
                                     </div>
-                                    <div class="flex">
-                                        <div class="form-group">
-                                            <div class="preview" *ngIf="poDocumentPreview && poDocumentPreview !== null">
-                                                <img [src]="poDocumentPreview" [alt]="form.value.name">
-                                            </div>
-                                        </div>
-                                        <mat-label>Purchase Order Document</mat-label>
-                                        <input type="file" (change)="uploadPODocument($event)">
-                                    </div>
+                                    <mat-label>Purchase Order Document</mat-label>
+
+                                    <input formControlName="purchaseOrderDocumentUrl" type="file" (change)="uploadPODocument($event)">
                                     <br>
                                     <div class="flex">
                                         <mat-divider class="flex-auto gt-xs:pr-3"></mat-divider>

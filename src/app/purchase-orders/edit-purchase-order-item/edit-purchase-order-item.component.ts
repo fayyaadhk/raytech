@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {RfqItem} from "../../api/models/rfq-item";
 import {Item} from "../../api/models/item";
 import {Supplier} from "../../api/models/supplier";
-import {Subject, takeUntil} from "rxjs";
+import {map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ItemService} from "../../item/item.service";
@@ -33,6 +33,8 @@ export class EditPurchaseOrderItemComponent implements OnInit {
     updateSuccess: boolean = true;
     keys = Object.keys;
     poItemStatus = POItemStatus;
+    filteredItems: Observable<any[]>;
+    formFieldHelpers: string[] = [''];
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: RfqItem,
                 private dialogRef: MatDialogRef<EditPurchaseOrderItemComponent>,
@@ -40,6 +42,22 @@ export class EditPurchaseOrderItemComponent implements OnInit {
                 private poItemService: PurchaseOrderItemService,
                 private supplierService: SupplierService,
                 private formBuilder: FormBuilder) {
+    }
+
+
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+
+    selectedItem(event) {
+        console.log(event.option.value);
+    }
+
+    displayItem(itemId: any) {
+        // return item ? item.name : '';
+        return this.items?.find(item => item.id === itemId)?.name;
     }
 
     get itemForm() {
@@ -58,8 +76,8 @@ export class EditPurchaseOrderItemComponent implements OnInit {
             supplierId: ['', Validators.required]
         });
 
-        this._getItems();
         this._getRfqItem();
+        this._getItems();
         this._getSuppliers();
     }
 
@@ -108,7 +126,7 @@ export class EditPurchaseOrderItemComponent implements OnInit {
         this.itemForm.quantity.setValue(this.poItem.quantity);
         this.itemForm.priceQuoted.setValue(this.poItem.priceQuoted);
         this.itemForm.status.setValue(this.poItem.status);
-        this.itemForm.supplierId.setValue(this.poItem.supplier.id);
+        this.itemForm.supplierId.setValue(this.poItem.supplier?.id);
         this.itemForm.expectedArrivalDate.setValue(this.poItem.expectedArrivalDate);
     }
 
@@ -118,6 +136,10 @@ export class EditPurchaseOrderItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
+                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }
@@ -127,6 +149,7 @@ export class EditPurchaseOrderItemComponent implements OnInit {
             .getPurchaseOrderItem(this.data.id)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((rfqItem) => {
+                console.log(">>> getItemRespose",rfqItem)
                 this.poItem = rfqItem;
                 this._initForm();
                 this.isLoading = false;

@@ -4,7 +4,7 @@ import {RfqItem} from "../../api/models/rfq-item";
 import {Item} from "../../api/models/item";
 import {Supplier} from "../../api/models/supplier";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Subject, takeUntil} from "rxjs";
+import {map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {ItemService} from "../../item/item.service";
 import {SupplierService} from "../../suppliers/suppliers.service";
 import {RfqItemService} from "../../rfq-item/rfq-item.service";
@@ -33,6 +33,8 @@ export class EditRFQItemComponent implements OnInit {
     updateSuccess: boolean = true;
     keys = Object.keys;
     rfqItemStatus = RFQItemStatus;
+    filteredItems: Observable<any[]>;
+    formFieldHelpers: string[] = [''];
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: RfqItem,
                 private dialogRef: MatDialogRef<EditRFQItemComponent>,
@@ -40,6 +42,21 @@ export class EditRFQItemComponent implements OnInit {
                 private rfqService: RfqItemService,
                 private supplierService: SupplierService,
                 private formBuilder: FormBuilder) {
+    }
+
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+
+    selectedItem(event) {
+        console.log(event.option.value);
+    }
+
+    displayItem(itemId: any) {
+        // return item ? item.name : '';
+        return this.items?.find(item => item.id === itemId)?.name;
     }
 
     get itemForm() {
@@ -118,6 +135,10 @@ export class EditRFQItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
+                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }

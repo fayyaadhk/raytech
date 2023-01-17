@@ -84,7 +84,7 @@ export class RfqItemComponent implements OnInit {
 
     displayItem(itemId: any) {
         // return item ? item.name : '';
-        return this.items.find(item => item.id === itemId)?.name;
+        return this.items?.find(item => item.id === itemId)?.name;
     }
 
     private _getItems() {
