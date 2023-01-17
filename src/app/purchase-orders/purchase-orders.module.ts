@@ -76,7 +76,9 @@ const purchaseOrderRoutes: Route[] = [
         MatAutocompleteModule,
         MatDividerModule,
         SharedModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        MatNativeDateModule
+
     ]
 })
 export class PurchaseOrdersModule {

@@ -14,32 +14,21 @@
                     mat-stroked-button>
                     <mat-icon
                         class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:cog'"></mat-icon>
+                        [svgIcon]="'heroicons_solid:cog'"
+                        (click)="deleteItem(this.itemId)"></mat-icon>
                     <span class="ml-2">Delete</span>
                 </button>
                 <button
                     class="hidden sm:inline-flex ml-3"
                     mat-flat-button
-                    [color]="'primary'">
+                    [color]="'primary'"
+                    routerLink="/items/form/{{this.itemId}}">
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:save'"></mat-icon>
                     <span class="ml-2">Edit</span>
                 </button>
 
-                <!-- Actions menu (visible on xs) -->
-                <div class="sm:hidden">
-                    <button
-                        [matMenuTriggerFor]="actionsMenu"
-                        mat-icon-button>
-                        <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
-                    </button>
-                    <mat-menu #actionsMenu="matMenu">
-                        <button mat-menu-item>Export</button>
-                        <button mat-menu-item>Reports</button>
-                        <button mat-menu-item>Settings</button>
-                    </mat-menu>
-                </div>
             </div>
         </div>
 
@@ -105,7 +94,9 @@
             <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="p-6">
                     <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Purchase Order Items</div>
-                    <div class="text-secondary font-medium">Appears {{this.item?.purchaseOrderItems?.length}} times in Purchase Order's </div>
+                    <div class="text-secondary font-medium">Appears {{this.item?.purchaseOrderItems?.length}} times in
+                        Purchase Order's
+                    </div>
                 </div>
                 <div class="overflow-x-auto mx-6">
                     <table
@@ -274,10 +265,10 @@
                             class="order-row h-16"
                             mat-row
                             *matRowDef="let row; columns: poItemsTableColumns;"></tr>
-                     <!--   <tr
-                            class="h-16 border-0"
-                            mat-footer-row
-                            *matFooterRowDef="['rfqItemsTableFooter']"></tr>-->
+                        <!--   <tr
+                               class="h-16 border-0"
+                               mat-footer-row
+                               *matFooterRowDef="['rfqItemsTableFooter']"></tr>-->
                     </table>
                 </div>
             </div>
@@ -290,7 +281,7 @@
             <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
                 <div class="p-6">
                     <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">RFQ Items</div>
-                    <div class="text-secondary font-medium">Appears {{this.item?.rfqItems?.length}} times in RFQ's </div>
+                    <div class="text-secondary font-medium">Appears {{this.item?.rfqItems?.length}} times in RFQ's</div>
                 </div>
                 <div class="overflow-x-auto mx-6">
                     <table
@@ -459,10 +450,10 @@
                             class="order-row h-16"
                             mat-row
                             *matRowDef="let row; columns: rfqItemsTableColumns;"></tr>
-                     <!--   <tr
-                            class="h-16 border-0"
-                            mat-footer-row
-                            *matFooterRowDef="['rfqItemsTableFooter']"></tr>-->
+                        <!--   <tr
+                               class="h-16 border-0"
+                               mat-footer-row
+                               *matFooterRowDef="['rfqItemsTableFooter']"></tr>-->
                     </table>
                 </div>
             </div>
@@ -473,10 +464,29 @@
         <div class="grid grid-cols-1 gap-8 w-full mt-8">
             <!-- Recent transactions table -->
             <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                <div class="p-6">
-                    <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Item Suppliers</div>
-                    <div class="text-secondary font-medium" *ngIf="this.item && this.item.itemSuppliers">{{this.item.itemSuppliers.length}} Suppliers for item</div>
+                <div class="flex items-center justify-between w-full">
+
+                    <div class="p-6">
+                        <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Item Suppliers</div>
+                        <div class="text-secondary font-medium"
+                             *ngIf="this.item && this.item.itemSuppliers">{{this.item.itemSuppliers.length}} Suppliers
+                            for item
+                        </div>
+                    </div>
+                    <div class="flex items-center ml-6 mr-12">
+                        <button
+                            class="hidden sm:inline-flex ml-3"
+                            mat-flat-button
+                            [color]="'primary'"
+                            (click)="openAddSupplierDialog()">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                            <span class="ml-2">Add Supplier for Item</span>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="overflow-x-auto mx-6">
                     <table
                         class="w-full bg-transparent"
