@@ -13,6 +13,8 @@ import {LayoutModule} from 'app/layout/layout.module';
 import {AppComponent} from 'app/app.component';
 import {appRoutes} from 'app/app.routing';
 import {AngularMaterialModule} from './angular-material.module';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -43,6 +45,8 @@ const routerConfig: ExtraOptions = {
 
         // 3rd party modules that require global configuration via forRoot
         AngularMaterialModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
         MarkdownModule.forRoot({}),
 
     ],

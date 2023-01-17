@@ -10,6 +10,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatRippleModule} from '@angular/material/core';
+import {MatNativeDateModule} from '@angular/material/core';
+
 import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -21,6 +23,11 @@ import {SharedModule} from '../shared/shared.module';
 import {ItemComponent} from './item.component';
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import {MatDividerModule} from "@angular/material/divider";
+import { AddItemSupplierComponent } from './add-item-supplier/add-item-supplier.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import {AngularMaterialModule} from "../angular-material.module";
 
 const itemRoutes: Route[] = [
     {
@@ -37,9 +44,11 @@ const itemRoutes: Route[] = [
 @NgModule({
     declarations: [
         ItemComponent,
-        ItemDetailsComponent
+        ItemDetailsComponent,
+        AddItemSupplierComponent
     ],
-    imports     : [
+    providers:[MatDatepickerModule],
+    imports: [
         RouterModule.forChild(itemRoutes),
         MatButtonModule,
         MatCheckboxModule,
@@ -58,7 +67,11 @@ const itemRoutes: Route[] = [
         MatExpansionModule,
         MatTableModule,
         MatDividerModule,
-        SharedModule
+        SharedModule,
+        MatAutocompleteModule,
+        MatMomentDateModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ]
 })
 export class ItemModule

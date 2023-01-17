@@ -7,10 +7,13 @@ import {ItemClass} from "./item.model";
 import {Item} from '../api/models/item';
 import {SupplierItem} from "../api/models/supplier-item";
 import {DetailedItem} from "../api/models/detailed-item";
+import {ItemSupplier} from "../api/models/item-supplier";
+import {CreateItemSupplierRequest} from "../api/models/create-item-supplier-request";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 // const apiURLItems = 'http://localhost:3000/' + 'Items';
 const apiURLItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/items';
+const apiURLItemSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/itemSuppliers';
 
 @Injectable({ providedIn: 'root' })
 export class ItemService {
@@ -51,8 +54,12 @@ export class ItemService {
         return this.http.put<ItemClass>(`${apiURLItems}/${itemId}`, model);
     }
 
-    deleteItem(itemId: string): Observable<any> {
+    deleteItem(itemId: any): Observable<any> {
         return this.http.delete<any>(`${apiURLItems}/${itemId}`);
+    }
+
+    addItemSupplier(request: CreateItemSupplierRequest): Observable<ItemSupplier>{
+        return this.http.post<ItemSupplier>(apiURLItemSuppliers, request);
     }
 
 }
