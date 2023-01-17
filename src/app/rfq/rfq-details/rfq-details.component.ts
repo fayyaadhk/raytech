@@ -3,14 +3,14 @@ import {Subject, takeUntil} from "rxjs";
 import {RfqService} from "../rfq.service";
 import {ActivatedRoute} from "@angular/router";
 import {ClientService} from "../../client/client.service";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {RfqItem} from "../../api/models/rfq-item";
 import {MatSort} from "@angular/material/sort";
-import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditRFQItemComponent} from "../edit-rfqitem/edit-rfqitem.component";
 import {CreatePOFromRFQComponent} from "./create-pofrom-rfq/create-pofrom-rfq.component";
+import {RFQItemStatus} from "../../data/rfq-item-status";
 
 @Component({
     selector: 'app-rfq-details',
@@ -116,9 +116,6 @@ export class RfqDetailsComponent implements OnInit {
     }
 
     openDialog(rfqItem) {
-
-        console.log(">> rfqItem before rfqItemToUpdate", rfqItem);
-
         const rfqItemToUpdate: RfqItem = {
             RfqId: rfqItem.rfqId,
             id: rfqItem.rfqItemId,
@@ -129,7 +126,6 @@ export class RfqDetailsComponent implements OnInit {
             supplier: rfqItem.supplier,
             item: rfqItem.item
         }
-        console.log(">> rfqItemToUpdate", rfqItemToUpdate);
 
         const dialogRef = this.dialog.open(EditRFQItemComponent, {
             width: '600px',
@@ -137,18 +133,14 @@ export class RfqDetailsComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            console.log(">>> res", res);
-
             // received data from dialog-component
             if (res.updated) {
-                console.log("calling this._getRfqDetails()")
                 this._getRfqDetails();
             }
         })
     }
 
     openPODialog() {
-        console.log("this.rfqs on open dialog", this.rfqs)
 
         const dialogRef = this.dialog.open(CreatePOFromRFQComponent, {
             width: '600px',
@@ -156,11 +148,8 @@ export class RfqDetailsComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            console.log(">>> res", res);
-
             // received data from dialog-component
-            if (res.updated) {
-                console.log("calling this._getRfqDetails()")
+            if (res && res.updated) {
                 this._getRfqDetails();
             }
         })
@@ -168,6 +157,20 @@ export class RfqDetailsComponent implements OnInit {
 
     deleteRfqItem(id: number) {
 
+    }
+
+    readyForPO(): boolean {
+
+        let ready = true;
+        if (!this.rfqs.items || this.rfqs.purchaseOrder) ready = false;
+
+        this.rfqs.items.forEach(item => {
+            if (item.priceQuoted == null || item.status != RFQItemStatus.QUOTATION_RECEIVED) {
+                ready = false;
+            }
+        });
+
+        return ready;
     }
 
     private _initForm() {
@@ -184,9 +187,7 @@ export class RfqDetailsComponent implements OnInit {
     }
 
     private _getRfqDetails() {
-        console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
-            console.log(params);
             if (params.id) {
                 this.currentRfqId = params.id;
                 this.rfqService
@@ -204,7 +205,6 @@ export class RfqDetailsComponent implements OnInit {
                         this.clientService.getClient(rfq.clientId.toString()).pipe(takeUntil(this.endsubs$))
                             .subscribe((client) => {
                                 this.client = client;
-                                console.log(this.client);
                                 this.isLoading = false;
                             });
 
@@ -219,11 +219,7 @@ export class RfqDetailsComponent implements OnInit {
                                 price: item.priceQuoted,
                                 status: item.status
                             });
-                        })
-                        for (let i = 0; i < this.rfqs.items.length; i++) {
-
-                        }
-                        console.log(">>>> this.items", this.items);
+                        });
                         this.dataSource = new MatTableDataSource(this.items);
                     });
             }

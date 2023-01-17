@@ -138,7 +138,7 @@ export class PurchaseOrderDetailComponent {
             console.log(">>> res", res);
 
             // received data from dialog-component
-            if (res.updated) {
+            if (res && res.updated) {
                 console.log("calling this._getPurchaseOrder()")
                 this._getPurchaseOrder();
             }
