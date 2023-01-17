@@ -1,22 +1,16 @@
 import { Component } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
-import {ItemService} from "../../item/item.service";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CategoryService} from "../../category/category.service";
-import {ItemClass} from "../../item/item.model";
 import {PurchaseOrderService} from "../purchase-order.service";
 import {PurchaseOrder} from "../../api/models/purchase-order";
 import {ClientService} from "../../client/client.service";
 import {RfqService} from "../../rfq/rfq.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {RfqItem} from "../../api/models/rfq-item";
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
-import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Rfq} from "../../rfq/rfq.model";
 import {UpdateRfqItem} from "../../api/models/update-rfq-item";
 import {RfqModule} from "../../rfq/rfq.module";
 import {CreateRfqItem} from "../../api/models/create-rfq-item";
@@ -46,7 +40,7 @@ export class AddPurchaseOrdersComponent {
     purchaseOrderItems: any = [];
     rfqs: any = [];
     dataSource: MatTableDataSource<PurchaseOrderItem>;
-    displayedColumns = ['id', 'name', 'supplier', 'quantity', 'price', 'actions'];
+    displayedColumns = ['id', 'name', 'supplier', 'quantity', 'price', 'expectedArrivalDate', 'actions'];
     public purchaseOrderDetails: any = {};
     public purchaseOrderItemDetails: any = [];
     keys = Object.keys;
@@ -84,7 +78,7 @@ export class AddPurchaseOrdersComponent {
         })
     }
 
-    updatePurchaseOrderItem(rfqItemId: number, supplierId:number, rfqId: number, quantity: string, price: number, status: string) {
+    updatePurchaseOrderItem(rfqItemId: number, supplierId: number, rfqId: number, quantity: string, price: number, expectedArrivalDate: string, status: string) {
 
         const dialogRef = this.dialog.open(PurchaseOrdersItemComponent, {
             width: '600px',
@@ -94,6 +88,7 @@ export class AddPurchaseOrdersComponent {
                 supplierId: supplierId,
                 quantity: quantity,
                 price: price,
+                expectedArrivalDate: expectedArrivalDate,
                 status: status
             },
         });
@@ -110,7 +105,7 @@ export class AddPurchaseOrdersComponent {
                 this.purchaseOrderItems.push(res);
                 this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
             }
-        })
+        });
     }
 
     removePurchaseOrderItem(purchaseOrderId: number) {

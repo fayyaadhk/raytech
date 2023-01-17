@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Subject, takeUntil} from "rxjs";
+import {map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {ItemService} from "../../item/item.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SupplierService} from "../../suppliers/suppliers.service";
@@ -31,6 +31,8 @@ export class PurchaseOrdersItemComponent {
     keys = Object.keys;
     poItemStatus = POItemStatus;
     public itemFilter: FormControl = new FormControl();
+    filteredItems: Observable<any[]>;
+    formFieldHelpers: string[] = [''];
 
     ngOnInit() {
         this._initForm();
@@ -54,6 +56,21 @@ export class PurchaseOrdersItemComponent {
         this.filteredRfqItems = this.items.filter(rfqItem => rfqItem.item.name.toLowerCase().includes(value));
     }
 
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+
+    selectedItem(event) {
+        console.log(event.option.value);
+    }
+
+    displayItem(itemId: any) {
+        // return item ? item.name : '';
+        return this.items.find(item => item.id === itemId)?.name;
+    }
+
     private _initForm() {
         this.form = this.formBuilder.group({
             itemId: ['', Validators.required],
@@ -62,6 +79,7 @@ export class PurchaseOrdersItemComponent {
             quantity: [null],
             price: [null],
             itemStatus: [''],
+            expectedArrivalDate: [''],
         });
     }
 
@@ -71,6 +89,10 @@ export class PurchaseOrdersItemComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
+                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }
@@ -108,9 +130,10 @@ export class PurchaseOrdersItemComponent {
                             name: this.itemName,
                             quantity: this.form.get('quantity').value,
                             priceQuoted: this.form.get('price').value,
+                            expectedArrivalDate: this.form.get('expectedArrivalDate').value,
                             status: this.form.get('itemStatus').value
                         }
-                    )
+                    );
                 }
                 else{
                     this.dialogRef.close(
@@ -123,9 +146,10 @@ export class PurchaseOrdersItemComponent {
                             name: this.itemName,
                             quantity: this.form.get('quantity').value,
                             priceQuoted: this.form.get('price').value,
+                            expectedArrivalDate: this.form.get('expectedArrivalDate').value,
                             status: this.form.get('itemStatus').value
                         }
-                    )
+                    );
                 }
 
             });
@@ -144,6 +168,7 @@ export class PurchaseOrdersItemComponent {
                     this.itemForm.itemId.setValue(this.data.itemId);
                     this.itemForm.quantity.setValue(this.data.quantity);
                     this.itemForm.price.setValue(this.data.price);
+                    this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
                     this.itemForm.itemStatus.setValue(this.data.status);
                     this.itemForm.supplier.setValue(this.data.supplierId);
                     //this.itemForm.name.setValue(item.name);

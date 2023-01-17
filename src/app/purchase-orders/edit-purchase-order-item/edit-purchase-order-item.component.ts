@@ -11,6 +11,7 @@ import {SupplierService} from "../../suppliers/suppliers.service";
 import {RfqModule} from "../../rfq/rfq.module";
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
 import {PurchaseOrderItemService} from "../purchase-orders-item/purchase-order-item.service";
+import {POItemStatus} from "../../data/purchase-order-item-status";
 
 @Component({
   selector: 'app-edit-purchase-order-item',
@@ -30,6 +31,8 @@ export class EditPurchaseOrderItemComponent implements OnInit {
     addSuccess: boolean = false;
     isLoading: boolean = true;
     updateSuccess: boolean = true;
+    keys = Object.keys;
+    poItemStatus = POItemStatus;
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: RfqItem,
                 private dialogRef: MatDialogRef<EditPurchaseOrderItemComponent>,

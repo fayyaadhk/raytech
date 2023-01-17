@@ -11,8 +11,8 @@ import {UpdateRfqItem} from "../api/models/update-rfq-item";
 import {CreateRfqItem} from "../api/models/create-rfq-item";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-// const apiURLRfqs = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/upload';
-const apiURLUpload = 'https://localhost:7234/' + 'api/upload';
+const apiURLUpload = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/upload';
+// const apiURLUpload = 'https://localhost:7234/' + 'api/upload';
 
 @Injectable({ providedIn: 'root' })
 export class FileUploadService {

@@ -11,8 +11,8 @@ import {PurchaseOrder} from "../api/models/purchase-order";
 import {CreatePurchaseOrderRequest} from "../api/models/create-purchase-order-request";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-// const apiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrders';
-const apiURL = 'https://localhost:7234/' + 'api/purchaseOrders';
+const apiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrders';
+// const apiURL = 'https://localhost:7234/' + 'api/purchaseOrders';
 const poItemsApiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrderItems';
 
 @Injectable({ providedIn: 'root' })

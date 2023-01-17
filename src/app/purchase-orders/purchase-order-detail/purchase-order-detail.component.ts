@@ -12,6 +12,7 @@ import {RfqItem} from "../../api/models/rfq-item";
 import {EditRFQItemComponent} from "../../rfq/edit-rfqitem/edit-rfqitem.component";
 import {MatDialog} from "@angular/material/dialog";
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
+import {EditPurchaseOrderItemComponent} from "../edit-purchase-order-item/edit-purchase-order-item.component";
 
 @Component({
   selector: 'app-purchase-order-detail',
@@ -128,7 +129,7 @@ export class PurchaseOrderDetailComponent {
         }
         console.log(">> poItemToUpdate", poItemToUpdate);
 
-        const dialogRef = this.dialog.open(EditRFQItemComponent, {
+        const dialogRef = this.dialog.open(EditPurchaseOrderItemComponent, {
             width: '600px',
             data: poItemToUpdate,
         });
