@@ -136,6 +136,7 @@ export class AddPurchaseOrdersComponent {
             client: [null],
             rfq: [null],
             purchaseOrderDocumentUrl: [''],
+            purchaseOrderDocument: [''],
             status: [''],
             items: new FormArray([]),
         });

@@ -17,15 +17,21 @@
                             <div class="flex">
                                 <mat-form-field class="flex-auto gt-xs:pr-3">
                                     <mat-label>Item</mat-label>
-                                    <mat-select
-                                        name="rfqItem" formControlName="itemId">
-                                        <mat-option *ngFor="let item of items"
-                                                    [value]="item.id">{{item.name}}</mat-option>
-                                    </mat-select>
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        matPrefix
-                                        [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
+                                    <input type="text"
+                                           placeholder="Search Items"
+                                           aria-label="Number"
+                                           matInput
+                                           class=""
+                                           [formControlName]="'itemId'"
+                                           [matAutocomplete]="auto">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                      (optionSelected)="selectedItem($event)"
+                                                      [displayWith]="displayItem.bind(this)">
+                                        <mat-option *ngFor="let item of filteredItems | async; let i = index"
+                                                    [value]="item.id">
+                                            {{item.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </mat-form-field>
                             </div>
 

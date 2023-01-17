@@ -57,8 +57,6 @@ const purchaseOrderRoutes: Route[] = [
     ],
     imports: [
         RouterModule.forChild(purchaseOrderRoutes),
-        MatDatepickerModule,
-        MatNativeDateModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -77,7 +75,8 @@ const purchaseOrderRoutes: Route[] = [
         MatTableModule,
         MatAutocompleteModule,
         MatDividerModule,
-        SharedModule
+        SharedModule,
+        MatDatepickerModule
     ]
 })
 export class PurchaseOrdersModule {

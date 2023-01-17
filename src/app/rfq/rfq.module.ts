@@ -16,6 +16,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import {SharedModule} from '../shared/shared.module';
 import {RfqComponent} from './rfq.component';
@@ -71,6 +72,7 @@ const rfqRoutes: Route[] = [
         MatTableModule,
         MatDialogModule,
         MatDatepickerModule,
+        MatAutocompleteModule,
         SharedModule
     ]
 })
