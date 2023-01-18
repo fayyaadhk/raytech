@@ -8,6 +8,12 @@ import {ActivatedRoute} from "@angular/router";
 import {Supplier} from "../../api/models/supplier";
 import {SupplierService} from "../suppliers.service";
 import {SupplierItem} from "../../api/models/supplier-item";
+import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
+import {
+    EditPurchaseOrderItemComponent
+} from "../../purchase-orders/edit-purchase-order-item/edit-purchase-order-item.component";
+import {AddSupplierItemComponent} from "../add-supplier-item/add-supplier-item.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-suppliers-details',
@@ -57,7 +63,8 @@ export class SuppliersDetailsComponent {
 
     constructor(private supplierService: SupplierService,
                 private formBuilder: FormBuilder,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -114,6 +121,24 @@ export class SuppliersDetailsComponent {
                     });
             }
         });
+    }
+
+    openDialog() {
+
+
+        const dialogRef = this.dialog.open(AddSupplierItemComponent, {
+            width: '600px',
+            data: this.currentSupplierId,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            console.log(">>> res", res);
+
+            // received data from dialog-component
+            if (res && res.updated) {
+                this.dataSource = new MatTableDataSource(this.supplierItems);
+            }
+        })
     }
 
 }

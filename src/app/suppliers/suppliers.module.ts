@@ -23,6 +23,8 @@ import {SharedModule} from '../shared/shared.module';
 import {SuppliersComponent} from "./suppliers.component";
 import {AddSuppliersComponent} from "./add-suppliers/add-suppliers.component";
 import {SuppliersDetailsComponent} from "./suppliers-details/suppliers-details.component";
+import { AddSupplierItemComponent } from './add-supplier-item/add-supplier-item.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 const suppliersRoutes: Route[] = [
     {
@@ -47,7 +49,8 @@ const suppliersRoutes: Route[] = [
     declarations: [
         SuppliersComponent,
         AddSuppliersComponent,
-        SuppliersDetailsComponent
+        SuppliersDetailsComponent,
+        AddSupplierItemComponent
     ],
     imports     : [
         RouterModule.forChild(suppliersRoutes),
@@ -67,6 +70,7 @@ const suppliersRoutes: Route[] = [
         MatProgressSpinnerModule,
         MatExpansionModule,
         MatTableModule,
+        MatAutocompleteModule,
         SharedModule
     ]
 })

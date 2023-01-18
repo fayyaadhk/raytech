@@ -16,6 +16,8 @@ import {RfqModule} from "../../rfq/rfq.module";
 import {CreateRfqItem} from "../../api/models/create-rfq-item";
 import {PurchaseOrdersItemComponent} from "../purchase-orders-item/purchase-orders-item.component";
 import {POStatus} from "../../data/purchase-order-status";
+import {UpdatePurchaseOrderItemRequest} from "../../api/models/update-purchase-order-item-request";
+import {CreatePurchaseOrderItemRequest} from "../../api/models/create-purchase-order-item-request";
 
 @Component({
   selector: 'app-add-purchase-orders',
@@ -40,13 +42,14 @@ export class AddPurchaseOrdersComponent {
     purchaseOrderItems: any = [];
     rfqs: any = [];
     dataSource: MatTableDataSource<PurchaseOrderItem>;
-    displayedColumns = ['id', 'name', 'supplier', 'quantity', 'price', 'expectedArrivalDate', 'actions'];
+    displayedColumns = ['id', 'name', 'supplier', 'quantity', 'status', 'price', 'expectedArrivalDate', 'actions'];
     public purchaseOrderDetails: any = {};
     public purchaseOrderItemDetails: any = [];
     keys = Object.keys;
     poStatus = POStatus;
     poDocumentPreview: string;
     formFieldHelpers: string[] = [''];
+    poItems: any = [];
 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private clientService: ClientService,
@@ -78,13 +81,14 @@ export class AddPurchaseOrdersComponent {
         })
     }
 
-    updatePurchaseOrderItem(rfqItemId: number, supplierId: number, rfqId: number, quantity: string, price: number, expectedArrivalDate: string, status: string) {
+    updatePurchaseOrderItem(poItemId: number, itemId: number, supplierId: number, quantity: string, price: number, expectedArrivalDate: string, status: string) {
+        console.log(supplierId, status);
 
         const dialogRef = this.dialog.open(PurchaseOrdersItemComponent, {
             width: '600px',
             data: {
-                rfqItemId: rfqItemId,
-                itemId: rfqId,
+                poItemId: poItemId,
+                itemId: itemId,
                 supplierId: supplierId,
                 quantity: quantity,
                 price: price,
@@ -97,7 +101,7 @@ export class AddPurchaseOrdersComponent {
             console.log(">>> res", res);
             if (res.editMode) {
 
-                this.purchaseOrderItems[res.rfqItemId] = res;
+                this.purchaseOrderItems[res.poItemId] = res;
 
                 this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
                 console.log(this.purchaseOrderItems);
@@ -108,15 +112,29 @@ export class AddPurchaseOrdersComponent {
         });
     }
 
-    removePurchaseOrderItem(purchaseOrderId: number) {
-        this.purchaseOrderItems.splice(purchaseOrderId, 1);
-        this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
+    removePurchaseOrderItem(purchaseOrderId: number, poItemId: number) {
+        console.log(poItemId);
+        if(purchaseOrderId){
+            console.log('here 1');
+            this.purchaseOrderItems.splice(purchaseOrderId, 1);
+            this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
+        }
+        else if (poItemId){
+            console.log('here 2');
+            this.purchaseOrderService.deletePoItem(poItemId)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe(() => {
+                    this.purchaseOrderItems.splice(purchaseOrderId, 1);
+                    this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
+                    this.isLoading = false;
+                });
+        }
     }
 
     ngOnInit() {
-        this._initForm();
-        this._checkEditMode();
         this.isLoading = true;
+        this._checkEditMode();
+        this._initForm();
         this._getRfqs();
         this._getClients();
     }
@@ -182,28 +200,30 @@ export class AddPurchaseOrdersComponent {
                 poNumber: this.form.get('poNumber').value,
                 purchaseOrderDocumentUrl: this.form.get('purchaseOrderDocumentUrl').value
             };
-            this._updateItem(updatePurchaseOrder);
 
             console.log('RFQS >>> ', this.purchaseOrders);
             for (let r = 0; r < this.purchaseOrderItems.length; r++) {
                 console.log(this.purchaseOrderItems);
                 console.log('edit mode ',this.purchaseOrderItems[r].editMode);
                 if (this.purchaseOrderItems[r].editMode === true) {
-                    const updateRfqItem: UpdateRfqItem = {
-                        rfqItemId: this.purchaseOrders.items[r].id,
+                    const updatePoItem: UpdatePurchaseOrderItemRequest = {
+                        purchaseOrderId: this.currentPurchaseOrderId,
                         itemId: this.purchaseOrderItems[r].itemId,
-                        supplierId: this.purchaseOrderItems[r].supplier,
+                        supplierId: this.purchaseOrderItems[r].supplierId,
                         quantity: this.purchaseOrderItems[r].quantity,
-                        priceQuoted: this.purchaseOrderItems[r].price,
+                        priceQuoted: this.purchaseOrderItems[r].priceQuoted,
                         expectedArrivalDate: this.purchaseOrderItems[r].expectedArrivalDate,
                         status: this.purchaseOrderItems[r].status
                     };
-                    console.log('UPDATE RFQ ITEMS ', updateRfqItem);
-                    this.rfqService
-                        .updateRfqItem(updateRfqItem, this.purchaseOrders.items[r].id)
+
+                    console.log('UPDATE PO ITEMS ', updatePoItem);
+                    console.log(this.purchaseOrders.items[r].id);
+
+                    this.purchaseOrderService
+                        .updatePoItem(updatePoItem, this.purchaseOrders.items[r].id)
                         .pipe(takeUntil(this.endsubs$))
                         .subscribe(
-                            (rfq: RfqModule) => {
+                            (po) => {
                                 this.updateSuccess = true;
                             },
                             () => {
@@ -211,29 +231,31 @@ export class AddPurchaseOrdersComponent {
                             }
                         );
                 } else if(this.purchaseOrderItems[r].editMode === false){
-                    const addRfqItem: CreateRfqItem = {
-                        rfqId: this.currentPurchaseOrderId,
+                    const addPoItem: CreatePurchaseOrderItemRequest = {
+                        purchaseOrderId: this.currentPurchaseOrderId,
                         itemId: this.purchaseOrderItems[r].itemId,
-                        supplierId: this.purchaseOrderItems[r].supplier,
+                        supplierId: this.purchaseOrderItems[r].supplierId,
                         quantity: this.purchaseOrderItems[r].quantity,
-                        priceQuoted: this.purchaseOrderItems[r].price,
-                        expectedArrivalDate: this.purchaseOrderItems[r].expectedArrivalDate,
-                        status: this.purchaseOrderItems[r].status
+                        priceQuoted: this.purchaseOrderItems[r].priceQuoted,
+                        status: this.purchaseOrderItems[r].status,
+                        expectedArrivalDate: this.purchaseOrderItems[r].expectedArrivalDate
                     };
-                    console.log('ADD RFQ ITEM', addRfqItem);
-                    this.rfqService
-                        .createRfqItem(addRfqItem)
+                    console.log('ADD PO ITEM', addPoItem);
+                    this.purchaseOrderService
+                        .createPoItem(addPoItem)
                         .pipe(takeUntil(this.endsubs$))
                         .subscribe(
-                            (rfq: RfqModule) => {
+                            (po) => {
                                 this.addSuccess = true;
                             },
-                            () => {
+                            (error) => {
+                                console.log(error);
                                 this.addSuccess = false;
                             }
                         );
                 }
             }
+            this._updateItem(updatePurchaseOrder);
             this.isLoading = false;
             this.updateSuccess = true;
             this.router.navigateByUrl('purchase-orders');
@@ -245,6 +267,7 @@ export class AddPurchaseOrdersComponent {
             this.addSuccess = true;
         }
     }
+
     onCancle() {
         this.location.back();
     }
@@ -319,59 +342,36 @@ export class AddPurchaseOrdersComponent {
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((purchaseOrders) => {
                         this.purchaseOrders = purchaseOrders;
-                        console.log("--- rfqs ", this.purchaseOrders);
-                        if (this.purchaseOrders) {
-                            this.purchaseOrderDetails = {
-                                poNumber: this.purchaseOrders.poNumber,
-                                dateReceived: this.purchaseOrders.dateReceived,
-                                due: this.purchaseOrders.due,
-                                description: this.purchaseOrders.description,
-                                purchaseOrderDocument: this.purchaseOrders.purchaseOrderDocumentUrl,
-                                client: this.purchaseOrders.clientId,
-                                buyer: this.purchaseOrders.buyerId,
-                                status: this.purchaseOrders.status
-                            };
-                        }
-
+                        this.poItems = purchaseOrders.items;
+                        console.log("--- purchase orders ", this.purchaseOrders);
                         for (let r = 0; r < this.purchaseOrders.items.length; r++) {
-                            console.log(">>>this.rfqs.items", this.purchaseOrders.items);
-                            // this.rfqItems = this.rfqs.items;
+                            console.log(">>>this.purchase.items", this.purchaseOrders.items);
                             this.purchaseOrderItemDetails.push({
-                                rfqItemId: this.purchaseOrders.items[r].id,
-                                itemId: this.purchaseOrders.items[r].item.id,
-                                supplierId: this.purchaseOrders.items[r].supplierId,
-                                name: this.purchaseOrders.items[r].item.name,
+                                poItemId: this.purchaseOrders.items[r].id,
+                                itemId: this.purchaseOrders.items[r].item?.id,
+                                supplierId: this.purchaseOrders.items[r].supplier?.id,
+                                supplierName: this.purchaseOrders.items[r].supplier?.name,
+                                name: this.purchaseOrders.items[r].item?.name,
                                 quantity: this.purchaseOrders.items[r].quantity,
                                 status: this.purchaseOrders.items[r].status,
-                                price: this.purchaseOrders.items[r].priceQuoted,
+                                priceQuoted: this.purchaseOrders.items[r].priceQuoted,
+                                expectedArrivalDate: this.purchaseOrders.items[r].expectedArrivalDate,
                             });
-                            //
-                            // console.log('rfqItemDetails before step 3', this.rfqItemDetails)
-                            //
-                            // this.setStep3 = {
-                            //     rfqItems: this.rfqItemDetails[r],
-                            //     quantity: this.purchaseOrders.items[r].quantity,
-                            //     status: this.purchaseOrders.items[r].status,
-                            //     price: this.purchaseOrders.items[r].priceQuoted,
-                            //     itemForm: null
-                            // };
+                            this.purchaseOrderItems = this.purchaseOrderItemDetails;
                         }
-
-                        this.purchaseOrderItems = this.purchaseOrderDetails;
                         //     //this.rfqItems = this.purchaseOrders.items;
-                        console.log("this.rfqItems", this.purchaseOrderItems);
+                        console.log("this.purchaseOrderItems", this.purchaseOrderItems);
                         this.purchaseOrderForm.poNumber.setValue(this.purchaseOrders.poNumber);
+                        this.purchaseOrderForm.dateReceived.setValue(this.purchaseOrders.dateReceived);
                         this.purchaseOrderForm.description.setValue(this.purchaseOrders.description);
+                        this.purchaseOrderForm.due.setValue(this.purchaseOrders.due);
                         this.purchaseOrderForm.buyer.setValue(this.purchaseOrders.buyerId);
-                        this.purchaseOrderForm.items.setValue(this.purchaseOrderItemDetails);
                         this.purchaseOrderForm.client.setValue(this.purchaseOrders.clientId);
                         this.purchaseOrderForm.rfq.setValue(this.purchaseOrders.rfqId);
-                        //this.rfqForm.step3.setValue(this.setStep3);
+                        this.purchaseOrderForm.purchaseOrderDocument.setValue(this.purchaseOrders.purchaseOrderDocumentUrl);
+                        this.purchaseOrderForm.status.setValue(this.purchaseOrders.status);
+
                         this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
-                        //this.rfqForm.step3['rfqItems'].setValue(this.rfqItemDetails);
-                        // this.rfqForm['step3']['status'].setValue(this.purchaseOrders.items.status);
-                        // this.rfqForm['step3']['price'].setValue(this.purchaseOrders.priceQuoted);
-                        // this.rfqForm['step3']['itemForm'].setValue(null);
                     });
             }
         });

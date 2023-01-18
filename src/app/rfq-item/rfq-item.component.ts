@@ -17,10 +17,12 @@ import {Item} from "../api/models/item";
 export class RfqItemComponent implements OnInit {
     items: any = [];
     suppliers: any = [];
+    supplier: any = [];
     itemId: string;
     itemName: string;
     supplierId: string;
     supplierName: string;
+    expectedArrivalDate;
     filteredRfqItems: any = [];
     rfqItemForm: FormGroup;
     isSubmitted = false;
@@ -112,46 +114,52 @@ export class RfqItemComponent implements OnInit {
             });
     }
 
-    onSubmit() {
-        if(this.editmode) {
-
-        }
-        else{
-
-        }
-        this.itemId = this.rfqItemForm.get('itemId').value;
-        this.supplierId = this.rfqItemForm.get('supplierId').value;
-
-        this.supplierService.getSupplier(this.supplierId)
+    private _getSupplier(id: string) {
+        this.supplierService
+            .getSupplier(id)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((supplier) => {
-                this.supplierName = supplier.name;
-                console.log(this.supplierName);
+                this.supplier = supplier;
+                this.isLoading = false;
+            });
+    }
 
-                this.itemService.getItem(this.itemId)
+    onSubmit() {
+        this.itemId = this.rfqItemForm.get('itemId').value;
+        if (this.rfqItemForm.get('expectedArrivalDate').value !== "") {
+            this.expectedArrivalDate = this.rfqItemForm.get('expectedArrivalDate').value;
+        } else {
+            this.expectedArrivalDate = null;
+        }
+        if (this.rfqItemForm.get('supplier').value !== "") {
+            this.supplierId = this.rfqItemForm.get('supplier').value;
+            this._getSupplier(this.supplierId);
+        } else {
+            this.supplierId = null;
+        }
+        this.itemService.getItem(this.itemId)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.itemName = item.name;
                 this.isLoading = false;
-                if(this.editmode){
+                if (this.editmode) {
                     this.dialogRef.close(
                         {
                             editMode: this.editmode,
                             rfqItemId: this.data.rfqItemId,
                             itemId: this.rfqItemForm.get('itemId').value,
-                            supplierId: supplier.id,
+                            supplierId: this.supplierId,
                             name: this.itemName,
-                            supplierName: this.supplierName,
+                            supplierName: this.supplier.name,
                             quantity: this.rfqItemForm.get('quantity').value,
                             priceQuoted: this.rfqItemForm.get('priceQuoted').value,
                             expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
                             status: this.rfqItemForm.get('itemStatus').value
                         }
                     )
-                }
-                else{
+                } else {
                     console.log('INTO ADD');
-                    console.log('Supplier Id', supplier.id);
+                    console.log('Supplier Id', this.supplierId);
                     console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
                     console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
 
@@ -161,9 +169,9 @@ export class RfqItemComponent implements OnInit {
                             newItem: true,
                             rfqItemId: this.data.rfqItemId,
                             itemId: this.rfqItemForm.get('itemId').value,
-                            supplierId: supplier.id,
+                            supplierId: this.supplierId,
                             name: this.itemName,
-                            supplierName: this.supplierName,
+                            supplierName: this.supplier.name,
                             quantity: this.rfqItemForm.get('quantity').value,
                             priceQuoted: this.rfqItemForm.get('priceQuoted').value,
                             expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
@@ -173,29 +181,28 @@ export class RfqItemComponent implements OnInit {
                 }
 
             });
-            });
         this.addSuccess = true;
     }
 
     private _checkEditMode() {
         console.log(">>> HERE ", this.data);
-            if (this.data.itemId) {
-                this.editmode = true;
-                this.currentRfqItemId = this.data.itemId;
-                this.itemService.getItem(this.currentRfqItemId)
-                    .pipe(takeUntil(this.endsubs$))
-                    .subscribe((item) => {
-                        this.isLoading = false;
-                        this.itemForm.itemId.setValue(this.data.itemId);
-                        this.itemForm.supplierId.setValue(this.data.supplierId);
-                        this.itemForm.quantity.setValue(this.data.quantity);
-                        this.itemForm.priceQuoted.setValue(this.data.priceQuoted);
-                        this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
-                        this.itemForm.itemStatus.setValue(this.data.status);
-                        //this.itemForm.name.setValue(item.name);
-                    });
-            }
+        if (this.data.itemId) {
+            this.editmode = true;
+            this.currentRfqItemId = this.data.itemId;
+            this.itemService.getItem(this.currentRfqItemId)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((item) => {
+                    this.isLoading = false;
+                    this.itemForm.itemId.setValue(this.data.itemId);
+                    this.itemForm.supplierId.setValue(this.data.supplierId);
+                    this.itemForm.quantity.setValue(this.data.quantity);
+                    this.itemForm.priceQuoted.setValue(this.data.priceQuoted);
+                    this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
+                    this.itemForm.itemStatus.setValue(this.data.status);
+                    //this.itemForm.name.setValue(item.name);
+                });
         }
+    }
 
     get itemForm() {
         return this.rfqItemForm.controls;
