@@ -8,13 +8,14 @@ import {POItemStatus} from "../../data/purchase-order-item-status";
 import {POStatus} from "../../data/purchase-order-status";
 
 @Component({
-  selector: 'app-purchase-orders-item',
-  templateUrl: './purchase-orders-item.component.html',
-  styleUrls: ['./purchase-orders-item.component.scss']
+    selector: 'app-purchase-orders-item',
+    templateUrl: './purchase-orders-item.component.html',
+    styleUrls: ['./purchase-orders-item.component.scss']
 })
 export class PurchaseOrdersItemComponent {
     items: any = [];
     suppliers: any = [];
+    supplier: any = [];
     itemId: string;
     itemName: string;
     filteredRfqItems: any = [];
@@ -27,7 +28,8 @@ export class PurchaseOrdersItemComponent {
     editmode = false;
     isLoading: any;
     currentPurchaseOrderItemId;
-    // status: POItemStatus;
+    expectedArrivalDate;
+    supplierId;
     keys = Object.keys;
     poItemStatus = POItemStatus;
     public itemFilter: FormControl = new FormControl();
@@ -35,10 +37,10 @@ export class PurchaseOrdersItemComponent {
     formFieldHelpers: string[] = [''];
 
     ngOnInit() {
-        this._initForm();
         this._getItems();
-        this._getSuppliers();
         this._checkEditMode();
+        this._initForm();
+        this._getSuppliers();
     }
 
     constructor(private formBuilder: FormBuilder,
@@ -78,7 +80,7 @@ export class PurchaseOrdersItemComponent {
             supplier: [null],
             quantity: [null],
             price: [null],
-            itemStatus: [''],
+            status: [''],
             expectedArrivalDate: [''],
         });
     }
@@ -107,47 +109,64 @@ export class PurchaseOrdersItemComponent {
             });
     }
 
+    private _getSupplier(id: string){
+        this.supplierService
+            .getSupplier(id)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((supplier) => {
+                this.supplier = supplier;
+                this.isLoading = false;
+            });
+    }
+
     onSubmit() {
-        if(this.editmode) {
-
-        }
-        else{
-
-        }
         this.itemId = this.form.get('itemId').value;
+        if (this.form.get('expectedArrivalDate').value !== "") {
+            this.expectedArrivalDate = this.form.get('expectedArrivalDate').value;
+        } else {
+            this.expectedArrivalDate = null;
+        }
+        if (this.form.get('supplier').value !== "") {
+            this.supplierId = this.form.get('supplier').value;
+            this._getSupplier(this.supplierId);
+        } else {
+            this.supplierId = null;
+        }
+
         this.itemService.getItem(this.itemId)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.itemName = item.name;
                 this.isLoading = false;
-                if(this.editmode){
+                if (this.editmode) {
                     this.dialogRef.close(
                         {
                             editMode: this.editmode,
-                            rfqItemId: this.data.rfqItemId,
+                            poItemId: this.data.poItemId,
                             itemId: this.form.get('itemId').value,
-                            supplierId: this.form.get('supplier').value,
+                            supplierId: this.supplierId,
+                            supplierName: this.supplier.name,
                             name: this.itemName,
                             quantity: this.form.get('quantity').value,
                             priceQuoted: this.form.get('price').value,
-                            expectedArrivalDate: this.form.get('expectedArrivalDate').value,
-                            status: this.form.get('itemStatus').value
+                            expectedArrivalDate: this.expectedArrivalDate,
+                            status: this.form.get('status').value
                         }
                     );
-                }
-                else{
+                } else {
                     this.dialogRef.close(
                         {
                             editMode: this.editmode,
                             newItem: true,
-                            rfqItemId: this.data.rfqItemId,
+                            poItemId: this.data.poItemId,
                             itemId: this.form.get('itemId').value,
-                            supplierId: this.form.get('supplier').value,
+                            supplierId: this.supplierId,
+                            supplierName: this.supplier.name,
                             name: this.itemName,
                             quantity: this.form.get('quantity').value,
                             priceQuoted: this.form.get('price').value,
-                            expectedArrivalDate: this.form.get('expectedArrivalDate').value,
-                            status: this.form.get('itemStatus').value
+                            expectedArrivalDate: this.expectedArrivalDate,
+                            status: this.form.get('status').value
                         }
                     );
                 }
@@ -164,13 +183,13 @@ export class PurchaseOrdersItemComponent {
             this.itemService.getItem(this.currentPurchaseOrderItemId)
                 .pipe(takeUntil(this.endsubs$))
                 .subscribe((item) => {
-                    this.isLoading = false;
                     this.itemForm.itemId.setValue(this.data.itemId);
                     this.itemForm.quantity.setValue(this.data.quantity);
                     this.itemForm.price.setValue(this.data.price);
                     this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
-                    this.itemForm.itemStatus.setValue(this.data.status);
                     this.itemForm.supplier.setValue(this.data.supplierId);
+                    this.itemForm.status.setValue(this.data.status);
+                    this.isLoading = false;
                     //this.itemForm.name.setValue(item.name);
                 });
         }

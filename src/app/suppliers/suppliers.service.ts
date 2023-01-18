@@ -8,6 +8,7 @@ import {Rfq} from "../api/models/rfq";
 import {CreateSupplierRequest} from "../api/models/create-supplier-request";
 import {UpdateSupplierRequest} from "../api/models/update-supplier-request";
 import {SupplierItem} from "../api/models/supplier-item";
+import {ItemSupplier} from "../api/models/item-supplier";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/suppliers';
@@ -35,6 +36,10 @@ export class SupplierService {
 
     createSupplier(model: CreateSupplierRequest): Observable<Supplier> {
         return this.http.post<Supplier>(apiURLSuppliers, model);
+    }
+
+    createItemSupplier(model: ItemSupplier): Observable<Supplier> {
+        return this.http.post<ItemSupplier>(apiURLSuppliers, model);
     }
 
     updateSupplier(model: UpdateSupplierRequest, supplierId: string): Observable<Supplier> {

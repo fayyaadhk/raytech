@@ -155,7 +155,7 @@
                                             <mat-label>Status</mat-label>
                                             <mat-select
                                                 name="status" formControlName="status">
-                                                <mat-option *ngFor="let status of keys(poStatus)" [value]="status">{{poStatus[status]}}</mat-option>
+                                                <mat-option *ngFor="let status of keys(poStatus)" [value]="poStatus[status]">{{poStatus[status]}}</mat-option>
                                             </mat-select>
                                             <mat-icon
                                                 class="icon-size-5"
@@ -202,7 +202,7 @@
                                             <ng-container matColumnDef="supplier">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier</mat-header-cell>
                                                 <mat-cell
-                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.supplierId}} </mat-cell>
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.supplierName}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="quantity">
@@ -211,16 +211,22 @@
                                                     *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.quantity}} </mat-cell>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="status">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+                                                <mat-cell
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.status}} </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="price">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
                                                 <mat-cell
-                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.priceQuoted}} </mat-cell>
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.priceQuoted | currency: 'R'}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="expectedArrivalDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Expected Arrival Date</mat-header-cell>
                                                 <mat-cell
-                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.expectedArrivalDate}} </mat-cell>
+                                                    *matCellDef="let purchaseOrderItems"> {{purchaseOrderItems.expectedArrivalDate | date}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="actions">
@@ -228,12 +234,12 @@
                                                 <mat-cell *matCellDef="let purchaseOrderItems; let i = index">
                                                     <div class="truncate">
                                                         <button
-                                                            (click)="updatePurchaseOrderItem(i, purchaseOrderItems.itemId, purchaseOrderItems.supplier, purchaseOrderItems.quantity, purchaseOrderItems.price, purchaseOrderItems.expectedArrivalDate, purchaseOrderItems.status)">
+                                                            (click)="updatePurchaseOrderItem(i, purchaseOrderItems.itemId, purchaseOrderItems.supplierId, purchaseOrderItems.quantity, purchaseOrderItems.priceQuoted, purchaseOrderItems.expectedArrivalDate, purchaseOrderItems.status)">
                                                             <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                         </button>
                                                         <button
-                                                            (click)="removePurchaseOrderItem(purchaseOrderItems.id)">
+                                                            (click)="removePurchaseOrderItem(purchaseOrderItems.id, purchaseOrderItems.poItemId)">
                                                             <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
                                                         </button>
                                                     </div>
@@ -286,6 +292,7 @@
                                 </ng-container>
                             </div>
                             <button
+                                type="button"
                                 mat-flat-button
                                 [color]="'primary'"
                                 (click)="onSubmit()">

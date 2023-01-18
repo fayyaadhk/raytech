@@ -9,11 +9,15 @@ import {Client} from "../client/client.model";
 import {CreateRfqRequest} from "../api/models/create-rfq-request";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {CreatePurchaseOrderRequest} from "../api/models/create-purchase-order-request";
+import {UpdateRfqItem} from "../api/models/update-rfq-item";
+import {CreateRfqItem} from "../api/models/create-rfq-item";
+import {CreatePurchaseOrderItemRequest} from "../api/models/create-purchase-order-item-request";
+import {UpdatePurchaseOrderItemRequest} from "../api/models/update-purchase-order-item-request";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrders';
 // const apiURL = 'https://localhost:7234/' + 'api/purchaseOrders';
-const poItemsApiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrderItems';
+const poItemsApiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseorderitems';
 
 @Injectable({ providedIn: 'root' })
 export class PurchaseOrderService {
@@ -46,4 +50,15 @@ export class PurchaseOrderService {
         return this.http.delete<any>(`${apiURL}/${purchaseOrderId}`);
     }
 
+    updatePoItem(model: UpdatePurchaseOrderItemRequest, poItemId: number): Observable<UpdatePurchaseOrderItemRequest> {
+        return this.http.put<UpdatePurchaseOrderItemRequest>(`${poItemsApiURL}/${poItemId}`, model);
+    }
+
+    createPoItem(model: CreatePurchaseOrderItemRequest): Observable<CreatePurchaseOrderItemRequest> {
+        return this.http.post<CreatePurchaseOrderItemRequest>(`${poItemsApiURL}`, model);
+    }
+
+    deletePoItem(poItemId: number): Observable<any> {
+        return this.http.delete<any>(`${poItemsApiURL}/${poItemId}`);
+    }
 }

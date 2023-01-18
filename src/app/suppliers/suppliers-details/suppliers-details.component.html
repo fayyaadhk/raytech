@@ -143,6 +143,18 @@
                 <div class="p-6">
                     <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
                 </div>
+                <div class="flex items-center ml-6">
+                    <button
+                        class="hidden sm:inline-flex ml-3"
+                        mat-flat-button
+                        (click)="openDialog()"
+                        [color]="'primary'">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">Add Item</span>
+                    </button>
+                </div>
                 <div class="overflow-x-auto mx-6">
                     <table
                         class="w-full bg-transparent"
