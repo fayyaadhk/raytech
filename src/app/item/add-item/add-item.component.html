@@ -128,15 +128,16 @@
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
                                             <mat-label>Category</mat-label>
-<!--                                            <input matInput formControlName="category">-->
+                                            <!--                                            <input matInput formControlName="category">-->
                                             <mat-select
                                                 name="category" formControlName="category">
-                                                <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+                                                <mat-option *ngFor="let category of categories"
+                                                            [value]="category.id">{{category.name}}</mat-option>
                                             </mat-select>
-<!--                                            <input-->
-<!--                                                matInput-->
-<!--                                                formControlName="category"-->
-<!--                                                type="number">-->
+                                            <!--                                            <input-->
+                                            <!--                                                matInput-->
+                                            <!--                                                formControlName="category"-->
+                                            <!--                                                type="number">-->
                                             <mat-icon
                                                 class="icon-size-5"
                                                 matPrefix

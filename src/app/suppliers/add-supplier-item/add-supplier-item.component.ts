@@ -21,10 +21,10 @@ export class AddSupplierItemComponent implements OnInit {
     endsubs$: Subject<any> = new Subject();
 
     form: FormGroup;
+    supplierId: number;
 
     addSuccess: boolean = false;
     isLoading: boolean = true;
-    updateSuccess: boolean = true;
     keys = Object.keys;
     poItemStatus = POItemStatus;
     filteredItems: Observable<any[]>;
@@ -58,12 +58,11 @@ export class AddSupplierItemComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.supplierId = this.data.id
         this.form = this.formBuilder.group({
             itemId: ['', Validators.required],
             price: [null, Validators.required],
             priceDate: [''],
-            supplierId: ['', Validators.required]
         });
 
         this._getItems();
@@ -73,39 +72,37 @@ export class AddSupplierItemComponent implements OnInit {
         this.createSupplierItem();
         this.dialogRef.close(
             {
-                updated: this.updateSuccess
+                added: this.addSuccess
             }
         )
 
     }
 
     createSupplierItem() {
-
+    let itemId = this.form.get('itemId').value;
         const request: any = {
             supplierId: this.data.id,
-            itemId: this.form.get('itemId').value,
+            itemId: itemId,
             price: this.form.get('price').value,
-            priceDate: this.form.get('priceDate').value
         };
 
         if (this.form.get('priceDate').value !== "") {
-            request.priceDate = this.form.get('expectedArrivalDate').value;
+            request.priceDate = this.form.get('priceDate').value;
         }
 
-        if (this.form.get('supplierId').value !== "") {
-            request.supplierId = this.form.get('supplierId').value;
-        }
-
-        this.supplierService.createItemSupplier(request)
+        this.supplierService.createItemSupplier(request, itemId)
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
                 (item) => {
-                    this.updateSuccess = true;
+                    console.log(request);
+                    this.isLoading = false
                 },
-                () => {
-                    this.updateSuccess = false;
+                (error) => {
+                    console.log(error);
+                    this.addSuccess = false;
                 }
             );
+        this.addSuccess = true;
     }
 
     private _getItems() {
