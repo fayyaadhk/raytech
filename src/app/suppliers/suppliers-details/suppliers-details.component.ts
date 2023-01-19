@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
@@ -16,9 +16,9 @@ import {AddSupplierItemComponent} from "../add-supplier-item/add-supplier-item.c
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-suppliers-details',
-  templateUrl: './suppliers-details.component.html',
-  styleUrls: ['./suppliers-details.component.scss']
+    selector: 'app-suppliers-details',
+    templateUrl: './suppliers-details.component.html',
+    styleUrls: ['./suppliers-details.component.scss']
 })
 export class SuppliersDetailsComponent {
     suppliers: any;
@@ -96,10 +96,10 @@ export class SuppliersDetailsComponent {
 
                         this.supplierService.getSupplierItems(this.currentSupplierId)
                             .pipe(takeUntil(this.endsubs$))
-                            .subscribe((supplierItems) =>{
+                            .subscribe((supplierItems) => {
                                 this.supplierItems = supplierItems;
                                 console.log(this.supplierItems);
-                                for(let i = 0; i < this.supplierItems.length; i++){
+                                for (let i = 0; i < this.supplierItems.length; i++) {
                                     this.items.push({
                                         itemId: this.supplierItems[i].item.id,
                                         name: this.supplierItems[i].item.name,
@@ -123,20 +123,29 @@ export class SuppliersDetailsComponent {
         });
     }
 
+    private _getItemSuppliers() {
+        this.supplierService
+            .getSupplierItems(this.currentSupplierId)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((supplierItems) => {
+                this.supplierItems = supplierItems;
+                this.dataSource = new MatTableDataSource(this.supplierItems);
+                this.isLoading = false;
+            });
+    }
+
     openDialog() {
-
-
         const dialogRef = this.dialog.open(AddSupplierItemComponent, {
             width: '600px',
-            data: this.currentSupplierId,
+            data: {id: this.currentSupplierId},
         });
 
         dialogRef.afterClosed().subscribe(res => {
             console.log(">>> res", res);
-
             // received data from dialog-component
-            if (res && res.updated) {
-                this.dataSource = new MatTableDataSource(this.supplierItems);
+            if (res && res.added) {
+                this._getItemSuppliers();
+                console.log(this.supplierItems);
             }
         })
     }

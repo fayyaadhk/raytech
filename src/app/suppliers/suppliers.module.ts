@@ -25,6 +25,7 @@ import {AddSuppliersComponent} from "./add-suppliers/add-suppliers.component";
 import {SuppliersDetailsComponent} from "./suppliers-details/suppliers-details.component";
 import { AddSupplierItemComponent } from './add-supplier-item/add-supplier-item.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 const suppliersRoutes: Route[] = [
     {
@@ -71,6 +72,7 @@ const suppliersRoutes: Route[] = [
         MatExpansionModule,
         MatTableModule,
         MatAutocompleteModule,
+        MatDatepickerModule,
         SharedModule
     ]
 })

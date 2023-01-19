@@ -12,6 +12,7 @@ import {ItemSupplier} from "../api/models/item-supplier";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/suppliers';
+const apiURLSupplierItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/items';
 
 @Injectable({ providedIn: 'root' })
 export class SupplierService {
@@ -38,8 +39,8 @@ export class SupplierService {
         return this.http.post<Supplier>(apiURLSuppliers, model);
     }
 
-    createItemSupplier(model: ItemSupplier): Observable<Supplier> {
-        return this.http.post<ItemSupplier>(apiURLSuppliers, model);
+    createItemSupplier(model: ItemSupplier, supplierId: number): Observable<Supplier> {
+        return this.http.post<ItemSupplier>(`${apiURLSupplierItems}/${supplierId}/supplier`, model);
     }
 
     updateSupplier(model: UpdateSupplierRequest, supplierId: string): Observable<Supplier> {

@@ -45,11 +45,19 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="flex">
-                                    <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-form-field
+                                        [ngClass]="formFieldHelpers"
+                                        class="flex-auto">
                                         <mat-label>Price Date</mat-label>
                                         <input
                                             matInput
-                                            formControlName="priceDate"/>
+                                            [formControlName]="'priceDate'"
+                                            [placeholder]="'Price Date'"
+                                            [matDatepicker]="picker1">
+                                        <mat-datepicker-toggle
+                                            matSuffix
+                                            [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                             </div>
