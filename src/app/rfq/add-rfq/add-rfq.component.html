@@ -218,12 +218,12 @@
                                                     <mat-cell *matCellDef="let rfqItems; let i = index">
                                                         <div class="truncate">
                                                             <button
-                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.price, rfqItems.status)">
+                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.priceQuoted, rfqItems.status)">
                                                                 <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                             </button>
                                                             <button
-                                                                (click)="removeRfqItem(rfqItems.id)">
+                                                                (click)="removeRfqItem(rfqItems.id, rfqItems.rfqItemId)">
                                                                 <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
                                                             </button>
                                                         </div>

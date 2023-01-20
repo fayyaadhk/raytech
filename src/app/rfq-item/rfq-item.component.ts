@@ -17,10 +17,12 @@ import {Item} from "../api/models/item";
 export class RfqItemComponent implements OnInit {
     items: any = [];
     suppliers: any = [];
+    supplier: any = [];
     itemId: string;
     itemName: string;
     supplierId: string;
     supplierName: string;
+    expectedArrivalDate;
     filteredRfqItems: any = [];
     rfqItemForm: FormGroup;
     isSubmitted = false;
@@ -37,17 +39,6 @@ export class RfqItemComponent implements OnInit {
     formFieldHelpers: string[] = [''];
     filteredItems: Observable<any[]>;
 
-    constructor(private formBuilder: FormBuilder,
-                private itemService: ItemService,
-                private supplierService: SupplierService,
-                private dialogRef: MatDialogRef<RfqItemComponent>,
-                @Inject(MAT_DIALOG_DATA) public data) {
-    }
-
-    get itemForm() {
-        return this.rfqItemForm.controls;
-    }
-
     ngOnInit() {
         this._initForm();
         this._getItems();
@@ -55,84 +46,20 @@ export class RfqItemComponent implements OnInit {
         this._checkEditMode();
     }
 
+    constructor(private formBuilder: FormBuilder,
+                private itemService: ItemService,
+                private supplierService: SupplierService,
+                private dialogRef: MatDialogRef<RfqItemComponent>,
+                @Inject(MAT_DIALOG_DATA) public data) {
+    }
+
+
     filterRfqItems(event): void {
         // Get the value
         const value = event.target.value.toLowerCase();
 
         // Filter the tags
-        this.filteredRfqItems = this.items.filter(rfqItem => rfqItem.item.name.toLowerCase().includes(value) || rfqItem.item.sku.includes(value));
-    }
-
-    selectedItem(event) {
-        console.log(event.option.value);
-    }
-
-    displayItem(itemId: any) {
-        // return item ? item.name : '';
-        return this.items?.find(item => item.id === itemId)?.name;
-    }
-
-    onSubmit() {
-        if (this.editmode) {
-
-        } else {
-
-        }
-        this.itemId = this.rfqItemForm.get('itemId').value;
-        this.supplierId = this.rfqItemForm.get('supplierId').value;
-
-        this.supplierService.getSupplier(this.supplierId)
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((supplier) => {
-                this.supplierName = supplier.name;
-                console.log(this.supplierName);
-
-                this.itemService.getItem(this.itemId)
-                    .pipe(takeUntil(this.endsubs$))
-                    .subscribe((item) => {
-                        this.itemName = item.name;
-                        this.isLoading = false;
-                        if (this.editmode) {
-                            this.dialogRef.close(
-                                {
-                                    editMode: this.editmode,
-                                    rfqItemId: this.data.rfqItemId,
-                                    itemId: this.rfqItemForm.get('itemId').value,
-                                    supplierId: supplier.id,
-                                    name: this.itemName,
-                                    supplierName: this.supplierName,
-                                    quantity: this.rfqItemForm.get('quantity').value,
-                                    priceQuoted: this.rfqItemForm.get('priceQuoted').value,
-                                    expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
-                                    status: this.rfqItemForm.get('itemStatus').value
-                                }
-                            )
-                        } else {
-                            console.log('INTO ADD');
-                            console.log('Supplier Id', supplier.id);
-                            console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
-                            console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
-
-                            this.dialogRef.close(
-                                {
-                                    editMode: this.editmode,
-                                    newItem: true,
-                                    rfqItemId: this.data.rfqItemId,
-                                    itemId: this.rfqItemForm.get('itemId').value,
-                                    supplierId: supplier.id,
-                                    name: this.itemName,
-                                    supplierName: this.supplierName,
-                                    quantity: this.rfqItemForm.get('quantity').value,
-                                    priceQuoted: this.rfqItemForm.get('priceQuoted').value,
-                                    expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
-                                    status: this.rfqItemForm.get('itemStatus').value
-                                }
-                            )
-                        }
-
-                    });
-            });
-        this.addSuccess = true;
+        this.filteredRfqItems = this.items.filter(rfqItem => rfqItem.item.name.toLowerCase().includes(value));
     }
 
     private _initForm() {
@@ -151,6 +78,15 @@ export class RfqItemComponent implements OnInit {
         const filterValue = value.toString().toLowerCase();
 
         return this.items.filter(option => option.name.toLowerCase().includes(filterValue) || option.sku.toLowerCase().includes(filterValue));
+    }
+
+    selectedItem(event) {
+        console.log(event.option.value);
+    }
+
+    displayItem(itemId: any) {
+        // return item ? item.name : '';
+        return this.items?.find(item => item.id === itemId)?.name;
     }
 
     private _getItems() {
@@ -178,6 +114,76 @@ export class RfqItemComponent implements OnInit {
             });
     }
 
+    private _getSupplier(id: string) {
+        this.supplierService
+            .getSupplier(id)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((supplier) => {
+                this.supplier = supplier;
+                this.isLoading = false;
+            });
+    }
+
+    onSubmit() {
+        this.itemId = this.rfqItemForm.get('itemId').value;
+        if (this.rfqItemForm.get('expectedArrivalDate').value !== "") {
+            this.expectedArrivalDate = this.rfqItemForm.get('expectedArrivalDate').value;
+        } else {
+            this.expectedArrivalDate = null;
+        }
+        if (this.rfqItemForm.get('supplier').value !== "") {
+            this.supplierId = this.rfqItemForm.get('supplier').value;
+            this._getSupplier(this.supplierId);
+        } else {
+            this.supplierId = null;
+        }
+        this.itemService.getItem(this.itemId)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((item) => {
+                this.itemName = item.name;
+                this.isLoading = false;
+                if (this.editmode) {
+                    this.dialogRef.close(
+                        {
+                            editMode: this.editmode,
+                            rfqItemId: this.data.rfqItemId,
+                            itemId: this.rfqItemForm.get('itemId').value,
+                            supplierId: this.supplierId,
+                            name: this.itemName,
+                            supplierName: this.supplier.name,
+                            quantity: this.rfqItemForm.get('quantity').value,
+                            priceQuoted: this.rfqItemForm.get('priceQuoted').value,
+                            expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
+                            status: this.rfqItemForm.get('itemStatus').value
+                        }
+                    )
+                } else {
+                    console.log('INTO ADD');
+                    console.log('Supplier Id', this.supplierId);
+                    console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
+                    console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
+
+                    this.dialogRef.close(
+                        {
+                            editMode: this.editmode,
+                            newItem: true,
+                            rfqItemId: this.data.rfqItemId,
+                            itemId: this.rfqItemForm.get('itemId').value,
+                            supplierId: this.supplierId,
+                            name: this.itemName,
+                            supplierName: this.supplier.name,
+                            quantity: this.rfqItemForm.get('quantity').value,
+                            priceQuoted: this.rfqItemForm.get('priceQuoted').value,
+                            expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
+                            status: this.rfqItemForm.get('itemStatus').value
+                        }
+                    )
+                }
+
+            });
+        this.addSuccess = true;
+    }
+
     private _checkEditMode() {
         console.log(">>> HERE ", this.data);
         if (this.data.itemId) {
@@ -196,5 +202,9 @@ export class RfqItemComponent implements OnInit {
                     //this.itemForm.name.setValue(item.name);
                 });
         }
+    }
+
+    get itemForm() {
+        return this.rfqItemForm.controls;
     }
 }

@@ -136,9 +136,22 @@ export class AddRfqComponent implements OnInit {
         })
     }
 
-    removeRfqItem(rfqId: number) {
-        this.rfqItems.splice(rfqId, 1);
-        this.dataSource = new MatTableDataSource(this.rfqItems);
+    removeRfqItem(rfqId: number, rfqItemId: number) {
+        if(rfqId){
+            console.log('here 1');
+            this.rfqItems.splice(rfqId, 1);
+            this.dataSource = new MatTableDataSource(this.rfqItems);
+        }
+        else if (rfqItemId){
+            console.log('here 2');
+            this.rfqService.deleteRfqItem(rfqItemId)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe(() => {
+                    this.rfqItems.splice(rfqId, 1);
+                    this.dataSource = new MatTableDataSource(this.rfqItems);
+                    this.isLoading = false;
+                });
+        }
     }
 
     ngOnInit() {
