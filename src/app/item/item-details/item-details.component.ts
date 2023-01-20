@@ -12,6 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CreatePOFromRFQComponent} from "../../rfq/rfq-details/create-pofrom-rfq/create-pofrom-rfq.component";
 import {AddItemSupplierComponent} from "../add-item-supplier/add-item-supplier.component";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
+import {DetailedRfqItem} from "../../api/models/detailed-rfq-item";
 
 @Component({
     selector: 'app-item-details',
@@ -31,7 +32,7 @@ export class ItemDetailsComponent {
     isLoading: boolean = false;
 
     rfqItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
+    rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'markup', 'status', 'actions'];
 
     poItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
     poItemsTableColumns: string[] = ['poId', 'poNumber', 'poDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
@@ -97,6 +98,7 @@ export class ItemDetailsComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.item = item;
+                console.log(">>> this.item.rfqItems", this.item.rfqItems);
                 this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
                 this.poItemsDataSource = new MatTableDataSource(this.item.purchaseOrderItems);
                 this.isLoading = false;
@@ -151,6 +153,14 @@ export class ItemDetailsComponent {
                 });
             }
         });
+    }
+
+    getSupplierPriceForItem(rfqItem: DetailedRfqItem){
+        return rfqItem.supplier.supplierItems.find(x => x.itemId == this.itemId).price;
+    }
+
+    getMarkup(rfqItem: DetailedRfqItem){
+        return  (this.getSupplierPriceForItem(rfqItem) / rfqItem.priceQuoted) * 100;
     }
 
 }
