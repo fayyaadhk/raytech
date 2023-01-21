@@ -38,33 +38,11 @@ export class SuppliersDetailsComponent {
     ];
     items = [];
     supplierItems: any;
-    statuses: any = [
-        {id: 1, name: 'Issued'},
-        {id: 2, name: 'Sourcing'},
-        {id: 3, name: 'Could not source'},
-        {id: 4, name: 'In progress'},
-        {id: 5, name: 'Pending submission'},
-        {id: 6, name: 'Quotation sent'},
-        {id: 7, name: 'Successful'},
-        {id: 8, name: 'Unsuccessful'},
-        {id: 9, name: 'Cancelled'},
-    ];
-    outcomes: any = [
-        {id: 1, name: 'Issued'},
-        {id: 2, name: 'Sourcing'},
-        {id: 3, name: 'Could not source'},
-        {id: 4, name: 'In progress'},
-        {id: 5, name: 'Pending submission'},
-        {id: 6, name: 'Quotation sent'},
-        {id: 7, name: 'Successful'},
-        {id: 8, name: 'Unsuccessful'},
-        {id: 9, name: 'Cancelled'},
-    ];
 
     constructor(private supplierService: SupplierService,
                 private formBuilder: FormBuilder,
                 private route: ActivatedRoute,
-                private dialog: MatDialog) {
+                private dialog: MatDialog,) {
     }
 
     ngOnInit() {
@@ -149,5 +127,4 @@ export class SuppliersDetailsComponent {
             }
         })
     }
-
 }

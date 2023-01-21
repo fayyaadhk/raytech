@@ -30,16 +30,16 @@
                             <div class="text-xl font-medium tracking-tight leading-6 truncate">
                                 {{suppliers.name}} </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.line1}} {{suppliers.contactInformation.address?.line2}}
+                                {{suppliers.contactInformation?.address?.line1}} {{suppliers.contactInformation?.address?.line2}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.suburb}}
+                                {{suppliers.contactInformation?.address?.suburb}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.postalCode}}
+                                {{suppliers.contactInformation?.address?.postalCode}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.province}}
+                                {{suppliers.contactInformation?.address?.province}}
                             </div>
                         </div>
 
@@ -48,22 +48,22 @@
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Email</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation.email}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation?.email}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Cellphone</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation.cellphone}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation?.cellphone}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Work</div>
-                            <div class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation.work}}</div>
+                            <div class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation?.work}}</div>
                         </div>
 
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Whatsapp</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation.whatsapp}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.contactInformation?.whatsapp}}</div>
                         </div>
                         <!--                        <div class="flex flex-col mx-6 my-3">-->
                         <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
@@ -88,21 +88,21 @@
                             <div class="text-xl font-medium tracking-tight leading-6 truncate">
                                 Contact Person <mat-icon svgIcon="heroicons_outline:phone"></mat-icon></div>
                             <div class="text-xl font-medium tracking-tight leading-6 truncate">
-                                {{suppliers.person.firstName}} {{suppliers.person.lastName}} </div>
+                                {{suppliers.person?.firstName}} {{suppliers.person?.lastName}} </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.person.idNumber}}
+                                {{suppliers.person?.idNumber}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.person.contactInformation.address?.line1}} {{suppliers.person.contactInformation.address?.line2}}
+                                {{suppliers.person?.contactInformation?.address?.line1}} {{suppliers.person?.contactInformation?.address?.line2}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.suburb}}
+                                {{suppliers.contactInformation?.address?.suburb}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.postalCode}}
+                                {{suppliers.contactInformation?.address?.postalCode}}
                             </div>
                             <div class="text-green-600 font-medium text-lg">
-                                {{suppliers.contactInformation.address?.province}}
+                                {{suppliers.contactInformation?.address?.province}}
                             </div>
                         </div>
 
@@ -111,22 +111,22 @@
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Email</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person.contactInformation.email}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person?.contactInformation?.email}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Cellphone</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person.contactInformation.cellphone}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person?.contactInformation?.cellphone}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Work</div>
-                            <div class="mt-2 font-medium text-xl leading-none">{{suppliers.person.contactInformation.work}}</div>
+                            <div class="mt-2 font-medium text-xl leading-none">{{suppliers.person?.contactInformation?.work}}</div>
                         </div>
 
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Whatsapp</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person.contactInformation.whatsapp}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{suppliers.person?.contactInformation?.whatsapp}}</div>
                         </div>
                         <!--                        <div class="flex flex-col mx-6 my-3">-->
                         <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->

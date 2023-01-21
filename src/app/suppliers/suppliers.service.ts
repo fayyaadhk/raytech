@@ -13,6 +13,7 @@ import {ItemSupplier} from "../api/models/item-supplier";
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 const apiURLSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/suppliers';
 const apiURLSupplierItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/items';
+const apiURLItemSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/itemSuppliers';
 
 @Injectable({ providedIn: 'root' })
 export class SupplierService {
@@ -31,7 +32,7 @@ export class SupplierService {
         return this.http.get<Supplier>(`${apiURLSuppliers}/${supplierId}/details`);
     }
 
-    getSupplierItems(supplierId: string): Observable<SupplierItem> {
+    getSupplierItems(supplierId: string): Observable<any> {
         return this.http.get<SupplierItem>(`${apiURLSuppliers}/${supplierId}/items`);
     }
 
@@ -43,12 +44,15 @@ export class SupplierService {
         return this.http.post<ItemSupplier>(`${apiURLSupplierItems}/${supplierId}/supplier`, model);
     }
 
+    deleteSupplierItem(supplierId: number) {
+        return this.http.delete<any>(`${apiURLItemSuppliers}/${supplierId}`);
+    }
+
     updateSupplier(model: UpdateSupplierRequest, supplierId: string): Observable<Supplier> {
         return this.http.put<Supplier>(`${apiURLSuppliers}/${supplierId}`, model);
     }
 
     deleteSupplier(supplierId: string) {
-        //return this.http.delete(BACKEND_URL, {params: supplierId});
         return this.http.delete<any>(`${apiURLSuppliers}/${supplierId}`);
     }
 
