@@ -20,7 +20,7 @@ export class PurchaseOrderSummaryComponent implements OnInit {
     @ViewChild('issuedPOTable', {read: MatSort}) issuedPOTableMatSort: MatSort;
 
     issuedPODataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    issuedPOTableColumns: string[] = ['poId', 'poNo', 'created', 'due', 'itemCount', 'status', 'editDelete'];
+    issuedPOTableColumns: string[] = ['poId', 'poNo', 'created', 'due', 'itemCount', 'status'];
 
     @ViewChild('closingSoonRFQTable', {read: MatSort}) closingSoonRFQTableMatSort: MatSort;
 

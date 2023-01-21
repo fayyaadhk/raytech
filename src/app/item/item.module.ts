@@ -28,6 +28,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {AngularMaterialModule} from "../angular-material.module";
+import { EditItemSupplierComponent } from './edit-item-supplier/edit-item-supplier.component';
 
 const itemRoutes: Route[] = [
     {
@@ -45,7 +46,8 @@ const itemRoutes: Route[] = [
     declarations: [
         ItemComponent,
         ItemDetailsComponent,
-        AddItemSupplierComponent
+        AddItemSupplierComponent,
+        EditItemSupplierComponent
     ],
     providers:[MatDatepickerModule],
     imports: [

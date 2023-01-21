@@ -125,7 +125,7 @@ export class EditRFQItemComponent implements OnInit {
         this.itemForm.quantity.setValue(this.rfqItem.quantity);
         this.itemForm.priceQuoted.setValue(this.rfqItem.priceQuoted);
         this.itemForm.status.setValue(this.rfqItem.status);
-        this.itemForm.supplierId.setValue(this.rfqItem.supplier.id);
+        this.itemForm.supplierId.setValue(this.rfqItem.supplier?.id);
         this.itemForm.expectedArrivalDate.setValue(this.rfqItem.expectedArrivalDate);
     }
 

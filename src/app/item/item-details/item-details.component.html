@@ -321,7 +321,7 @@
                                 mat-cell
                                 *matCellDef="let rfqItem">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/purchase-orders/details/{{rfqItem.rfq.id}}"> {{rfqItem.rfq.rfqNumber}}</a>
+                                    <a routerLink="/rfqs/details/{{rfqItem.rfq.id}}"> {{rfqItem.rfq.rfqNumber}}</a>
                                 </span>
                             </td>
                         </ng-container>
@@ -575,9 +575,18 @@
                             <td
                                 mat-cell
                                 *matCellDef="let itemSupplier">
-                                <span class="pr-6 font-medium whitespace-nowrap">
-                                    Action
-                                </span>
+                                <div class="truncate">
+                                    <button
+                                        (click)="openUpdateSupplierDialog(itemSupplier)">
+                                        <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+
+                                    </button>
+                                    <button class="ml-4"
+                                            (click)="deleteItemSupplier(itemSupplier.itemSupplierId)">
+                                        <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                    </button>
+
+                                </div>
                             </td>
                         </ng-container>
 
