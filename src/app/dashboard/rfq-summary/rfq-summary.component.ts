@@ -20,12 +20,12 @@ export class RfqSummaryComponent {
     @ViewChild('issuedRFQTable', {read: MatSort}) issuedRFQTableMatSort: MatSort;
 
     issuedRFQDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    issuedRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status', 'editDelete'];
+    issuedRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status'];
 
     @ViewChild('closingSoonRFQTable', {read: MatSort}) closingSoonRFQTableMatSort: MatSort;
 
     closingSoonRFQDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    closingSoonRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status', 'editDelete'];
+    closingSoonRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status'];
 
     /**
      * After view init

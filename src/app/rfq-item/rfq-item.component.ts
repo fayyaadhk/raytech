@@ -77,7 +77,7 @@ export class RfqItemComponent implements OnInit {
     private _filter(value: string): any[] {
         const filterValue = value.toString().toLowerCase();
 
-        return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue) || option.sku.toLowerCase().includes(filterValue));
     }
 
     selectedItem(event) {

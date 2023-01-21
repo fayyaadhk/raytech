@@ -9,6 +9,7 @@ import {SupplierItem} from "../api/models/supplier-item";
 import {DetailedItem} from "../api/models/detailed-item";
 import {ItemSupplier} from "../api/models/item-supplier";
 import {CreateItemSupplierRequest} from "../api/models/create-item-supplier-request";
+import {UpdateItemSupplierRequest} from "../api/models/update-item-supplier-request";
 
 const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
 // const apiURLItems = 'http://localhost:3000/' + 'Items';
@@ -58,8 +59,21 @@ export class ItemService {
         return this.http.delete<any>(`${apiURLItems}/${itemId}`);
     }
 
+    // Item Supplier
     addItemSupplier(request: CreateItemSupplierRequest): Observable<ItemSupplier>{
         return this.http.post<ItemSupplier>(apiURLItemSuppliers, request);
+    }
+
+    deleteItemSupplier(itemSupplierId: number): Observable<ItemSupplier>{
+        return this.http.delete<ItemSupplier>(`${apiURLItemSuppliers}/${itemSupplierId}`);
+    }
+
+    getItemSupplier(itemSupplierId: number): Observable<ItemSupplier>{
+        return this.http.get<ItemSupplier>(`${apiURLItemSuppliers}/${itemSupplierId}`);
+    }
+
+    updateItemSupplier(itemSupplierId: number, request: UpdateItemSupplierRequest): Observable<ItemSupplier>{
+        return this.http.put<ItemSupplier>(`${apiURLItemSuppliers}/${itemSupplierId}`, request);
     }
 
 }

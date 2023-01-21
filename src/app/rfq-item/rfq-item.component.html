@@ -39,7 +39,7 @@
                                            [matAutocomplete]="auto">
                                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectedItem($event)" [displayWith]="displayItem.bind(this)">
                                         <mat-option *ngFor="let item of filteredItems | async; let i = index" [value]="item.id">
-                                            {{item.name}}
+                                            {{item.name}} | {{item.sku}}|
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

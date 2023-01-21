@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {CreatePOFromRFQComponent} from "../../rfq/rfq-details/create-pofrom-rfq/create-pofrom-rfq.component";
 import {AddItemSupplierComponent} from "../add-item-supplier/add-item-supplier.component";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
+import {DetailedRfqItem} from "../../api/models/detailed-rfq-item";
+import {EditItemSupplierComponent} from "../edit-item-supplier/edit-item-supplier.component";
 
 @Component({
     selector: 'app-item-details',
@@ -31,10 +33,10 @@ export class ItemDetailsComponent {
     isLoading: boolean = false;
 
     rfqItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
+    rfqItemsTableColumns: string[] = ['rfqId', 'rfqNumber', 'rfqDate', 'quantity', 'priceQuoted', 'supplier', 'markup', 'status'];
 
     poItemsDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    poItemsTableColumns: string[] = ['poId', 'poNumber', 'poDate', 'quantity', 'priceQuoted', 'supplier', 'status', 'actions'];
+    poItemsTableColumns: string[] = ['poId', 'poNumber', 'poDate', 'quantity', 'priceQuoted', 'supplier', 'status'];
 
     itemSuppliersDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
     itemSuppliersTableColumns: string[] = ['supplierName', 'price', 'dateQuoted', 'actions'];
@@ -97,6 +99,7 @@ export class ItemDetailsComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.item = item;
+                console.log(">>> this.item.rfqItems", this.item.rfqItems);
                 this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
                 this.poItemsDataSource = new MatTableDataSource(this.item.purchaseOrderItems);
                 this.isLoading = false;
@@ -109,6 +112,7 @@ export class ItemDetailsComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((itemSuppliers) => {
                 this.itemSuppliers = itemSuppliers;
+                console.log(">>> this.itemSuppliers", this.itemSuppliers);
                 this.itemSuppliersDataSource = new MatTableDataSource(this.itemSuppliers);
                 this.isLoading = false;
             });
@@ -125,6 +129,24 @@ export class ItemDetailsComponent {
             // received data from dialog-component
             console.log(">>> res", res)
             if (res && res.added) {
+                this._getItemSuppliers();
+            }
+        })
+    }
+
+    openUpdateSupplierDialog(itemSupplier: any) {
+
+        console.log(">>> opening passing itemSupplier", itemSupplier);
+
+        const dialogRef = this.dialog.open(EditItemSupplierComponent, {
+            width: '600px',
+            data: itemSupplier,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            console.log(">>> res", res)
+            if (res && res.updated) {
                 this._getItemSuppliers();
             }
         })
@@ -151,6 +173,37 @@ export class ItemDetailsComponent {
                 });
             }
         });
+    }
+
+
+    deleteItemSupplier(itemSupplierId: number) {
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete item',
+            message: 'Are you sure you want to remove this item supplier? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+            // If the confirm button pressed...
+            if (result === 'confirmed') {
+                this.itemService.deleteItemSupplier(itemSupplierId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this._getItemSuppliers();
+                });
+            }
+        });
+    }
+
+    getSupplierPriceForItem(rfqItem: DetailedRfqItem){
+        return rfqItem.supplier?.supplierItems?.find(x => x.itemId == this.itemId).price;
+    }
+
+    getMarkup(rfqItem: DetailedRfqItem){
+        return  (this.getSupplierPriceForItem(rfqItem) / rfqItem.priceQuoted) * 100;
     }
 
 }
