@@ -48,6 +48,7 @@ import {FileUploadService} from "../../shared/file-upload.service";
 export class AddRfqComponent implements OnInit {
     editmode = false;
     verticalStepperForm: FormGroup;
+    itemForm: FormGroup;
     quoteDocumentPreview: string;
     rfqDocumentPreview: string;
     isSubmitted = false;
@@ -103,6 +104,7 @@ export class AddRfqComponent implements OnInit {
             // received data from dialog-component
             if (res) {
                 this.rfqItems.push(res);
+                console.log(this.rfqItems);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
 
             }
@@ -255,22 +257,22 @@ export class AddRfqComponent implements OnInit {
 
     addItem() {
         const newItem: ItemClass = new ItemClass();
-        newItem.name = this.verticalStepperForm.get('step3.itemForm.name').value;
-        newItem.shortDescription = this.verticalStepperForm.get('step3.itemForm.shortDescription').value;
-        newItem.description = this.verticalStepperForm.get('step3.itemForm.description').value;
-        newItem.sku = this.verticalStepperForm.get('step3.itemForm.sku').value;
-        newItem.rrsp = this.verticalStepperForm.get('step3.itemForm.rrsp').value;
-        newItem.thumbnail = this.verticalStepperForm.get('step3.itemForm.thumbnail').value;
-        newItem.categoryId = this.verticalStepperForm.get('step3.itemForm.category').value;
-        newItem.brandId = this.verticalStepperForm.get('step3.itemForm.brand').value;
+        newItem.name = this.itemForm.get('name').value;
+        newItem.shortDescription = this.itemForm.get('shortDescription').value;
+        newItem.description = this.itemForm.get('description').value;
+        newItem.sku = this.itemForm.get('sku').value;
+        newItem.rrsp = this.itemForm.get('rrsp').value;
+        newItem.thumbnail = this.itemForm.get('thumbnail').value;
+        newItem.categoryId = this.itemForm.get('category').value;
+        newItem.brandId = this.itemForm.get('brand').value;
         this.itemService
             .addItem(newItem)
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
                 (client) => {
                     this.addSuccess = true;
-                    // this.verticalStepperForm.step3.itemForm.reset();
-                    this.verticalStepperForm['step3.itemForm'].reset();
+                    // this.rfqForm.step3['itemForm'].reset();
+                    this.itemForm.reset();
                 },
                 (error) => {
                     this.addSuccess = false;
@@ -311,18 +313,19 @@ export class AddRfqComponent implements OnInit {
                 supplierId: [''],
                 expectedArrivalDate: [''],
                 price: [null],
-                itemForm: this.formBuilder.group({
-                    name: ['',],
-                    description: [''],
-                    shortDescription: [''],
-                    sku: [''],
-                    rrsp: [''],
-                    thumbnail: [''],
-                    category: [''],
-                    brand: [''],
-                }),
             }),
         });
+
+        this.itemForm = this.formBuilder.group({
+            name: ['',],
+            description: [''],
+            shortDescription: [''],
+            sku: [''],
+            rrsp: [''],
+            thumbnail: [''],
+            category: [''],
+            brand: [''],
+        })
     }
 
     private _getClients() {

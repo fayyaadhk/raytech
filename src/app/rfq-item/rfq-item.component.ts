@@ -131,8 +131,8 @@ export class RfqItemComponent implements OnInit {
         } else {
             this.expectedArrivalDate = null;
         }
-        if (this.rfqItemForm.get('supplier').value !== "") {
-            this.supplierId = this.rfqItemForm.get('supplier').value;
+        if (this.rfqItemForm.get('supplierId').value !== "") {
+            this.supplierId = this.rfqItemForm.get('supplierId').value;
             this._getSupplier(this.supplierId);
         } else {
             this.supplierId = null;
