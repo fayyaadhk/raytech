@@ -127,17 +127,11 @@
                                     </div>
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                            <mat-label>Category</mat-label>
-                                            <!--                                            <input matInput formControlName="category">-->
-                                            <mat-select
+                                            <mat-label>Category</mat-label><mat-select
                                                 name="category" formControlName="category">
                                                 <mat-option *ngFor="let category of categories"
                                                             [value]="category.id">{{category.name}}</mat-option>
                                             </mat-select>
-                                            <!--                                            <input-->
-                                            <!--                                                matInput-->
-                                            <!--                                                formControlName="category"-->
-                                            <!--                                                type="number">-->
                                             <mat-icon
                                                 class="icon-size-5"
                                                 matPrefix
@@ -146,15 +140,15 @@
                                     </div>
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                            <mat-label>Brand</mat-label>
-                                            <input
-                                                matInput
-                                                formControlName="brand"
-                                                type="number">
+                                            <mat-label>Brand</mat-label><mat-select
+                                            name="category" formControlName="brand">
+                                            <mat-option *ngFor="let brand of brands"
+                                                        [value]="brand.id">{{brand.name}}</mat-option>
+                                        </mat-select>
                                             <mat-icon
                                                 class="icon-size-5"
                                                 matPrefix
-                                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -171,7 +165,7 @@
                                     <mat-icon
                                         class="text-green-500"
                                         [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                    <span class="ml-2">Client added</span>
+                                    <span class="ml-2">Item added</span>
                                 </ng-container>
                                 <ng-container *ngIf="addSuccess === false">
                                     <mat-icon
@@ -187,7 +181,7 @@
                                     <mat-icon
                                         class="text-green-500"
                                         [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                    <span class="ml-2">Client updated</span>
+                                    <span class="ml-2">Item updated</span>
                                 </ng-container>
                                 <ng-container *ngIf="updateSuccess === false">
                                     <mat-icon

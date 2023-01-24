@@ -10,6 +10,7 @@ import {ItemService} from "../item.service";
 import {ItemClass} from '../item.model';
 import {CreateClientRequest} from "../../api/models/create-client-request";
 import {MatTableDataSource} from "@angular/material/table";
+import {BrandService} from "../../brand/brand.service";
 
 @Component({
   selector: 'app-add-item',
@@ -46,8 +47,10 @@ export class AddItemComponent {
     isLoading: boolean = false;
     item: [] = null;
     categories: any = null;
+    brands: any = null;
 
     constructor(private itemService: ItemService,
+                private brandService: BrandService,
                 private formBuilder: FormBuilder,
                 private _fuseConfirmationService: FuseConfirmationService,
                 private location: Location,
@@ -62,6 +65,7 @@ export class AddItemComponent {
         this._checkEditMode();
         this.isLoading = true;
         this._getCategories();
+        this._getBrands();
     }
 
     ngOnDestroy() {
@@ -88,6 +92,16 @@ export class AddItemComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((categories) => {
                 this.categories = categories;
+                this.isLoading = false;
+            });
+    }
+
+    private _getBrands(){
+        this.brandService
+            .getBrands()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((brands) => {
+                this.brands = brands;
                 this.isLoading = false;
             });
     }
