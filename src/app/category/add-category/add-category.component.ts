@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Category} from '../../api/models/category';
 import {CommodityService} from "../../commodity/commodity.service";
 import {Commodity} from "../../commodity/commodity.model";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-category',
@@ -87,9 +88,10 @@ export class AddCategoryComponent {
         } else {
             this._addCategory();
             this.isLoading = false;
-            this.router.navigateByUrl('categories');
+            // this.router.navigateByUrl('categories');
         }
     }
+
     onCancle() {
         this.location.back();
     }

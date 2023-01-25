@@ -1,0 +1,78 @@
+<div class="shadow-lg overflow-hidden">
+    <div class="flex border-b">
+        <!-- Selected product form -->
+        <form
+            class="flex flex-col w-full"
+            [formGroup]="categoryForm">
+            <div class="flex flex-col sm:flex-row p-8">
+
+                <div class="flex flex-auto flex-wrap">
+                    <!-- Name, SKU & etc. -->
+                    <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+                        <p class="text-lg font-medium" mat-dialog-title>Add Category</p>
+                        <p class="text-secondary mb-6">
+                            Adding category for item
+                        </p>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="flex">
+                                <mat-form-field class="flex-auto gt-xs:pr-3 fuse-mat-textarea">
+                                    <mat-label>Name</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="name"
+                                        [placeholder]="'Name'">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        matPrefix
+                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>Commodity</mat-label>
+                                    <mat-select
+                                        name="rfq" formControlName="commodityId">
+                                        <mat-option *ngFor="let commodity of commodities"
+                                                    [value]="commodity.id">{{commodity.name}}</mat-option>
+                                    </mat-select>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        matPrefix
+                                        [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center mr-4"
+                        *ngIf="addSuccess">
+                        <ng-container *ngIf="addSuccess === true">
+                            <mat-icon
+                                class="text-green-500"
+                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                            <span class="ml-2">Item added</span>
+                        </ng-container>
+                        <ng-container *ngIf="addSuccess === false">
+                            <mat-icon
+                                class="text-red-500"
+                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                            <span class="ml-2">An error occurred, try again!</span>
+                        </ng-container>
+                    </div>
+                    <button
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="onSubmit()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
