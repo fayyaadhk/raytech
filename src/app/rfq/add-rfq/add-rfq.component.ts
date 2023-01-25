@@ -97,6 +97,7 @@ export class AddRfqComponent implements OnInit {
     openDialog() {
 
         const dialogRef = this.dialog.open(RfqItemComponent, {
+            height: '800px',
             width: '600px',
             data: {modalTitle: 'Add New RFQ Item'},
         });
@@ -115,6 +116,7 @@ export class AddRfqComponent implements OnInit {
     openCreateNewItemDialog() {
 
         const dialogRef = this.dialog.open(AddNewItemComponent, {
+            height: '800px',
             width: '600px',
             data: {modalTitle: 'Add New Item'},
         });
@@ -135,6 +137,7 @@ export class AddRfqComponent implements OnInit {
     updateRfqItem(rfqItemId: number, rfqId: number, supplierId: number, quantity: string, price: number, status: string) {
 
         const dialogRef = this.dialog.open(RfqItemComponent, {
+            height: '800px',
             width: '600px',
             data: {
                 rfqItemId: rfqItemId,

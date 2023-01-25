@@ -10,6 +10,8 @@ import {RfqStatus} from "../../../data/rfq-status";
 import {SupplierService} from "../../../suppliers/suppliers.service";
 import {RFQItemStatus} from "../../../data/rfq-item-status";
 import {Item} from "../../../api/models/item";
+import {AddItemCategoryComponent} from "../../../item/add-item/add-item-category/add-item-category.component";
+import {AddItemBrandComponent} from "../../../item/add-item/add-item-brand/add-item-brand.component";
 
 @Component({
     selector: 'app-add-new-item',
@@ -43,7 +45,8 @@ export class AddNewItemComponent implements OnInit {
         private categoryService: CategoryService,
         private brandService: BrandService,
         private supplierService: SupplierService,
-        private dialogRef: MatDialogRef<AddNewItemComponent>
+        private dialogRef: MatDialogRef<AddNewItemComponent>,
+        private dialog: MatDialog,
     ) {
     }
 
@@ -156,6 +159,41 @@ export class AddNewItemComponent implements OnInit {
                 priceQuoted: [null],
             }),
         });
+    }
+
+    openDialogCategory() {
+        const dialogRef = this.dialog.open(AddItemCategoryComponent, {
+            width: '600px',
+            data: {
+                modalTitle: 'Add New Category',
+            },
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res) {
+                this._getCategories();
+                this.newItemForm.get('step1.category').setValue(res.categoryId);
+            }
+        });
+    }
+
+    openDialogBrand() {
+        const dialogRef = this.dialog.open(AddItemBrandComponent, {
+            width: '600px',
+            data: {modalTitle: 'Add New Brand'},
+        });
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res) {
+                this._getBrands();
+                this.newItemForm.get('step1.brand').setValue(res.brandId);
+            }
+        });
+    }
+
+    get itemForm() {
+        return this.newItemForm.controls;
     }
 
 }

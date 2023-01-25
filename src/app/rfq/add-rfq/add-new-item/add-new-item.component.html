@@ -6,7 +6,7 @@
 
                 <div class="prose prose-sm max-w-3xl">
                     <h2>Create a New Item</h2>
-                    <p class="my-6 font-medium">
+                    <p class="my-2 font-medium">
                         Create a new item to add to the RFQ
                     </p>
                 </div>
@@ -19,7 +19,8 @@
                         #addNewItemStepper>
                         <mat-step
                             [formGroupName]="'step1'"
-                            [stepControl]="newItemForm.get('step1')">
+                            [stepControl]="newItemForm.get('step1')"
+                            #itemStepperStep1>
                             <ng-template matStepLabel>Add New Item</ng-template>
 
                             <div class="flex flex-col my-6">
@@ -124,6 +125,14 @@
                                                     [svgIcon]="'heroicons_solid:view-list'"></mat-icon>
                                             </mat-form-field>
                                         </div>
+                                        <div class="flex flex-col my-3">
+                                            <div class="flex flex-col my-2">
+                                                <button mat-stroked-button [color]="'primary'" (click)="openDialogCategory()">Add Category</button>
+                                            </div>
+                                            <div class="flex flex-col my-2">
+                                                <button mat-stroked-button [color]="'primary'" (click)="openDialogBrand()">Add Brand</button>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </div>
                             </div>
@@ -141,6 +150,7 @@
                                     mat-flat-button
                                     [color]="'primary'"
                                     type="button"
+                                    [disabled]="itemStepperStep1.stepControl.pristine || itemStepperStep1.stepControl.invalid"
                                     matStepperNext
                                 (click)="createNewItem()">
                                     Next
