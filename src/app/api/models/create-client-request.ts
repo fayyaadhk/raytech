@@ -3,7 +3,7 @@
 import { ContactInformation } from './contact-information';
 import { Person } from './person';
 export class CreateClientRequest {
-  buyer?: Person[];
+  buyers?: Person[];
   contactInformation?: ContactInformation;
   name?: null | string;
   vatNumber?: null | string;

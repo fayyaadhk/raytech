@@ -20,6 +20,7 @@ import {CategoryService} from "../../category/category.service";
 import {BrandService} from "../../brand/brand.service";
 import {RfqStatus} from "../../data/rfq-status";
 import {FileUploadService} from "../../shared/file-upload.service";
+import {AddNewItemComponent} from "./add-new-item/add-new-item.component";
 
 @Component({
     selector: 'app-add-rfq',
@@ -106,6 +107,26 @@ export class AddRfqComponent implements OnInit {
                 this.rfqItems.push(res);
                 console.log(this.rfqItems);
                 this.dataSource = new MatTableDataSource(this.rfqItems);
+
+            }
+        })
+    }
+
+    openCreateNewItemDialog() {
+
+        const dialogRef = this.dialog.open(AddNewItemComponent, {
+            width: '600px',
+            data: {modalTitle: 'Add New Item'},
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res) {
+                console.log(res);
+                this.rfqItems.push(res);
+                console.log(this.rfqItems);
+                this.dataSource = new MatTableDataSource(this.rfqItems);
+                // this.dataSource = new MatTableDataSource(this.rfqItems);
 
             }
         })
