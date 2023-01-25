@@ -27,6 +27,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatTableModule} from '@angular/material/table';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { AddNewItemComponent } from './add-new-item/add-new-item.component';
 
 const addRfqRoutes: Route[] = [
     {
@@ -38,7 +39,8 @@ const addRfqRoutes: Route[] = [
 @NgModule({
     declarations: [
         AddRfqComponent,
-        RfqItemComponent
+        RfqItemComponent,
+        AddNewItemComponent
     ],
     imports: [
         RouterModule.forChild(addRfqRoutes),

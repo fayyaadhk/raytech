@@ -5,7 +5,7 @@ import { Person } from './person';
 import { Rfq } from './rfq';
 import {PurchaseOrder} from "./purchase-order";
 export class Client {
-  buyer?: Person[];
+  buyers?: Person[];
   contactInformation?: ContactInformation;
   id?: number;
   name?: null | string;

@@ -145,7 +145,8 @@
                                             name="status"
                                             formControlName="status"
                                             [placeholder]="'Status'">
-                                            <mat-option *ngFor="let status of keys(rfqStatus)" [value]="status">{{rfqStatus[status]}}</mat-option>
+                                            <mat-option *ngFor="let status of keys(rfqStatus)"
+                                                        [value]="status">{{rfqStatus[status]}}</mat-option>
                                         </mat-select>
                                         <mat-icon
                                             class="icon-size-5"
@@ -156,7 +157,8 @@
 
                                     <mat-label>RFQ Document</mat-label>
 
-                                    <input formControlName="rfqDocument" type="file" (change)="uploadRFQDocument($event)">
+                                    <input formControlName="rfqDocument" type="file"
+                                           (change)="uploadRFQDocument($event)">
 
 
                                 </div>
@@ -180,180 +182,72 @@
                                     Select items from inventory for this RFQ
                                 </p>
                                 <div class="flex flex-col my-6">
-                                    <div class="flex flex-col">
-                                        <button mat-stroked-button (click)="openDialog()">Attach item to RFQ</button>
+                                    <div class="flex flex-col my-2">
+                                        <button mat-stroked-button (click)="openDialog()">Attach Existing Item to RFQ</button>
                                     </div>
 
+                                    <div class="flex flex-col my-2">
+                                        <button [color]="'primary'" mat-stroked-button (click)="openCreateNewItemDialog()">Create New Item for RFQ</button>
+                                    </div>
                                 </div>
                                 <div class="flex flex-col gt-sm:flex-row">
                                     <div class="flex flex-col">
-                                            <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                                                <ng-container matColumnDef="id">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.itemId}} </mat-cell>
-                                                </ng-container>
+                                        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                                            <ng-container matColumnDef="id">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
+                                                <mat-cell *matCellDef="let rfqItems"> {{rfqItems.itemId}} </mat-cell>
+                                            </ng-container>
 
-                                                <ng-container matColumnDef="name">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.name}} </mat-cell>
-                                                </ng-container>
+                                            <ng-container matColumnDef="name">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Name
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let rfqItems"> {{rfqItems.name}} </mat-cell>
+                                            </ng-container>
 
-                                                <ng-container matColumnDef="supplierName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.supplierName}} </mat-cell>
-                                                </ng-container>
+                                            <ng-container matColumnDef="supplierName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Supplier
+                                                </mat-header-cell>
+                                                <mat-cell
+                                                    *matCellDef="let rfqItems"> {{rfqItems.supplierName}} </mat-cell>
+                                            </ng-container>
 
-                                                <ng-container matColumnDef="quantity">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.quantity}} </mat-cell>
-                                                </ng-container>
+                                            <ng-container matColumnDef="quantity">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let rfqItems"> {{rfqItems.quantity}} </mat-cell>
+                                            </ng-container>
 
-                                                <ng-container matColumnDef="priceQuoted">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems"> {{rfqItems.priceQuoted}} </mat-cell>
-                                                </ng-container>
+                                            <ng-container matColumnDef="priceQuoted">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Price
+                                                </mat-header-cell>
+                                                <mat-cell
+                                                    *matCellDef="let rfqItems"> {{rfqItems.priceQuoted}} </mat-cell>
+                                            </ng-container>
 
-                                                <ng-container matColumnDef="actions">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                                    <mat-cell *matCellDef="let rfqItems; let i = index">
-                                                        <div class="truncate">
-                                                            <button
-                                                                (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.priceQuoted, rfqItems.status)">
-                                                                <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+                                            <ng-container matColumnDef="actions">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Actions
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let rfqItems; let i = index">
+                                                    <div class="truncate">
+                                                        <button
+                                                            (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.priceQuoted, rfqItems.status)">
+                                                            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
-                                                            </button>
-                                                            <button
-                                                                class="ml-4"
-                                                                (click)="removeRfqItem(rfqItems.id, rfqItems.rfqItemId)">
-                                                                <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
-                                                            </button>
-                                                        </div>
-                                                    </mat-cell>
-                                                </ng-container>
+                                                        </button>
+                                                        <button
+                                                            class="ml-4"
+                                                            (click)="removeRfqItem(rfqItems.id, rfqItems.rfqItemId)">
+                                                            <mat-icon
+                                                                [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
 
-                                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-                                                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                                            </mat-table>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col my-6">
-                                    <div class="flex flex-col">
-                                        <mat-expansion-panel [formGroup]="itemForm">
-                                            <mat-expansion-panel-header>
-                                                <mat-panel-title>
-                                                    Add New Item
-                                                </mat-panel-title>
-                                                <mat-panel-description>
-                                                    Add additional items
-                                                </mat-panel-description>
-                                            </mat-expansion-panel-header>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="name"
-                                                        [placeholder]="'Name'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="description"
-                                                        [placeholder]="'Description'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="shortDescription"
-                                                        [placeholder]="'Short Description'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="sku"
-                                                        [placeholder]="'SKU'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:tag'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="rrsp"
-                                                        type="number"
-                                                        [placeholder]="'RRSP'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:cash'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <input
-                                                        matInput
-                                                        formControlName="thumbnail"
-                                                        [placeholder]="'Thumbnail'">
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:photograph'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                <mat-select
-                                                    name="category" formControlName="category" placeholder="Category">
-                                                    <mat-option *ngFor="let category of categories"
-                                                                [value]="category.id">{{category.name}}</mat-option>
-                                                </mat-select>
-                                                <mat-icon
-                                                    class="icon-size-5"
-                                                    matPrefix
-                                                    [svgIcon]="'heroicons_solid:view-list'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="flex">
-                                                <mat-form-field class="flex-auto gt-xs:pr-3">
-                                                    <mat-select
-                                                        name="brand" formControlName="brand" placeholder="Brand">
-                                                        <mat-option *ngFor="let brand of brands"
-                                                                    [value]="brand.id">{{brand.name}}</mat-option>
-                                                    </mat-select>
-                                                    <mat-icon
-                                                        class="icon-size-5"
-                                                        matPrefix
-                                                        [svgIcon]="'heroicons_solid:view-list'"></mat-icon>
-                                                </mat-form-field>
-                                            </div>
-                                            <button
-                                                mat-flat-button
-                                                (click)="addItem()"
-                                                [color]="'primary'">
-                                                Add Item
-                                            </button>
-                                        </mat-expansion-panel>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                                        </mat-table>
                                     </div>
                                 </div>
                                 <div class="flex justify-end mt-8">

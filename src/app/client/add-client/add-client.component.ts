@@ -86,7 +86,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 console.log('>>> this.client', this.client.contactInformation);
                 updateClient.name = this.form.get('name').value;
                 updateClient.vatNumber = this.form.get('vatNumber').value;
-                updateClient.buyer = this.form.get('buyer').value;
+                updateClient.buyers = this.form.get('buyer').value;
                 updateClient.contactInformation = this.form.get('contactInformation').value;
                 updateClient.contactInformation.id = this.client.contactInformation.id;
                 updateClient.contactInformation.address.id = this.client.contactInformation.address.id;
@@ -94,7 +94,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
             } else {
                 if (!this.updateOld) {
                     updateClient.name = this.form.get('name').value;
-                    updateClient.buyer = this.form.get('buyer').value;
+                    updateClient.buyers = this.form.get('buyer').value;
                     updateClient.contactInformation = this.form.get('contactInformation').value;
                 }
             }
