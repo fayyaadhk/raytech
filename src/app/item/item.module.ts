@@ -29,6 +29,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {AngularMaterialModule} from "../angular-material.module";
 import { EditItemSupplierComponent } from './edit-item-supplier/edit-item-supplier.component';
+import { AddItemBrandComponent } from './add-item/add-item-brand/add-item-brand.component';
+import { AddItemCategoryComponent } from './add-item/add-item-category/add-item-category.component';
 
 const itemRoutes: Route[] = [
     {
@@ -47,7 +49,9 @@ const itemRoutes: Route[] = [
         ItemComponent,
         ItemDetailsComponent,
         AddItemSupplierComponent,
-        EditItemSupplierComponent
+        EditItemSupplierComponent,
+        AddItemBrandComponent,
+        AddItemCategoryComponent
     ],
     providers:[MatDatepickerModule],
     imports: [

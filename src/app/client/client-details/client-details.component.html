@@ -43,29 +43,31 @@
 
                     </div>
                     <div class="flex flex-row flex-wrap mt-4 -mx-6">
+                        <ng-container *ngIf="clients.contactInformation">
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Email</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{clients.contactInformation.email}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{clients?.contactInformation?.email}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Cellphone</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{clients.contactInformation.cellphone}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{clients?.contactInformation?.cellphone}}</div>
                         </div>
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Work</div>
-                            <div class="mt-2 font-medium text-xl leading-none">{{clients.contactInformation.work}}</div>
+                            <div class="mt-2 font-medium text-xl leading-none">{{clients?.contactInformation?.work}}</div>
                         </div>
 
                         <div class="flex flex-col mx-6 my-3">
                             <div class="text-sm font-medium leading-none text-secondary">Whatsapp</div>
                             <div
-                                class="mt-2 font-medium text-xl leading-none">{{clients.contactInformation.whatsapp}}</div>
+                                class="mt-2 font-medium text-xl leading-none">{{clients?.contactInformation?.whatsapp}}</div>
                         </div>
                         <!--                        <div class="flex flex-col mx-6 my-3">-->
                         <!--                            <div class="text-sm font-medium leading-none text-secondary">Minimum</div>-->
                         <!--                            <div class="mt-2 font-medium text-3xl leading-none">{{ | currency:'USD'}}</div> -->
+                        </ng-container>
                     </div>
                 </div>
             </div>

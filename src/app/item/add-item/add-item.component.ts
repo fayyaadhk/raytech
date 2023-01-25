@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
 import {CategoryService} from "../../category/category.service";
@@ -11,10 +11,16 @@ import {ItemClass} from '../item.model';
 import {CreateClientRequest} from "../../api/models/create-client-request";
 import {MatTableDataSource} from "@angular/material/table";
 import {BrandService} from "../../brand/brand.service";
+import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
+import {AddCategoryComponent} from "../../category/add-category/add-category.component";
+import {MatDialog} from "@angular/material/dialog";
+import {AddBrandComponent} from "../../brand/add-brand/add-brand.component";
+import {AddItemBrandComponent} from "./add-item-brand/add-item-brand.component";
+import {AddItemCategoryComponent} from "./add-item-category/add-item-category.component";
 
 @Component({
-  selector: 'app-add-item',
-  templateUrl: './add-item.component.html',
+    selector: 'app-add-item',
+    templateUrl: './add-item.component.html',
     styles: [
         /* language=SCSS */`
             .inventory-grid {
@@ -55,9 +61,9 @@ export class AddItemComponent {
                 private _fuseConfirmationService: FuseConfirmationService,
                 private location: Location,
                 private route: ActivatedRoute,
+                private dialog: MatDialog,
                 private router: Router,
-                private categoryService: CategoryService)
-                {
+                private categoryService: CategoryService) {
     }
 
     ngOnInit() {
@@ -79,14 +85,45 @@ export class AddItemComponent {
             description: [''],
             shortDescription: [''],
             sku: [''],
-            rrsp: [''],
+            rrsp: [null],
             thumbnail: [''],
-            category: [''],
+            category: [null],
             brand: [null],
         });
     }
 
-    private _getCategories(){
+    openDialogCategory() {
+        const dialogRef = this.dialog.open(AddItemCategoryComponent, {
+            width: '600px',
+            data: {
+                modalTitle: 'Add New Category',
+            },
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res) {
+                this._getCategories();
+                this.itemForm.category.setValue(res.categoryId);
+            }
+        });
+    }
+
+    openDialogBrand() {
+        const dialogRef = this.dialog.open(AddItemBrandComponent, {
+            width: '600px',
+            data: {modalTitle: 'Add New Brand'},
+        });
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res) {
+                this._getBrands();
+                this.itemForm.brand.setValue(res.brandId);
+            }
+        });
+    }
+
+    private _getCategories() {
         this.categoryService
             .getCategories()
             .pipe(takeUntil(this.endsubs$))
@@ -96,7 +133,7 @@ export class AddItemComponent {
             });
     }
 
-    private _getBrands(){
+    private _getBrands() {
         this.brandService
             .getBrands()
             .pipe(takeUntil(this.endsubs$))
@@ -110,7 +147,9 @@ export class AddItemComponent {
         this.isSubmitted = true;
         this.isLoading = true;
 
-        if (this.form.invalid) {return;}
+        if (this.form.invalid) {
+            return;
+        }
         const updateClient: ItemClass = new ItemClass();
         updateClient.name = this.form.get('name').value;
         updateClient.shortDescription = this.form.get('shortDescription').value;
@@ -125,10 +164,11 @@ export class AddItemComponent {
             // this.location.back();
         } else {
             this._addItem();
-            this.isLoading = false;
             this.router.navigateByUrl('items');
+            this.isLoading = false;
         }
     }
+
     onCancle() {
         this.location.back();
     }
@@ -136,7 +176,7 @@ export class AddItemComponent {
     onImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
-            this.form.patchValue({ image: file });
+            this.form.patchValue({image: file});
             this.form.get('image').updateValueAndValidity();
             const fileReader = new FileReader();
             fileReader.onload = () => {

@@ -5,6 +5,7 @@ import {Location} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BrandService} from "../brand.service";
 import {Brand} from "../../api/models/brand";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-brand',
@@ -60,13 +61,14 @@ export class AddBrandComponent implements OnInit {
         if (this.editmode) {
             this._updateBrand(updateBrand);
             this.isLoading = false;
-            // this.router.navigateByUrl('brands');
+            this.router.navigateByUrl('brands');
         } else {
             this._addBrand();
             this.isLoading = false;
-            // this.router.navigateByUrl('brands');
+            this.router.navigateByUrl('brands');
         }
     }
+
     onCancle() {
         this.location.back();
     }
@@ -80,7 +82,7 @@ export class AddBrandComponent implements OnInit {
             .createBrand(brandForm)
             .pipe(takeUntil(this.endsubs$))
             .subscribe(
-                (category) => {
+                (brand) => {
                     this.addSuccess = true;
                     this.form.reset();
                 },
