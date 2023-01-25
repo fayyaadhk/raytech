@@ -124,6 +124,11 @@ export class RfqItemComponent implements OnInit {
             });
     }
 
+    getSupplierName(id: number) {
+        console.log(">>> this.suppliers", this.suppliers);
+        return this.suppliers.find(x => x.id == id).name;
+    }
+
     onSubmit() {
         this.itemId = this.rfqItemForm.get('itemId').value;
         if (this.rfqItemForm.get('expectedArrivalDate').value !== "") {
