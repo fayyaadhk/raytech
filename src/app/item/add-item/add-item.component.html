@@ -127,7 +127,8 @@
                                     </div>
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                            <mat-label>Category</mat-label><mat-select
+                                            <mat-label>Category</mat-label>
+                                            <mat-select
                                                 name="category" formControlName="category">
                                                 <mat-option *ngFor="let category of categories"
                                                             [value]="category.id">{{category.name}}</mat-option>
@@ -140,16 +141,25 @@
                                     </div>
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
-                                            <mat-label>Brand</mat-label><mat-select
-                                            name="category" formControlName="brand">
-                                            <mat-option *ngFor="let brand of brands"
-                                                        [value]="brand.id">{{brand.name}}</mat-option>
-                                        </mat-select>
+                                            <mat-label>Brand</mat-label>
+                                            <mat-select
+                                                name="category" formControlName="brand">
+                                                <mat-option *ngFor="let brand of brands"
+                                                            [value]="brand.id">{{brand.name}}</mat-option>
+                                            </mat-select>
                                             <mat-icon
                                                 class="icon-size-5"
                                                 matPrefix
                                                 [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
                                         </mat-form-field>
+                                    </div>
+                                    <div class="flex flex-col my-3">
+                                        <div class="flex flex-col my-2">
+                                            <button mat-stroked-button [color]="'primary'" (click)="openDialogCategory()">Add Category</button>
+                                        </div>
+                                        <div class="flex flex-col my-2">
+                                            <button mat-stroked-button [color]="'primary'" (click)="openDialogBrand()">Add Brand</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
