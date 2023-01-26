@@ -5,7 +5,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {Client} from '../../api/models/client';
 import {FuseConfirmationService} from '../../../@fuse/services/confirmation';
 import {Location} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CreateClientRequest} from "../../api/models/create-client-request";
 import {HttpParams} from "@angular/common/http";
 
@@ -50,7 +50,8 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 private formBuilder: FormBuilder,
                 private _fuseConfirmationService: FuseConfirmationService,
                 private location: Location,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private router: Router,) {
 
     }
 
@@ -100,11 +101,12 @@ export class AddClientComponent implements OnInit, OnDestroy {
             }
             this._updateClient(updateClient);
             this.isLoading = false;
+            this.router.navigateByUrl('clients');
             // this.location.back();
         } else {
             this._addClient();
             this.isLoading = false;
-            this.location.back();
+            this.router.navigateByUrl('clients');
         }
     }
 
@@ -130,16 +132,16 @@ export class AddClientComponent implements OnInit, OnDestroy {
             name: ['', Validators.required],
             buyer: [null],
             contactInformation: this.formBuilder.group({
-                work: [''],
-                cellphone: [''],
-                telephone: [''],
-                whatsapp: [''],
+                work: [null],
+                cellphone: [null],
+                telephone: [null],
+                whatsapp: [null],
                 email: [''],
                 address: this.formBuilder.group({
                     line1: [''],
                     line2: [''],
                     suburb: [''],
-                    postalCode: [''],
+                    postalCode: [null],
                     city: [''],
                     province: [''],
                     country: [''],
@@ -150,30 +152,43 @@ export class AddClientComponent implements OnInit, OnDestroy {
     }
 
     private _addClient() {
-        const newClient: CreateClientRequest = new CreateClientRequest();
-
-        newClient.name = this.form.get('name').value;
-        newClient.vatNumber = this.form.get('vatNumber').value;
-
-        if (this.form.get('contactInformation').value) {
-            newClient.contactInformation = this.form.get('contactInformation').value;
-        } else {
-            newClient.contactInformation = null;
+        const newClient: CreateClientRequest = {
+            name: this.form.get('name').value,
+            vatNumber: this.form.get('vatNumber').value,
+            contactInformation: {
+                work: this.form.get('contactInformation.work').value,
+                telephone: this.form.get('contactInformation.telephone').value,
+                cellphone: this.form.get('contactInformation.cellphone').value,
+                email: this.form.get('contactInformation.email').value,
+                whatsapp: this.form.get('contactInformation.whatsapp').value,
+                address: {
+                    line1: this.form.get('contactInformation.address.line1').value,
+                    line2: this.form.get('contactInformation.address.line2').value,
+                    postalCode: this.form.get('contactInformation.address.postalCode').value,
+                    suburb: this.form.get('contactInformation.address.suburb').value,
+                    city: this.form.get('contactInformation.address.city').value,
+                    province: this.form.get('contactInformation.address.province').value,
+                    country: this.form.get('contactInformation.address.country').value,
+                }
+            }
         }
-        /*  newClient.contactInformation.work = this.form.get(['contactInformation','work']).value;
-
-          //newClient.contactInformation.work = this.form.controls['contactInformation'].value.work;
-          newClient.contactInformation.telephone = this.form.get(['contactInformation','telephone']).value;
-          newClient.contactInformation.cellphone = this.form.get(['contactInformation','cellphone']).value;
-          newClient.contactInformation.email = this.form.get(['contactInformation','email']).value;
-          newClient.contactInformation.whatsapp = this.form.get(['contactInformation','whatsapp']).value;
-          newClient.contactInformation.address.line1 = this.form.get(['contactInformation','address', 'line1']).value;
-          newClient.contactInformation.address.line2 = this.form.get(['contactInformation','address', 'line2']).value;
-          newClient.contactInformation.address.postalCode = this.form.get(['contactInformation','address', 'postalCode']).value;
-          newClient.contactInformation.address.suburb = this.form.get(['contactInformation','address', 'suburb']).value;
-          newClient.contactInformation.address.city = this.form.get(['contactInformation','address', 'city']).value;
-          newClient.contactInformation.address.province = this.form.get(['contactInformation','address', 'province']).value;
-          newClient.contactInformation.address.country = this.form.get(['contactInformation','address', 'country']).value;*/
+        console.log(newClient);
+        //
+        // newClient.name = this.form.get('name').value;
+        // newClient.vatNumber = this.form.get('vatNumber').value;
+        // console.log('work ', this.form.get('contactInformation.work').value);
+        // newClient.contactInformation.work = this.form.get('contactInformation.work').value;
+        // newClient.contactInformation.telephone = this.form.get('contactInformation.telephone').value;
+        // newClient.contactInformation.cellphone = this.form.get('contactInformation.cellphone').value;
+        // newClient.contactInformation.email = this.form.get('contactInformation.email').value;
+        // newClient.contactInformation.whatsapp = this.form.get('contactInformation.whatsapp').value;
+        // newClient.contactInformation.address.line1 = this.form.get('contactInformation.address.line1').value;
+        // newClient.contactInformation.address.line2 = this.form.get('contactInformation.address.line2').value;
+        // newClient.contactInformation.address.postalCode = this.form.get('contactInformation.address.postalCode').value;
+        // newClient.contactInformation.address.suburb = this.form.get('contactInformation.address.suburb').value;
+        // newClient.contactInformation.address.city = this.form.get('contactInformation.address.city').value;
+        // newClient.contactInformation.address.province = this.form.get('contactInformation.address.province').value;
+        // newClient.contactInformation.address.country = this.form.get('contactInformation.address.country').value;
         //newClient.rfQs = this.form.get('rfq').value;
 
         if (newClient) {
