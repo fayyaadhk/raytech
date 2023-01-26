@@ -89,18 +89,34 @@ export class AddNewItemComponent implements OnInit {
     addItemToRfq() {
         let sId = this.newItemForm.get('step2.supplierId').value;
 
-        this.dialogRef.close(
-            {
-                itemId: this.item.id,
-                supplierId: sId,
-                name: this.item.name,
-                supplierName: this.getSupplierName(sId),
-                quantity: this.newItemForm.get('step2.quantity').value,
-                priceQuoted: this.newItemForm.get('step2.priceQuoted').value,
-                expectedArrivalDate: this.newItemForm.get('step2.expectedArrivalDate').value,
-                status: this.newItemForm.get('step2.status').value
-            }
-        )
+        if (sId) {
+            this.dialogRef.close(
+                {
+                    itemId: this.item.id,
+                    supplierId: sId,
+                    name: this.item.name,
+                    supplierName: this.getSupplierName(sId),
+                    quantity: this.newItemForm.get('step2.quantity').value,
+                    priceQuoted: this.newItemForm.get('step2.priceQuoted').value,
+                    expectedArrivalDate: this.newItemForm.get('step2.expectedArrivalDate').value,
+                    status: this.newItemForm.get('step2.status').value
+                }
+            )
+        }
+        else{
+            this.dialogRef.close(
+                {
+                    itemId: this.item.id,
+                    supplierId: sId,
+                    name: this.item.name,
+                    supplierName: '',
+                    quantity: this.newItemForm.get('step2.quantity').value,
+                    priceQuoted: this.newItemForm.get('step2.priceQuoted').value,
+                    expectedArrivalDate: this.newItemForm.get('step2.expectedArrivalDate').value,
+                    status: this.newItemForm.get('step2.status').value
+                }
+            )
+        }
     }
 
     getSupplierName(id: number) {
