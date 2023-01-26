@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import {Category} from '../api/models/category';
 
-const apiURLCategories = 'http://raytechholdings-001-site1.etempurl.com/api/' + 'categories';
+const apiURLCategories = 'https://raytechholdings.com/api/' + 'categories';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {

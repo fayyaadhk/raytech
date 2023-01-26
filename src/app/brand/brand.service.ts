@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 
 import {Brand} from "../api/models/brand";
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLBrands = 'http://raytechholdings-001-site1.etempurl.com/api/' + 'brands';
+const apiURLBrands = 'https://raytechholdings.com/api/' + 'brands';
 
 @Injectable({ providedIn: 'root' })
 export class BrandService {

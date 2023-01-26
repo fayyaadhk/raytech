@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';;
-import { Router } from '@angular/router';
+import {Observable} from 'rxjs';
+
+import {Router} from '@angular/router';
 
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
 import {UpdateRfqItem} from "../../api/models/update-rfq-item";
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLPOItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseorderitems';
+const apiURLPOItems = 'https://raytechholdings.com/' + 'api/purchaseorderitems';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PurchaseOrderItemService {
 
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) {
+    }
 
     getPurchaseOrderItems(): Observable<PurchaseOrderItem[]> {
         return this.http.get<PurchaseOrderItem[]>(apiURLPOItems);
@@ -23,7 +24,7 @@ export class PurchaseOrderItemService {
     //     return this.http.post<RfqItem>(apiURLRfqItems, rfqItemData);
     // }
 
-    createPurchaseOrderItem(model: PurchaseOrderItem): Observable<PurchaseOrderItem>{
+    createPurchaseOrderItem(model: PurchaseOrderItem): Observable<PurchaseOrderItem> {
         return this.http.post<PurchaseOrderItem>(apiURLPOItems, model);
     }
 

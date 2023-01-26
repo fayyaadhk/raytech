@@ -1,30 +1,21 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, switchMap, take, tap} from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-// import {Rfq} from "./rfq.model";
-import {Rfq} from '../api/models/rfq';
-import {Client} from "../client/client.model";
-import {CreateRfqRequest} from "../api/models/create-rfq-request";
+import {Router} from '@angular/router';
 import {PurchaseOrder} from "../api/models/purchase-order";
-import {CreatePurchaseOrderRequest} from "../api/models/create-purchase-order-request";
-import {UpdateRfqItem} from "../api/models/update-rfq-item";
-import {CreateRfqItem} from "../api/models/create-rfq-item";
 import {CreatePurchaseOrderItemRequest} from "../api/models/create-purchase-order-item-request";
 import {UpdatePurchaseOrderItemRequest} from "../api/models/update-purchase-order-item-request";
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseOrders';
-// const apiURL = 'https://localhost:7234/' + 'api/purchaseOrders';
-const poItemsApiURL = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/purchaseorderitems';
+const apiURL = 'https://raytechholdings.com/' + 'api/purchaseOrders';
+const poItemsApiURL = 'https://raytechholdings.com/' + 'api/purchaseorderitems';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PurchaseOrderService {
 
     private purchaseOrders: PurchaseOrder[] = [];
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) {
+    }
 
     getPurchaseOrders(): Observable<PurchaseOrder[]> {
         return this.http.get<PurchaseOrder[]>(apiURL);

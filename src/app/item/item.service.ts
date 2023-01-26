@@ -11,10 +11,8 @@ import {ItemSupplier} from "../api/models/item-supplier";
 import {CreateItemSupplierRequest} from "../api/models/create-item-supplier-request";
 import {UpdateItemSupplierRequest} from "../api/models/update-item-supplier-request";
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-// const apiURLItems = 'http://localhost:3000/' + 'Items';
-const apiURLItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/items';
-const apiURLItemSuppliers = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/itemSuppliers';
+const apiURLItems = 'https://raytechholdings.com/' + 'api/items';
+const apiURLItemSuppliers = 'https://raytechholdings.com/' + 'api/itemSuppliers';
 
 @Injectable({ providedIn: 'root' })
 export class ItemService {
