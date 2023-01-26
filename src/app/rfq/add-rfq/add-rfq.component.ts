@@ -334,7 +334,7 @@ export class AddRfqComponent implements OnInit {
                 rfqItems: new FormArray([]),
                 quantity: [null],
                 status: [''],
-                supplierId: [''],
+                supplierId: [null],
                 expectedArrivalDate: [''],
                 price: [null],
             }),

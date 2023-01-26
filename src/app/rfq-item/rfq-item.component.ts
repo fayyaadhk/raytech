@@ -64,8 +64,8 @@ export class RfqItemComponent implements OnInit {
 
     private _initForm() {
         this.rfqItemForm = this.formBuilder.group({
-            itemId: ['', Validators.required],
-            supplierId: [''],
+            itemId: [null, Validators.required],
+            supplierId: [null],
             name: [''],
             quantity: [null],
             priceQuoted: [null],
