@@ -105,7 +105,7 @@ export class AddNewItemComponent implements OnInit {
 
     getSupplierName(id: number) {
         console.log(">>> this.suppliers", this.suppliers);
-        return this.suppliers.find(x => x.id == id).name;
+        return this.suppliers?.find(x => x.id == id)?.name;
     }
 
     private _getBrands() {
