@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 
 import {DashboardSummary} from "../api/models/dashboard-summary";
 
-const apiURLItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/datasummary';
+const apiURLItems = 'https://raytechholdings.com/' + 'api/datasummary';
 
 @Injectable({providedIn: 'root'})
 export class DataSummaryService {

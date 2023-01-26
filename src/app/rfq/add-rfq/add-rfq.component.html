@@ -95,13 +95,9 @@
                                         <mat-label>Date Due</mat-label>
                                         <input
                                             matInput
+                                            type="datetime-local"
                                             [formControlName]="'dueDate'"
-                                            [placeholder]="'Date for RFQ deadline'"
-                                            [matDatepicker]="picker1">
-                                        <mat-datepicker-toggle
-                                            matSuffix
-                                            [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
+                                            [placeholder]="'Date for RFQ deadline'">
                                     </mat-form-field>
                                     <mat-form-field
                                         [ngClass]="formFieldHelpers"

@@ -1,25 +1,23 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subject, switchMap, take, tap} from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-// import {Rfq} from "./rfq.model";
+import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 import {Rfq} from '../api/models/rfq';
-import {Client} from "../client/client.model";
 import {CreateRfqRequest} from "../api/models/create-rfq-request";
 import {UpdateRfqItem} from "../api/models/update-rfq-item";
 import {CreateRfqItem} from "../api/models/create-rfq-item";
 
-const BACKEND_URL = 'http://localhost:3000' + '/suppliers';
-const apiURLRfqs = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqs';
-const apiURLRfqItems = 'http://raytechholdings-001-site1.etempurl.com/' + 'api/rfqitems';
+const apiURLRfqs = 'https://raytechholdings.com/' + 'api/rfqs';
+const apiURLRfqItems = 'https://raytechholdings.com/' + 'api/rfqitems';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class RfqService {
 
     private rfqs: Rfq[] = [];
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) {
+    }
 
     getRfqs(): Observable<Rfq[]> {
         return this.http.get<Rfq[]>(apiURLRfqs);
