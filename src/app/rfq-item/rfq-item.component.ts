@@ -136,7 +136,7 @@ export class RfqItemComponent implements OnInit {
         } else {
             this.expectedArrivalDate = null;
         }
-        if (this.rfqItemForm.get('supplierId').value !== "") {
+        if (this.rfqItemForm.get('supplierId').value !== "" && this.rfqItemForm.get('supplierId').value !== null) {
             this.supplierId = this.rfqItemForm.get('supplierId').value;
             this._getSupplier(this.supplierId);
         } else {
@@ -168,23 +168,39 @@ export class RfqItemComponent implements OnInit {
                     console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
                     console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
 
-                    this.dialogRef.close(
-                        {
-                            editMode: this.editmode,
-                            newItem: true,
-                            rfqItemId: this.data.rfqItemId,
-                            itemId: this.rfqItemForm.get('itemId').value,
-                            supplierId: this.supplierId,
-                            name: this.itemName,
-                            supplierName: this.supplier.name,
-                            quantity: this.rfqItemForm.get('quantity').value,
-                            priceQuoted: this.rfqItemForm.get('priceQuoted').value,
-                            expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
-                            status: this.rfqItemForm.get('itemStatus').value
-                        }
-                    )
+                    if (this.supplierId) {
+                        this.dialogRef.close(
+                            {
+                                editMode: this.editmode,
+                                newItem: true,
+                                rfqItemId: this.data.rfqItemId,
+                                itemId: this.rfqItemForm.get('itemId').value,
+                                supplierId: this.supplierId,
+                                name: this.itemName,
+                                supplierName: this.supplier.name,
+                                quantity: this.rfqItemForm.get('quantity').value,
+                                priceQuoted: this.rfqItemForm.get('priceQuoted').value,
+                                expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
+                                status: this.rfqItemForm.get('itemStatus').value
+                            }
+                        )
+                    }
+                    else{
+                        this.dialogRef.close(
+                            {
+                                editMode: this.editmode,
+                                newItem: true,
+                                rfqItemId: this.data.rfqItemId,
+                                itemId: this.rfqItemForm.get('itemId').value,
+                                name: this.itemName,
+                                quantity: this.rfqItemForm.get('quantity').value,
+                                priceQuoted: this.rfqItemForm.get('priceQuoted').value,
+                                expectedArrivalDate: this.rfqItemForm.get('expectedArrivalDate').value,
+                                status: this.rfqItemForm.get('itemStatus').value
+                            }
+                        )
+                    }
                 }
-
             });
         this.addSuccess = true;
     }
