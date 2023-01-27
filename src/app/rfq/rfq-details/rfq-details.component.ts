@@ -110,7 +110,7 @@ export class RfqDetailsComponent implements OnInit {
 
     getPOItemValue() {
         let result = this.rfqs.purchaseOrder?.items.map(a => a.priceQuoted).reduce(function (a, b) {
-                return a + b;
+            return a + b;
         });
         return result;
     }
@@ -156,13 +156,15 @@ export class RfqDetailsComponent implements OnInit {
     }
 
     deleteRfqItem(id: number) {
-
+        this.rfqService.deleteRfqItem(id).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+            this._getRfqDetails();
+        });
     }
 
     readyForPO(): boolean {
 
         let ready = true;
-        if (!this.rfqs.items || this.rfqs.purchaseOrder) ready = false;
+        if (!this.rfqs.items || this.rfqs.purchaseOrder || this.rfqs.items.length === 0) ready = false;
 
         this.rfqs.items.forEach(item => {
             if (item.priceQuoted == null || item.status != RFQItemStatus.QUOTATION_RECEIVED) {
