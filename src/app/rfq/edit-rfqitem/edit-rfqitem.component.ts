@@ -97,7 +97,6 @@ export class EditRFQItemComponent implements OnInit {
             itemId: this.rfqItemForm.get('itemId').value,
             status: this.rfqItemForm.get('status').value,
             quantity: this.rfqItemForm.get('quantity').value,
-            priceQuoted: this.rfqItemForm.get('priceQuoted').value
         };
 
         if (this.rfqItemForm.get('expectedArrivalDate').value !== "") {
@@ -106,6 +105,10 @@ export class EditRFQItemComponent implements OnInit {
 
         if (this.rfqItemForm.get('supplierId').value !== "") {
             request.supplierId = this.rfqItemForm.get('supplierId').value;
+        }
+
+        if (this.rfqItemForm.get('priceQuoted').value !== "") {
+            request.supplierId = this.rfqItemForm.get('priceQuoted').value;
         }
 
         this.rfqService.updateRfqItem(request, this.rfqItem.id)
