@@ -8,25 +8,13 @@
 
                 <div class="flex flex-auto flex-wrap">
                     <!-- Name, SKU & etc. -->
-                    <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+                    <div class="flex flex-col w-full lg:w-4/4 sm:pl-8">
                         <p class="text-lg font-medium" mat-dialog-title>Add item</p>
                         <p class="text-secondary mb-6">
                             Adding item to RFQ
                         </p>
                         <div class="flex flex-col gt-xs:flex-row">
                             <div class="flex">
-                                <!--<mat-form-field class="flex-auto gt-xs:pr-3">
-                                    <mat-label>Item</mat-label>
-                                    <mat-select
-                                        name="rfqItem" formControlName="itemId">
-                                        <mat-option *ngFor="let item of items"
-                                                    [value]="item.id"><span>{{item.name}}</span></mat-option>
-                                    </mat-select>
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        matPrefix
-                                        [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
-                                </mat-form-field>-->
                                 <mat-form-field class="flex-auto gt-xs:pr-3">
                                     <mat-label>Item</mat-label>
                                     <input type="text"
@@ -39,7 +27,7 @@
                                            [matAutocomplete]="auto">
                                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectedItem($event)" [displayWith]="displayItem.bind(this)">
                                         <mat-option *ngFor="let item of filteredItems | async; let i = index" [value]="item.id">
-                                            {{item.name}} | {{item.sku}}|
+                                            {{item.name}} <span *ngIf="item.sku"> | {{item.sku}}</span>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
@@ -49,6 +37,7 @@
                                     <mat-label>Supplier</mat-label>
                                     <mat-select
                                         name="rfqItem" formControlName="supplierId">
+
                                         <mat-option *ngFor="let supplier of suppliers"
                                                     [value]="supplier.id">{{supplier.name}}</mat-option>
                                     </mat-select>

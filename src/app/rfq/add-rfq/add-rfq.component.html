@@ -142,7 +142,7 @@
                                             formControlName="status"
                                             [placeholder]="'Status'">
                                             <mat-option *ngFor="let status of keys(rfqStatus)"
-                                                        [value]="status">{{rfqStatus[status]}}</mat-option>
+                                                        [value]="rfqStatus[status]">{{rfqStatus[status]}}</mat-option>
                                         </mat-select>
                                         <mat-icon
                                             class="icon-size-5"

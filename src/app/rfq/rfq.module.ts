@@ -26,6 +26,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { EditRFQItemComponent } from './edit-rfqitem/edit-rfqitem.component';
 import { CreatePOFromRFQComponent } from './rfq-details/create-pofrom-rfq/create-pofrom-rfq.component';
+import { AddRfqItemComponent } from './rfq-details/add-rfq-item/add-rfq-item.component';
 
 
 const rfqRoutes: Route[] = [
@@ -49,7 +50,8 @@ const rfqRoutes: Route[] = [
     declarations: [
         RfqComponent,
         EditRFQItemComponent,
-        CreatePOFromRFQComponent
+        CreatePOFromRFQComponent,
+        AddRfqItemComponent,
     ],
     imports     : [
         RouterModule.forChild(rfqRoutes),

@@ -91,7 +91,6 @@ export class ClientComponent implements OnInit {
                 this.clients = clients;
                 this.dataSource = new MatTableDataSource(this.clients);
                 this.isLoading = false;
-                console.log(this.clients);
             });
     }
 }

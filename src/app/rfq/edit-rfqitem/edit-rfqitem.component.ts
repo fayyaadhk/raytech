@@ -68,9 +68,9 @@ export class EditRFQItemComponent implements OnInit {
         this.rfqItemForm = this.formBuilder.group({
             itemId: ['', Validators.required],
             name: [''],
-            quantity: [null],
+            quantity: [null, Validators.required],
             priceQuoted: [null],
-            status: [''],
+            status: ['', Validators.required],
             expectedArrivalDate: [''],
             supplierId: ['']
         });
@@ -108,7 +108,7 @@ export class EditRFQItemComponent implements OnInit {
         }
 
         if (this.rfqItemForm.get('priceQuoted').value !== "") {
-            request.supplierId = this.rfqItemForm.get('priceQuoted').value;
+            request.priceQuoted = this.rfqItemForm.get('priceQuoted').value;
         }
 
         this.rfqService.updateRfqItem(request, this.rfqItem.id)

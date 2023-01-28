@@ -182,12 +182,12 @@ export class AddRfqComponent implements OnInit {
 
     ngOnInit() {
         this.isLoading = true;
-        this._initForm();
-        this._getClients();
         this._getItems();
-        this._checkEditMode();
+        this._getClients();
         this._getCategories();
         this._getBrands();
+        this._checkEditMode();
+        this._initForm();
     }
 
     ngOnDestroy() {
@@ -332,8 +332,8 @@ export class AddRfqComponent implements OnInit {
             }),
             step3: this.formBuilder.group({
                 rfqItems: new FormArray([]),
-                quantity: [null],
-                status: [''],
+                quantity: [null, Validators.required],
+                status: ['', Validators.required],
                 supplierId: [null],
                 expectedArrivalDate: [''],
                 price: [null],

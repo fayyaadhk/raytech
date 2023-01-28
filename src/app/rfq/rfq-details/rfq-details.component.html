@@ -185,7 +185,7 @@
                             </div>
 
                         </ng-container>
-                        <ng-container >
+                        <ng-container>
                             <div class="flex flex-row flex-wrap mt-4 -mx-6">
                                 <div class="flex flex-col mx-6 my-3">
                                     <button
@@ -279,8 +279,24 @@
                     <div class="grid grid-cols-1 xl:grid-cols-1 gap-8 w-full">
                         <!-- Recent transactions table -->
                         <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-                            <div class="p-6">
-                                <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
+                            <div class="flex items-center justify-between w-full">
+
+                                <div class="p-6">
+                                    <div class="mr-4 text-3xl font-medium tracking-tight leading-6 truncate">Items</div>
+                                </div>
+
+                                <div class="flex items-center ml-6 mr-12">
+                                    <button
+                                        class="hidden sm:inline-flex ml-3"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        (click)="openAddRfqItemDialog()">
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:plus'"></mat-icon>
+                                        <span class="ml-2">Add RFQ Item</span>
+                                    </button>
+                                </div>
                             </div>
                             <div class="overflow-x-auto mx-6">
                                 <table

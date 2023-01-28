@@ -11,6 +11,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditRFQItemComponent} from "../edit-rfqitem/edit-rfqitem.component";
 import {CreatePOFromRFQComponent} from "./create-pofrom-rfq/create-pofrom-rfq.component";
 import {RFQItemStatus} from "../../data/rfq-item-status";
+import {AddRfqItemComponent} from "./add-rfq-item/add-rfq-item.component";
 
 @Component({
     selector: 'app-rfq-details',
@@ -173,6 +174,21 @@ export class RfqDetailsComponent implements OnInit {
         });
 
         return ready;
+    }
+
+    openAddRfqItemDialog() {
+        const dialogRef = this.dialog.open(AddRfqItemComponent, {
+            width: '600px',
+            data: this.rfqs,
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            console.log(">>> after closed in rfqDetails", res);
+            if (res && res.added) {
+                this._getRfqDetails();
+            }
+        })
     }
 
     private _initForm() {
