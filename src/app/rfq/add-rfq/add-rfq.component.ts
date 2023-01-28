@@ -332,8 +332,8 @@ export class AddRfqComponent implements OnInit {
             }),
             step3: this.formBuilder.group({
                 rfqItems: new FormArray([]),
-                quantity: [null],
-                status: [''],
+                quantity: [null, Validators.required],
+                status: ['', Validators.required],
                 supplierId: [null],
                 expectedArrivalDate: [''],
                 price: [null],

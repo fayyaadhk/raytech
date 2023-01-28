@@ -236,7 +236,6 @@ export class AddClientComponent implements OnInit, OnDestroy {
                         this.client = client;
                         this.clientForm.name.setValue(client.name);
                         this.clientForm.vatNumber.setValue(client.vatNumber);
-                        console.log('HERE1', client.contactInformation);
 
                         if (this.client.contactInformation) {
                             this.contactInfo = {
@@ -258,7 +257,6 @@ export class AddClientComponent implements OnInit, OnDestroy {
 
                             this.clientForm.contactInformation.setValue(this.contactInfo);
                         } else {
-                            console.log('After IF ');
                             //this.clientForm.contactInformation.setValue(client.contactInformation);
                         }
                     });

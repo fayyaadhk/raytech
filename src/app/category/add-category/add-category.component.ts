@@ -111,7 +111,6 @@ export class AddCategoryComponent {
     }
 
     private _addCategory() {
-        console.log('>>> GOT INTO ADD');
         const categoryForm: Category = {
             name: this.form.get('name').value,
             commodityId: this.form.get('commodityId').value

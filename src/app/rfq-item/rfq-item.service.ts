@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 
 import {RfqItem} from '../api/models/rfq-item';
 import {UpdateRfqItem} from "../api/models/update-rfq-item";
+import {CreateRfqItem} from "../api/models/create-rfq-item";
 
 const apiURLRfqItems = 'https://raytechholdings.com/' + 'api/rfqitems';
 
@@ -24,7 +25,7 @@ export class RfqItemService {
     //     return this.http.post<RfqItem>(apiURLRfqItems, rfqItemData);
     // }
 
-    createRfqItem(model: RfqItem): Observable<RfqItem> {
+    createRfqItem(model: CreateRfqItem): Observable<RfqItem> {
         return this.http.post<RfqItem>(apiURLRfqItems, model);
     }
 
@@ -33,7 +34,6 @@ export class RfqItemService {
     }
 
     updateRfqItem(model: UpdateRfqItem, rfqItemId: number): Observable<RfqItem> {
-        console.log(">>> request", model);
         return this.http.put<RfqItem>(`${apiURLRfqItems}/${rfqItemId}`, model);
     }
 

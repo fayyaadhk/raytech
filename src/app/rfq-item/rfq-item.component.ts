@@ -53,7 +53,6 @@ export class RfqItemComponent implements OnInit {
                 @Inject(MAT_DIALOG_DATA) public data) {
     }
 
-
     filterRfqItems(event): void {
         // Get the value
         const value = event.target.value.toLowerCase();
@@ -67,9 +66,9 @@ export class RfqItemComponent implements OnInit {
             itemId: [null, Validators.required],
             supplierId: [null],
             name: [''],
-            quantity: [null],
+            quantity: [null, Validators.required],
             priceQuoted: [null],
-            expectedArrivalDate: [''],
+            expectedArrivalDate: [null],
             itemStatus: [''],
         });
     }
@@ -125,7 +124,6 @@ export class RfqItemComponent implements OnInit {
     }
 
     getSupplierName(id: number) {
-        console.log(">>> this.suppliers", this.suppliers);
         return this.suppliers.find(x => x.id == id).name;
     }
 
@@ -163,10 +161,6 @@ export class RfqItemComponent implements OnInit {
                         }
                     )
                 } else {
-                    console.log('INTO ADD');
-                    console.log('Supplier Id', this.supplierId);
-                    console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
-                    console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
 
                     if (this.supplierId) {
                         this.dialogRef.close(
@@ -206,7 +200,6 @@ export class RfqItemComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        console.log(">>> HERE ", this.data);
         if (this.data.itemId) {
             this.editmode = true;
             this.currentRfqItemId = this.data.itemId;
@@ -220,7 +213,6 @@ export class RfqItemComponent implements OnInit {
                     this.itemForm.priceQuoted.setValue(this.data.priceQuoted);
                     this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
                     this.itemForm.itemStatus.setValue(this.data.status);
-                    //this.itemForm.name.setValue(item.name);
                 });
         }
     }
