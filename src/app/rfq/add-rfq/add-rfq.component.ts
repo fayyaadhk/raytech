@@ -182,12 +182,12 @@ export class AddRfqComponent implements OnInit {
 
     ngOnInit() {
         this.isLoading = true;
-        this._initForm();
-        this._getClients();
         this._getItems();
-        this._checkEditMode();
+        this._getClients();
         this._getCategories();
         this._getBrands();
+        this._checkEditMode();
+        this._initForm();
     }
 
     ngOnDestroy() {
