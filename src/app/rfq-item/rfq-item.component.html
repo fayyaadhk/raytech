@@ -1,8 +1,8 @@
-<div class="shadow-lg overflow-hidden">
+<!--<mat-spinner class="flex flex-col items-center justify-center" *ngIf="itemLoading"></mat-spinner>-->
+<div class="shadow-lg overflow-hidden" >
     <div class="flex border-b">
         <!-- Selected product form -->
-        <form
-            *ngIf="!itemLoading"
+        <form *ngIf="!itemLoading"
             class="flex flex-col w-full"
             [formGroup]="rfqItemForm">
             <div class="flex flex-col sm:flex-row p-8">

@@ -155,6 +155,7 @@ export class AddItemComponent {
         updateClient.shortDescription = this.form.get('shortDescription').value;
         updateClient.description = this.form.get('description').value;
         updateClient.sku = this.form.get('sku').value;
+        updateClient.rrsp = this.form.get('rrsp').value;
         updateClient.thumbnail = this.form.get('thumbnail').value;
         updateClient.categoryId = this.form.get('category').value;
         updateClient.brandId = this.form.get('brand').value;
