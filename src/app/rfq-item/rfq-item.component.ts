@@ -103,6 +103,7 @@ export class RfqItemComponent implements OnInit {
                     startWith(''),
                     map(value => this._filter(value || '')),
                 );
+                this.itemLoading = false;
             });
     }
 
@@ -230,7 +231,6 @@ export class RfqItemComponent implements OnInit {
                     this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
                     this.itemForm.itemStatus.setValue(this.data.status);
                     this.isLoading = false;
-                    this.itemLoading = false;
                     //this.itemForm.name.setValue(item.name);
                 });
         }
