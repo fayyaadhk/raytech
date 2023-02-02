@@ -63,6 +63,10 @@ export class AddClientComponent implements OnInit, OnDestroy {
         return this.form.controls;
     }
 
+    get address() {
+        return (this.form['controls'].contactInformation['controls'].address['controls']);
+    }
+
     ngOnInit() {
         this._initForm();
         this._checkEditMode();
@@ -78,6 +82,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
         this.isLoading = true;
 
         if (this.form.invalid) {
+            this.isLoading = false
             return;
         }
 
@@ -86,32 +91,33 @@ export class AddClientComponent implements OnInit, OnDestroy {
             if (this.clientContactInformation) {
                 console.log('>>> this.client', this.client.contactInformation);
                 updateClient.name = this.form.get('name').value;
-                updateClient.vatNumber = this.form.get('vatNumber').value;
+                updateClient.vatNumber = this.form.get('vatNumber').value.toString();
                 updateClient.buyers = this.form.get('buyer').value;
                 updateClient.contactInformation = this.form.get('contactInformation').value;
                 updateClient.contactInformation.id = this.client.contactInformation.id;
-                updateClient.contactInformation.address.id = this.client.contactInformation.address.id;
+                updateClient.contactInformation.address.id = this.client.contactInformation?.address?.id;
                 this.updateOld = false;
             } else {
                 if (!this.updateOld) {
                     updateClient.name = this.form.get('name').value;
                     updateClient.buyers = this.form.get('buyer').value;
-                    updateClient.contactInformation = this.form.get('contactInformation').value;
+                    updateClient.vatNumber = this.form.get('vatNumber').value.toString();
+                    updateClient.contactInformation = null;
                 }
             }
             this._updateClient(updateClient);
             this.isLoading = false;
-            this.router.navigateByUrl('clients');
-            // this.location.back();
+            if (this.updateSuccess) {
+                this.router.navigateByUrl('clients');
+            }
         } else {
             this._addClient();
             this.isLoading = false;
-            this.router.navigateByUrl('clients');
         }
     }
 
     onCancle() {
-        this.location.back();
+        this.router.navigateByUrl('clients');
     }
 
     onImageUpload(event) {
@@ -138,23 +144,24 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 whatsapp: [null],
                 email: [''],
                 address: this.formBuilder.group({
-                    line1: [''],
+                    line1: ['', Validators.required],
                     line2: [''],
-                    suburb: [''],
-                    postalCode: [null],
-                    city: [''],
-                    province: [''],
-                    country: [''],
+                    suburb: ['', Validators.required],
+                    postalCode: ['', Validators.required],
+                    city: ['', Validators.required],
+                    province: ['', Validators.required],
+                    country: ['South Africa', Validators.required],
                 })
             }),
-            vatNumber: [null],
+            vatNumber: [''],
         });
     }
 
     private _addClient() {
+        let addClient;
         const newClient: CreateClientRequest = {
             name: this.form.get('name').value,
-            vatNumber: this.form.get('vatNumber').value,
+            vatNumber: this.form.get('vatNumber').value.toString(),
             contactInformation: {
                 work: this.form.get('contactInformation.work').value,
                 telephone: this.form.get('contactInformation.telephone').value,
@@ -164,7 +171,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 address: {
                     line1: this.form.get('contactInformation.address.line1').value,
                     line2: this.form.get('contactInformation.address.line2').value,
-                    postalCode: this.form.get('contactInformation.address.postalCode').value,
+                    postalCode: this.form.get('contactInformation.address.postalCode').value.toString(),
                     suburb: this.form.get('contactInformation.address.suburb').value,
                     city: this.form.get('contactInformation.address.city').value,
                     province: this.form.get('contactInformation.address.province').value,
@@ -172,6 +179,19 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 }
             }
         }
+
+        // if (newClient.contactInformation.work || newClient.contactInformation.telephone || newClient.contactInformation.cellphone || newClient.contactInformation.email ||
+        //     newClient.contactInformation.whatsapp || newClient.contactInformation.address.line1 || newClient.contactInformation.address.line2 ||
+        //     newClient.contactInformation.address.postalCode || newClient.contactInformation.address.suburb || newClient.contactInformation.address.city
+        //     || newClient.contactInformation.address.province || newClient.contactInformation.address.country) {
+        //     addClient = newClient;
+        // } else {
+        //     addClient = {
+        //         name: this.form.get('name').value,
+        //         vatNumber: this.form.get('vatNumber').value.toString()
+        //     }
+        // }
+
         console.log(newClient);
         //
         // newClient.name = this.form.get('name').value;
@@ -192,6 +212,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
         //newClient.rfQs = this.form.get('rfq').value;
 
         if (newClient) {
+            this.addSuccess = false;
             this.clientService
                 .addClient(newClient)
                 .pipe(takeUntil(this.endsubs$))
@@ -200,8 +221,10 @@ export class AddClientComponent implements OnInit, OnDestroy {
                         this.addSuccess = true;
                         console.log(client);
                         this.form.reset();
+                        this.router.navigateByUrl('clients');
                     },
-                    () => {
+                    (error) => {
+                        console.log(error);
                         this.addSuccess = false;
                     }
                 );
@@ -211,6 +234,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
     }
 
     private _updateClient(clientData: CreateClientRequest) {
+        this.updateSuccess = false;
         this.clientService
             .updateClient(clientData, this.currentClientId)
             .pipe(takeUntil(this.endsubs$))
@@ -218,7 +242,8 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 (client: Client) => {
                     this.updateSuccess = true;
                 },
-                () => {
+                (error) => {
+                    console.log(error);
                     this.updateSuccess = false;
                 }
             );
@@ -230,30 +255,50 @@ export class AddClientComponent implements OnInit, OnDestroy {
                 this.editmode = true;
                 this.currentClientId = params.id;
                 this.clientService
-                    .getClient(params.id)
+                    .getClientDetails(params.id)
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((client) => {
+                        console.log(client);
                         this.client = client;
                         this.clientForm.name.setValue(client.name);
                         this.clientForm.vatNumber.setValue(client.vatNumber);
 
                         if (this.client.contactInformation) {
-                            this.contactInfo = {
-                                work: client.contactInformation.work,
-                                cellphone: client.contactInformation.cellphone,
-                                telephone: client.contactInformation.telephone,
-                                email: client.contactInformation.email,
-                                whatsapp: client.contactInformation.whatsapp,
-                                address: {
-                                    line1: client.contactInformation.address.line1,
-                                    line2: client.contactInformation.address.line2,
-                                    suburb: client.contactInformation.address.suburb,
-                                    city: client.contactInformation.address.city,
-                                    postalCode: client.contactInformation.address.postalCode,
-                                    province: client.contactInformation.address.province,
-                                    country: client.contactInformation.address.country
-                                }
-                            };
+                            if (this.client.contactInformation.address) {
+                                this.contactInfo = {
+                                    work: client.contactInformation.work,
+                                    cellphone: client.contactInformation.cellphone,
+                                    telephone: client.contactInformation.telephone,
+                                    email: client.contactInformation.email,
+                                    whatsapp: client.contactInformation.whatsapp,
+                                    address: {
+                                        line1: client.contactInformation?.address?.line1,
+                                        line2: client.contactInformation?.address?.line2,
+                                        suburb: client.contactInformation?.address?.suburb,
+                                        city: client.contactInformation?.address?.city,
+                                        postalCode: client.contactInformation?.address?.postalCode,
+                                        province: client.contactInformation?.address?.province,
+                                        country: client.contactInformation?.address?.country
+                                    }
+                                };
+                            } else {
+                                this.contactInfo = {
+                                    work: client.contactInformation.work,
+                                    cellphone: client.contactInformation.cellphone,
+                                    telephone: client.contactInformation.telephone,
+                                    email: client.contactInformation.email,
+                                    whatsapp: client.contactInformation.whatsapp,
+                                    address: {
+                                        line1: null,
+                                        line2: null,
+                                        suburb: null,
+                                        city: null,
+                                        postalCode: null,
+                                        province: null,
+                                        country: null
+                                    }
+                                };
+                            }
 
                             this.clientForm.contactInformation.setValue(this.contactInfo);
                         } else {

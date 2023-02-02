@@ -157,7 +157,10 @@
                                                     type="text"
                                                     formControlName="whatsapp"
                                                     [placeholder]="'Whatsapp'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -168,7 +171,10 @@
                                                     type="text"
                                                     formControlName="telephone"
                                                     [placeholder]="'Telephone'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -179,7 +185,10 @@
                                                     type="email"
                                                     formControlName="email"
                                                     [placeholder]="'Email'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                                             </mat-form-field>
                                         </div>
 
@@ -190,9 +199,15 @@
                                                 <input
                                                     matInput
                                                     type="text"
+                                                    #line1
                                                     formControlName="line1"
                                                     [placeholder]="'Address Line 1'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.line1.invalid && isSubmitted" class=""
+                                                >Line 1 is required</small>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -203,7 +218,10 @@
                                                     type="text"
                                                     formControlName="line2"
                                                     [placeholder]="'Address Line 2'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -214,7 +232,12 @@
                                                     type="text"
                                                     formControlName="suburb"
                                                     [placeholder]="'Suburb'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.suburb.invalid && isSubmitted" class=""
+                                                >Suburb is required</small>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -225,7 +248,12 @@
                                                     type="text"
                                                     formControlName="city"
                                                     [placeholder]="'City'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.city.invalid && isSubmitted" class=""
+                                                >City is required</small>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -233,10 +261,15 @@
                                                 <mat-label>Postal Code</mat-label>
                                                 <input
                                                     matInput
-                                                    type="text"
+                                                    type="number"
                                                     formControlName="postalCode"
                                                     [placeholder]="'Postal Code'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.postalCode.invalid && isSubmitted" class=""
+                                                >Postal Code is required</small>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -247,7 +280,12 @@
                                                     type="text"
                                                     formControlName="country"
                                                     [placeholder]="'Country'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.country.invalid && isSubmitted" class=""
+                                                >Country is required</small>
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -258,7 +296,12 @@
                                                     type="text"
                                                     formControlName="province"
                                                     [placeholder]="'Province'">
-                                                <span matPrefix>/</span>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                                <small *ngIf="address.province.invalid && isSubmitted" class=""
+                                                >Province is required</small>
                                             </mat-form-field>
                                         </div>
                                         </ng-container>
