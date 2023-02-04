@@ -70,27 +70,34 @@
                             <div class="w-12 h-1 my-6 border-t-2"></div>
 
                             <!-- RfqItems -->
-                            <ng-container *ngFor="let poItem of po.items">
-                                <div class="flex items-center leading-5 text-md text-secondary ">
+                            <div class="overflow-y-scroll max-h-40">
+                                <ng-container *ngFor="let poItem of po.items">
+                                    <div class="flex items-center leading-5 text-md text-secondary ">
 
-                                    <div class="ml-1.5">{{poItem.quantity}} x {{poItem.item.name | slice:0:50}} </div>
-                                    <mat-icon *ngIf="poItem.status === 'PENDING ORDER PLACEMENT'" [matTooltip]="poItem.status"
-                                              class="text-orange-600 icon-size-5 text-hint mx-2"
-                                              [svgIcon]="'mat_outline:access_time'"></mat-icon>
-                                    <mat-icon  *ngIf="poItem.status === 'ORDER PLACED'"
-                                               class="text-blue-800 icon-size-5 text-hint mx-2" [matTooltip]="poItem.status"
-                                               [svgIcon]="'heroicons_outline:user'"></mat-icon>
-                                    <mat-icon *ngIf="poItem.status === 'PENDING PAYMENT'" [matTooltip]="poItem.status"
-                                              class="text-red-800 icon-size-5 text-hint mx-2"
-                                              [svgIcon]="'mat_outline:money'"></mat-icon>
-                                    <mat-icon *ngIf="poItem.status === 'PENDING DELIVERY'" [matTooltip]="poItem.status"
-                                              class="text-green-800 icon-size-5 text-hint mx-2"
-                                              [svgIcon]="'heroicons_outline:truck'"></mat-icon>
-                                    <mat-icon *ngIf="poItem.status === 'DELIVERED'" [matTooltip]="poItem.status"
-                                              class="text-green-800 icon-size-5 text-hint mx-2"
-                                              [svgIcon]="'mat_outline:check_circle'"></mat-icon>
-                                </div>
-                            </ng-container>
+                                        <div class="ml-1.5">{{poItem.quantity}}
+                                            x {{poItem.item.name | slice:0:50}} </div>
+                                        <mat-icon *ngIf="poItem.status === 'PENDING ORDER PLACEMENT'"
+                                                  [matTooltip]="poItem.status"
+                                                  class="text-orange-600 icon-size-5 text-hint mx-2"
+                                                  [svgIcon]="'mat_outline:access_time'"></mat-icon>
+                                        <mat-icon *ngIf="poItem.status === 'ORDER PLACED'"
+                                                  class="text-blue-800 icon-size-5 text-hint mx-2"
+                                                  [matTooltip]="poItem.status"
+                                                  [svgIcon]="'heroicons_outline:user'"></mat-icon>
+                                        <mat-icon *ngIf="poItem.status === 'PENDING PAYMENT'"
+                                                  [matTooltip]="poItem.status"
+                                                  class="text-red-800 icon-size-5 text-hint mx-2"
+                                                  [svgIcon]="'mat_outline:money'"></mat-icon>
+                                        <mat-icon *ngIf="poItem.status === 'PENDING DELIVERY'"
+                                                  [matTooltip]="poItem.status"
+                                                  class="text-green-800 icon-size-5 text-hint mx-2"
+                                                  [svgIcon]="'heroicons_outline:truck'"></mat-icon>
+                                        <mat-icon *ngIf="poItem.status === 'DELIVERED'" [matTooltip]="poItem.status"
+                                                  class="text-green-800 icon-size-5 text-hint mx-2"
+                                                  [svgIcon]="'mat_outline:check_circle'"></mat-icon>
+                                    </div>
+                                </ng-container>
+                            </div>
                             <!-- Course completion -->
 
                         </div>
