@@ -4,7 +4,7 @@ import {RfqItem} from "../../api/models/rfq-item";
 import {Item} from "../../api/models/item";
 import {Supplier} from "../../api/models/supplier";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {map, Observable, startWith, Subject, takeUntil} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {ItemService} from "../../item/item.service";
 import {SupplierService} from "../../suppliers/suppliers.service";
 import {RfqItemService} from "../../rfq-item/rfq-item.service";
@@ -33,7 +33,7 @@ export class EditRFQItemComponent implements OnInit {
     updateSuccess: boolean = true;
     keys = Object.keys;
     rfqItemStatus = RFQItemStatus;
-    filteredItems: Observable<any[]>;
+    filteredItems: Array<any> = [];
     formFieldHelpers: string[] = [''];
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: RfqItem,
@@ -78,6 +78,21 @@ export class EditRFQItemComponent implements OnInit {
         this._getItems();
         this._getRfqItem();
         this._getSuppliers();
+    }
+
+    onSearchChange(searchValue: string): void {
+        this.filteredItems = null;
+        this.isLoading = true;
+        this.itemService
+            .getItemSearch(searchValue)
+            .pipe(takeUntil(this.endsubs$),
+                filter(_ => searchValue.length >= 3),
+                debounceTime(500),
+                distinctUntilChanged())
+            .subscribe((items) => {
+                this.filteredItems = items;
+                console.log(this.filteredItems);
+            });
     }
 
     onSubmit() {
@@ -138,10 +153,10 @@ export class EditRFQItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
-                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this._filter(value || '')),
-                );
+                // this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                //     startWith(''),
+                //     map(value => this._filter(value || '')),
+                // );
                 this.isLoading = false;
             });
     }

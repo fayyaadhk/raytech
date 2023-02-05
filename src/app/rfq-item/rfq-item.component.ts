@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Observable, Subject, takeUntil, startWith, map} from "rxjs";
+import {Observable, Subject, takeUntil, startWith, map, distinctUntilChanged, filter, debounceTime} from "rxjs";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ItemService} from "../item/item.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -38,7 +38,7 @@ export class RfqItemComponent implements OnInit {
     keys = Object.keys;
     rfqItemStatus = RFQItemStatus;
     formFieldHelpers: string[] = [''];
-    filteredItems: Observable<any[]>;
+    filteredItems: Array<any> = [];
 
     ngOnInit() {
         this._initForm();
@@ -99,12 +99,29 @@ export class RfqItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
-                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this._filter(value || '')),
-                );
+                // this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
+                //     startWith(''),
+                //     map(value => this._filter(value || '')),
+                // );
                 this.itemLoading = false;
             });
+    }
+
+    onSearchChange(searchValue: string): void {
+        this.filteredItems = null;
+        this.isLoading = true;
+        if(searchValue){
+            this.itemService
+                .getItemSearch(searchValue)
+                .pipe(takeUntil(this.endsubs$),
+                    filter(_ => searchValue.length >= 3),
+                    debounceTime(500),
+                    distinctUntilChanged())
+                .subscribe((items) => {
+                    this.filteredItems = items;
+                    console.log(this.filteredItems);
+                });
+        }
     }
 
     private _getSuppliers() {
@@ -130,10 +147,9 @@ export class RfqItemComponent implements OnInit {
     }
 
     getSupplierName(id: string) {
-        if(id){
+        if (id) {
             return this.suppliers.find(x => x.id == id).name;
-        }
-        else{
+        } else {
             return null;
         }
     }
@@ -194,8 +210,7 @@ export class RfqItemComponent implements OnInit {
                                 status: this.rfqItemForm.get('itemStatus').value
                             }
                         )
-                    }
-                    else{
+                    } else {
                         this.dialogRef.close(
                             {
                                 editMode: this.editmode,
@@ -221,18 +236,20 @@ export class RfqItemComponent implements OnInit {
             this.isLoading = true;
             this.editmode = true;
             this.currentRfqItemId = this.data.itemId;
-            this.itemService.getItem(this.currentRfqItemId)
-                .pipe(takeUntil(this.endsubs$))
-                .subscribe((item) => {
-                    this.itemForm.itemId.setValue(this.data.itemId);
-                    this.itemForm.supplierId.setValue(this.data.supplierId);
-                    this.itemForm.quantity.setValue(this.data.quantity);
-                    this.itemForm.priceQuoted.setValue(this.data.priceQuoted);
-                    this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
-                    this.itemForm.itemStatus.setValue(this.data.status);
-                    this.isLoading = false;
-                    //this.itemForm.name.setValue(item.name);
-                });
+            if (this.itemLoading) {
+                this.itemService.getItem(this.currentRfqItemId)
+                    .pipe(takeUntil(this.endsubs$))
+                    .subscribe((item) => {
+                        this.itemForm.itemId.setValue(this.data.itemId);
+                        this.itemForm.supplierId.setValue(this.data.supplierId);
+                        this.itemForm.quantity.setValue(this.data.quantity);
+                        this.itemForm.priceQuoted.setValue(this.data.priceQuoted);
+                        this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
+                        this.itemForm.itemStatus.setValue(this.data.status);
+                        this.isLoading = false;
+                        //this.itemForm.name.setValue(item.name);
+                    });
+            }
         }
     }
 

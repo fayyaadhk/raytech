@@ -38,7 +38,8 @@ export class AddSuppliersComponent {
                 private formBuilder: FormBuilder,
                 private _fuseConfirmationService: FuseConfirmationService,
                 private location: Location,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private router: Router,) {
 
     }
 
@@ -78,21 +79,23 @@ export class AddSuppliersComponent {
                 updateSupplier.contactInfo = this.supplier.contactInfo.id;
                 updateSupplier.contactInfo.address.id = this.supplier.contactInfo.address.id;
                 updateSupplier.contactPerson = this.form.get('contactPerson').value;
+                updateSupplier.thumbnail = '';
                 this.updateOld = false;
             } else {
                 if (!this.updateOld) {
                     updateSupplier.name = this.form.get('name').value;
                     updateSupplier.contactInfo = this.form.get('contactInformation').value;
                     updateSupplier.contactPerson = this.form.get('contactPerson').value;
+                    updateSupplier.thumbnail = '';
                 }
             }
             this._updateSupplier(updateSupplier);
             this.isLoading = false;
-            // this.location.back();
+            this.router.navigateByUrl('suppliers');
         } else {
             this._addSupplier();
             this.isLoading = false;
-            this.location.back();
+            this.router.navigateByUrl('suppliers');
         }
     }
 
@@ -135,7 +138,7 @@ export class AddSuppliersComponent {
             contactPerson: this.formBuilder.group({
                 firstName: [''],
                 lastName: [''],
-                idNumber: [null],
+                idNumber: [''],
                 work: [''],
                 cellphone: [''],
                 telephone: [''],
@@ -208,31 +211,32 @@ export class AddSuppliersComponent {
                 this.editmode = true;
                 this.currentSupplierId = params.id;
                 this.supplierService
-                    .getSupplier(params.id)
+                    .getSupplierDetails(params.id)
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((supplier) => {
                         this.supplier = supplier;
                         this.supplierForm.name.setValue(supplier.name);
 
+                        console.log(supplier);
                         if (this.supplier.contactInformation) {
                             this.contactInfo = {
-                                work: supplier.contactInfo.work,
-                                cellphone: supplier.contactInfo.cellphone,
-                                telephone: supplier.contactInfo.telephone,
-                                email: supplier.contactInfo.email,
-                                whatsapp: supplier.contactInfo.whatsapp,
+                                work: this.supplier.contactInformation?.work,
+                                cellphone: this.supplier.contactInformation?.cellphone,
+                                telephone: this.supplier.contactInformation?.telephone,
+                                email: this.supplier.contactInformation?.email,
+                                whatsapp: this.supplier.contactInformation?.whatsapp,
                                 address: {
-                                    line1: supplier.contactInfo.address.line1,
-                                    line2: supplier.contactInfo.address.line2,
-                                    suburb: supplier.contactInfo.address.suburb,
-                                    city: supplier.contactInfo.address.city,
-                                    postalCode: supplier.contactInfo.address.postalCode,
-                                    province: supplier.contactInfo.address.province,
-                                    country: supplier.contactInfo.address.country
+                                    line1: this.supplier.contactInformation?.address?.line1,
+                                    line2: this.supplier.contactInformation?.address?.line2,
+                                    suburb: this.supplier.contactInformation?.address?.suburb,
+                                    city: this.supplier.contactInformation?.address?.city,
+                                    postalCode: this.supplier.contactInformation?.address?.postalCode,
+                                    province: this.supplier.contactInformation?.address?.province,
+                                    country: this.supplier.contactInformation?.address?.country
                                 }
                             };
 
-                            this.supplierForm.contactInfo.setValue(this.contactInfo);
+                            this.supplierForm.contactInformation.setValue(this.contactInfo);
                         } else {
                             //this.clientForm.contactInfo.setValue(client.contactInfo);
                         }
@@ -240,19 +244,19 @@ export class AddSuppliersComponent {
                         if (this.supplier.contactPerson) {
                             this.contactPerson = {
 
-                                work: supplier.contactPerson.contactInformation.work,
-                                cellphone: supplier.contactPerson.contactInformation.cellphone,
-                                telephone: supplier.contactPerson.contactInformation.telephone,
-                                email: supplier.contactPerson.contactInformation.email,
-                                whatsapp: supplier.contactPerson.contactInformation.whatsapp,
+                                work: this.supplier.person.contactInformation.work,
+                                cellphone: this.supplier.person.contactInformation.cellphone,
+                                telephone: this.supplier.person.contactInformation.telephone,
+                                email: this.supplier.person.contactInformation.email,
+                                whatsapp: this.supplier.person.contactInformation.whatsapp,
                                 address: {
-                                    line1: supplier.contactPerson.contactInformation.address.line1,
-                                    line2: supplier.contactPerson.contactInformation.address.line2,
-                                    suburb: supplier.contactPerson.contactInformation.address.suburb,
-                                    city: supplier.contactPerson.contactInformation.address.city,
-                                    postalCode: supplier.contactPerson.contactInformation.address.postalCode,
-                                    province: supplier.contactPerson.contactInformation.address.province,
-                                    country: supplier.contactPerson.contactInformation.address.country
+                                    line1: this.supplier.person.contactInformation.address.line1,
+                                    line2: this.supplier.person.contactInformation.address.line2,
+                                    suburb: this.supplier.person.contactInformation.address.suburb,
+                                    city: this.supplier.person.contactInformation.address.city,
+                                    postalCode: this.supplier.person.contactInformation.address.postalCode,
+                                    province: this.supplier.person.contactInformation.address.province,
+                                    country: this.supplier.person.contactInformation.address.country
                                 }
                             };
 

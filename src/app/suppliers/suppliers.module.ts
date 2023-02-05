@@ -73,6 +73,7 @@ const suppliersRoutes: Route[] = [
         MatTableModule,
         MatAutocompleteModule,
         MatDatepickerModule,
+        MatDividerModule,
         SharedModule
     ]
 })

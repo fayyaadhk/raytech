@@ -134,7 +134,7 @@ export class AddRfqComponent implements OnInit {
         })
     }
 
-    updateRfqItem(rfqItemId: number, rfqId: number, supplierId: number, quantity: string, price: number, status: string) {
+    updateRfqItem(rfqItemId: number, rfqId: number, supplierId: number, quantity: string, price: number, status: string, expectedArrivalDate: string) {
 
         const dialogRef = this.dialog.open(RfqItemComponent, {
             height: '800px',
@@ -144,6 +144,7 @@ export class AddRfqComponent implements OnInit {
                 itemId: rfqId,
                 quantity: quantity,
                 supplierId: supplierId,
+                expectedArrivalDate: expectedArrivalDate,
                 priceQuoted: price,
                 status: status
             },
