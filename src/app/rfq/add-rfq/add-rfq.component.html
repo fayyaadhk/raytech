@@ -224,7 +224,7 @@
                                                 <mat-cell *matCellDef="let rfqItems; let i = index">
                                                     <div class="truncate">
                                                         <button
-                                                            (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.priceQuoted, rfqItems.status)">
+                                                            (click)="updateRfqItem(i, rfqItems.itemId, rfqItems.supplierId, rfqItems.quantity, rfqItems.priceQuoted, rfqItems.status, rfqItems.expectedArrivalDate)">
                                                             <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
 
                                                         </button>

@@ -54,5 +54,4 @@ export class RfqService {
     deleteRfq(rfqId: string): Observable<any> {
         return this.http.delete<any>(`${apiURLRfqs}/${rfqId}`);
     }
-
 }

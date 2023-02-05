@@ -74,4 +74,8 @@ export class ItemService {
         return this.http.put<ItemSupplier>(`${apiURLItemSuppliers}/${itemSupplierId}`, request);
     }
 
+    getItemSearch(searchTerm: string): Observable<any>{
+        return this.http.get<any>(`${apiURLItems}/search/${searchTerm}`);
+    }
+
 }
