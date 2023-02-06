@@ -44,6 +44,17 @@ export class RfqItemComponent implements OnInit {
 
     selectedItem: DetailedItem = null;
 
+    constructor(private formBuilder: FormBuilder,
+                private itemService: ItemService,
+                private supplierService: SupplierService,
+                private dialogRef: MatDialogRef<RfqItemComponent>,
+                @Inject(MAT_DIALOG_DATA) public data) {
+    }
+
+    get itemForm() {
+        return this.rfqItemForm.controls;
+    }
+
     ngOnInit() {
         this._initForm();
         this._getItems();
@@ -52,39 +63,12 @@ export class RfqItemComponent implements OnInit {
         this.isLoading = false;
     }
 
-    constructor(private formBuilder: FormBuilder,
-                private itemService: ItemService,
-                private supplierService: SupplierService,
-                private dialogRef: MatDialogRef<RfqItemComponent>,
-                @Inject(MAT_DIALOG_DATA) public data) {
-    }
-
-
     filterRfqItems(event): void {
         // Get the value
         const value = event.target.value.toLowerCase();
 
         // Filter the tags
         this.filteredRfqItems = this.items.filter(rfqItem => rfqItem.item.name.toLowerCase().includes(value));
-    }
-
-    private _initForm() {
-        this.isLoading = true;
-        this.rfqItemForm = this.formBuilder.group({
-            itemId: [null, Validators.required],
-            supplierId: [null],
-            name: [''],
-            quantity: [null],
-            priceQuoted: [null],
-            expectedArrivalDate: [null],
-            itemStatus: [''],
-        });
-    }
-
-    private _filter(value: string): any[] {
-        const filterValue = value.toString().toLowerCase();
-
-        return this.items.filter(option => option.name.toLowerCase().includes(filterValue) || option.sku.toLowerCase().includes(filterValue));
     }
 
     getSelectedItem(event) {
@@ -96,9 +80,11 @@ export class RfqItemComponent implements OnInit {
                 this.selectedItem = item;
 
                 let itemSuppliers: Supplier[] = [];
-                this.selectedItem.itemSuppliers.forEach(supplier =>
-                    itemSuppliers.push(supplier.supplier)
-                );
+                if (this.selectedItem && this.selectedItem.itemSuppliers) {
+                    this.selectedItem.itemSuppliers.forEach(supplier =>
+                        itemSuppliers.push(supplier.supplier)
+                    );
+                }
                 this.suppliers = itemSuppliers;
 
                 this.itemLoading = false;
@@ -109,22 +95,11 @@ export class RfqItemComponent implements OnInit {
         return this.items?.find(item => item.id === itemId)?.name;
     }
 
-    private _getItems() {
-        this.itemLoading = true
-        this.itemService
-            .getItems()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((items) => {
-                this.items = items;
-                this.itemLoading = false;
-            });
-    }
-
     onSearchChange(searchValue: string): void {
         this.selectedItem = null;
         this.filteredItems = null;
         this.isLoading = true;
-        if(searchValue){
+        if (searchValue) {
             this.itemService
                 .getItemSearch(searchValue)
                 .pipe(takeUntil(this.endsubs$),
@@ -135,28 +110,6 @@ export class RfqItemComponent implements OnInit {
                     this.filteredItems = items;
                 });
         }
-    }
-
-    private _getSuppliers() {
-        this.isLoading = true;
-        this.supplierService
-            .getSuppliers()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((suppliers) => {
-                this.suppliers = suppliers;
-            });
-    }
-
-    private _getSupplier(id: string) {
-        this.isLoading = true;
-        this.supplierService
-            .getSupplier(id)
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((supplier) => {
-                this.supplier = supplier;
-                this.supplierName = this.suppliers.name;
-                this.isLoading = false;
-            });
     }
 
     getSupplierName(id: string) {
@@ -239,6 +192,58 @@ export class RfqItemComponent implements OnInit {
         this.addSuccess = true;
     }
 
+    private _initForm() {
+        this.isLoading = true;
+        this.rfqItemForm = this.formBuilder.group({
+            itemId: [null, Validators.required],
+            supplierId: [null],
+            name: [''],
+            quantity: [null],
+            priceQuoted: [null],
+            expectedArrivalDate: [null],
+            itemStatus: [''],
+        });
+    }
+
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.items.filter(option => option.name.toLowerCase().includes(filterValue) || option.sku.toLowerCase().includes(filterValue));
+    }
+
+    private _getItems() {
+        this.itemLoading = true
+        this.itemService
+            .getItems()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((items) => {
+                this.items = items;
+                this.itemLoading = false;
+            });
+    }
+
+    private _getSuppliers() {
+        this.isLoading = true;
+        this.supplierService
+            .getSuppliers()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((suppliers) => {
+                this.suppliers = suppliers;
+            });
+    }
+
+    private _getSupplier(id: string) {
+        this.isLoading = true;
+        this.supplierService
+            .getSupplier(id)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((supplier) => {
+                this.supplier = supplier;
+                this.supplierName = this.suppliers.name;
+                this.isLoading = false;
+            });
+    }
+
     private _checkEditMode() {
         if (this.data.itemId) {
             this.isLoading = true;
@@ -258,9 +263,5 @@ export class RfqItemComponent implements OnInit {
                     });
             }
         }
-    }
-
-    get itemForm() {
-        return this.rfqItemForm.controls;
     }
 }

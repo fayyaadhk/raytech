@@ -36,7 +36,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
-                            <ng-container *ngIf="this.selectedItem && this.selectedItem.itemSuppliers.length > 0">
+                            <ng-container *ngIf="this.selectedItem && this.selectedItem.itemSuppliers && this.selectedItem.itemSuppliers.length > 0">
                                 <div class="mb-4">
                                     <div class="flex" *ngFor="let x of this.selectedItem.itemSuppliers">
                                         <div>
