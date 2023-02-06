@@ -1,5 +1,5 @@
 <!--<mat-spinner class="flex flex-col items-center justify-center" *ngIf="itemLoading"></mat-spinner>-->
-<div class="shadow-lg overflow-hidden" >
+<div class="shadow-lg overflow-hidden">
     <div class="flex border-b">
         <!-- Selected product form -->
         <form
@@ -27,13 +27,27 @@
                                            (input)="onSearchChange($event.target.value)"
                                            autoActiveFirstOption
                                            [matAutocomplete]="auto">
-                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectedItem($event)" [displayWith]="displayItem.bind(this)">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                      (optionSelected)="getSelectedItem($event)"
+                                                      [displayWith]="displayItem.bind(this)">
                                         <mat-option *ngFor="let item of filteredItems; let i = index" [value]="item.id">
                                             {{item.name}} <span *ngIf="item.sku"> | {{item.sku}}</span>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
+                            <ng-container *ngIf="this.selectedItem && this.selectedItem.itemSuppliers.length > 0">
+                                <div class="mb-4">
+                                    <div class="flex" *ngFor="let x of this.selectedItem.itemSuppliers">
+                                        <div>
+                                            <p> <span>{{x.supplier.name}}: </span>
+                                                <span>{{x.price | currency:'R'}} </span>
+                                                <span>({{x.priceDate | date:'MMM dd, yyyy'}}) </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
                             <div class="flex">
                                 <mat-form-field class="flex-auto gt-xs:pr-3">
                                     <mat-label>Supplier</mat-label>

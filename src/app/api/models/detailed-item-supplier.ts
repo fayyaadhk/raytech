@@ -7,5 +7,5 @@ export interface DetailedItemSupplier {
   itemId?: number;
   price?: number;
   priceDate?: string;
-  Supplier?: Supplier;
+  supplier?: Supplier;
 }

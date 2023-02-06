@@ -8,6 +8,8 @@ import {RfqStatus} from "../data/rfq-status";
 import {RFQItemStatus} from "../data/rfq-item-status";
 import {SupplierService} from "../suppliers/suppliers.service";
 import {Item} from "../api/models/item";
+import {DetailedItem} from "../api/models/detailed-item";
+import {Supplier} from "../api/models/supplier";
 
 @Component({
     selector: 'app-rfq-item',
@@ -39,6 +41,8 @@ export class RfqItemComponent implements OnInit {
     rfqItemStatus = RFQItemStatus;
     formFieldHelpers: string[] = [''];
     filteredItems: Array<any> = [];
+
+    selectedItem: DetailedItem = null;
 
     ngOnInit() {
         this._initForm();
@@ -83,12 +87,25 @@ export class RfqItemComponent implements OnInit {
         return this.items.filter(option => option.name.toLowerCase().includes(filterValue) || option.sku.toLowerCase().includes(filterValue));
     }
 
-    selectedItem(event) {
-        console.log(event.option.value);
+    getSelectedItem(event) {
+        this.itemLoading = true
+        this.itemService
+            .getItemWithAllDetails(this.rfqItemForm.get('itemId').value)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((item) => {
+                this.selectedItem = item;
+
+                let itemSuppliers: Supplier[] = [];
+                this.selectedItem.itemSuppliers.forEach(supplier =>
+                    itemSuppliers.push(supplier.supplier)
+                );
+                this.suppliers = itemSuppliers;
+
+                this.itemLoading = false;
+            });
     }
 
     displayItem(itemId: any) {
-        // return item ? item.name : '';
         return this.items?.find(item => item.id === itemId)?.name;
     }
 
@@ -99,15 +116,12 @@ export class RfqItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
-                // this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
-                //     startWith(''),
-                //     map(value => this._filter(value || '')),
-                // );
                 this.itemLoading = false;
             });
     }
 
     onSearchChange(searchValue: string): void {
+        this.selectedItem = null;
         this.filteredItems = null;
         this.isLoading = true;
         if(searchValue){
@@ -119,7 +133,6 @@ export class RfqItemComponent implements OnInit {
                     distinctUntilChanged())
                 .subscribe((items) => {
                     this.filteredItems = items;
-                    console.log(this.filteredItems);
                 });
         }
     }
@@ -164,7 +177,7 @@ export class RfqItemComponent implements OnInit {
         if (this.rfqItemForm.get('supplierId').value !== "" && this.rfqItemForm.get('supplierId').value) {
             this.supplierId = this.rfqItemForm.get('supplierId').value;
             this._getSupplier(this.supplierId);
-            console.log('supplier', this.supplierId);
+
         } else {
             this.supplierId = null;
         }
@@ -189,10 +202,6 @@ export class RfqItemComponent implements OnInit {
                         }
                     )
                 } else {
-                    console.log('INTO ADD');
-                    console.log('Supplier Id', this.supplierId);
-                    console.log('priceQuoted', this.rfqItemForm.get('priceQuoted').value);
-                    console.log('expectedArrivalDate', this.rfqItemForm.get('expectedArrivalDate').value);
 
                     if (this.supplierId) {
                         this.dialogRef.close(
@@ -231,7 +240,6 @@ export class RfqItemComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        console.log(">>> HERE ", this.data);
         if (this.data.itemId) {
             this.isLoading = true;
             this.editmode = true;
@@ -247,7 +255,6 @@ export class RfqItemComponent implements OnInit {
                         this.itemForm.expectedArrivalDate.setValue(this.data.expectedArrivalDate);
                         this.itemForm.itemStatus.setValue(this.data.status);
                         this.isLoading = false;
-                        //this.itemForm.name.setValue(item.name);
                     });
             }
         }

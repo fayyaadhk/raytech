@@ -46,7 +46,7 @@
             <ng-container matColumnDef="PONumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"><a
-                    routerLink="details/{{purchaseOrder.id}}">{{purchaseOrder.poNumber}}</a></mat-cell>
+                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary">{{purchaseOrder.poNumber}}</a></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="RFQNumber">
