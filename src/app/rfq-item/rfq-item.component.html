@@ -36,14 +36,39 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
-                            <ng-container *ngIf="this.selectedItem && this.selectedItem.itemSuppliers && this.selectedItem.itemSuppliers.length > 0">
-                                <div class="mb-4">
+                            <ng-container *ngIf="this.selectedItem">
+                                <div class="mb-4"
+                                     *ngIf="this.selectedItem.itemSuppliers && this.selectedItem.itemSuppliers.length > 0">
                                     <div class="flex" *ngFor="let x of this.selectedItem.itemSuppliers">
                                         <div>
-                                            <p> <span>{{x.supplier.name}}: </span>
+                                            <p><span>{{x.supplier.name}}: </span>
                                                 <span>{{x.price | currency:'R'}} </span>
                                                 <span>({{x.priceDate | date:'MMM dd, yyyy'}}) </span>
                                             </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4" *ngIf="this.selectedItem.sku">
+                                    <div class="flex">
+                                        <div>
+                                            <p>SKU: <span class="text-primary">{{this.selectedItem.sku}} </span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4" *ngIf="this.selectedItem.rrsp">
+                                    <div class="flex">
+                                        <div>
+                                            <p>RRSP: <span class="text-primary">{{this.selectedItem.rrsp}} </span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4" *ngIf="this.selectedItem.rfqItems">
+                                    RFQ History
+                                    <div class="flex" *ngFor="let x of this.selectedItem.rfqItems">
+                                        <div>
+                                            <p>RFQ: <span class="text-primary">{{x.rfq.rfqNumber}} </span> |
+                                                Price Quoted: <span class="text-primary">{{x.priceQuoted}}</span> |
+                                                RFQ Result: <span class="text-primary">{{x.rfq.status}} </span></p>
                                         </div>
                                     </div>
                                 </div>
