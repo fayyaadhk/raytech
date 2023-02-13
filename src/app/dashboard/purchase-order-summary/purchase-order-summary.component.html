@@ -83,7 +83,7 @@
                         mat-header-cell
                         mat-sort-header
                         *matHeaderCellDef>
-                        RFQ ID
+                        PO ID
                     </th>
                     <td
                         mat-cell
@@ -106,7 +106,7 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/purchase-orders/details/{{transaction.id}}"> {{transaction.poNumber}}</a>
+                                    <a routerLink="/purchase-orders/details/{{transaction.id}}" class="hover:text-primary"> {{transaction.poNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>

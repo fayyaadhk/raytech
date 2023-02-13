@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {ClientService} from "../client/client.service";
 import {Router} from "@angular/router";
@@ -6,12 +6,14 @@ import {ItemService} from "./item.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {ItemClass} from './item.model';
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {CategoryService} from "../category/category.service";
+import {BrandService} from "../brand/brand.service";
 
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styles: [
-      /* language=SCSS */`
+    selector: 'app-item',
+    templateUrl: './item.component.html',
+    styles: [
+        /* language=SCSS */`
             .inventory-grid {
                 grid-template-columns: 48px auto 40px;
 
@@ -28,32 +30,37 @@ import {FuseConfirmationService} from "../../@fuse/services/confirmation";
                 }
             }
         `
-  ],
+    ],
 })
 export class ItemComponent implements OnInit {
     items: any = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<ItemClass>;
-    displayedColumns = ['id', 'name', 'sku', 'shortDescription', 'category', 'editDelete'];
+    displayedColumns = ['id', 'name', 'sku', 'shortDescription','brand', 'category', 'editDelete'];
 
+    categories: any = [];
+    brands: any = [];
 
     constructor(private itemService: ItemService,
+                private cateogryService: CategoryService,
+                private brandService: BrandService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
 
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.isLoading = true;
-        this._getItems();
+        this._getCategories();
+        this._getBrands();
     }
 
-    createItem(){
+    createItem() {
         this.router.navigateByUrl('items/form');
     }
 
-    updateItem(itemId: string){
+    updateItem(itemId: string) {
         this.router.navigateByUrl(`items/form/${itemId}`);
     }
 
@@ -69,8 +76,6 @@ export class ItemComponent implements OnInit {
         });
 
         confirmation.afterClosed().subscribe((result) => {
-
-            // If the confirm button pressed...
             if (result === 'confirmed') {
                 this.itemService.deleteItem(itemId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
                     this._getItems();
@@ -85,13 +90,46 @@ export class ItemComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    private _getItems(){
+    getBrandById(brandId) {
+        return this.brands.find(brand => brand.id === brandId).name;
+    }
+
+    getCategoryById(categoryId) {
+        return this.categories.find(cat => cat.id === categoryId).name;
+    }
+
+    private _getItems() {
         this.itemService
             .getItems()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
-                this.items = items;
+                this.items = items.sort((a,b) => a.name.localeCompare(b.name));
+                console.log(">>> this.items", this.items);
                 this.dataSource = new MatTableDataSource(this.items);
+                this.isLoading = false;
+            });
+    }
+
+    private _getCategories() {
+        this.cateogryService
+            .getCategories()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((categories) => {
+                this.categories = categories;
+                this.dataSource = new MatTableDataSource(this.categories);
+                this._getItems();
+
+                this.isLoading = false;
+            });
+    }
+
+    private _getBrands() {
+        this.brandService
+            .getBrands()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((brands) => {
+                this.brands = brands;
+                this.dataSource = new MatTableDataSource(this.brands);
                 this.isLoading = false;
             });
     }

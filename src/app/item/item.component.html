@@ -39,33 +39,46 @@
     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
         <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ID</mat-header-cell>
-                <mat-cell *matCellDef="let item"> {{item.id}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-20'"> ID</mat-header-cell>
+                <mat-cell *matCellDef="let item" [ngClass]="'max-w-20'"> <a routerLink="details/{{item.id}}" class="hover:text-primary">{{item.id}}</a> </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
-                <mat-cell *matCellDef="let item"><a routerLink="details/{{item.id}}">{{item.name}}</a></mat-cell>
+                <mat-cell *matCellDef="let item"><a routerLink="details/{{item.id}}" class="hover:text-primary">{{item.name}}</a></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="sku">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> SKU</mat-header-cell>
-                <mat-cell *matCellDef="let item"> {{item.sku}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> SKU</mat-header-cell>
+                <mat-cell *matCellDef="let item" [ngClass]="'max-w-48'"> <a routerLink="details/{{item.id}}" class="hover:text-primary">{{item.sku}}</a> </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="shortDescription">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Description</mat-header-cell>
-                <mat-cell *matCellDef="let item"> {{item.shortDescription}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-1/2'"> Description
+                </mat-header-cell>
+                <mat-cell *matCellDef="let item"
+                          [ngClass]="'max-w-1/2'">
+                    {{(item.shortDescription.length > 50) ? (item.shortDescription | slice:0:50) + '...' : (item.shortDescription)}}
+                </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="category">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Category</mat-header-cell>
-                <mat-cell *matCellDef="let item"> {{item?.category }} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> Category</mat-header-cell>
+                <mat-cell *matCellDef="let item"  [ngClass]="'max-w-48'">
+                    <ng-container *ngIf="item.categoryId">{{getCategoryById(item.categoryId) }} </ng-container>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="brand">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> Brand</mat-header-cell>
+                <mat-cell *matCellDef="let item"  [ngClass]="'max-w-48'">
+                    <ng-container *ngIf="item.brandId">{{getBrandById(item.brandId) }} </ng-container>
+                </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="editDelete">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
-                <mat-cell *matCellDef="let item">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-32'"> Actions</mat-header-cell>
+                <mat-cell *matCellDef="let item" [ngClass]="'max-w-32'">
                     <div class="truncate">
                         <button
                             (click)="updateItem(item.id)">

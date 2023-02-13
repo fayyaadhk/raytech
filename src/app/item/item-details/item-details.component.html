@@ -22,7 +22,7 @@
                     class="hidden sm:inline-flex ml-3"
                     mat-flat-button
                     [color]="'primary'"
-                    routerLink="/items/form/{{this.itemId}}">
+                    routerLink="/items/form/{{this.itemId}}" class="hover:text-primary">
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:save'"></mat-icon>
@@ -136,7 +136,7 @@
                                 mat-cell
                                 *matCellDef="let rfqItem">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/purchase-orders/details/{{rfqItem.purchaseOrder.id}}"> {{rfqItem.purchaseOrder.poNumber}}</a>
+                                    <a routerLink="/purchase-orders/details/{{rfqItem.purchaseOrder.id}}" class="hover:text-primary"> {{rfqItem.purchaseOrder.poNumber}}</a>
                                 </span>
                             </td>
                         </ng-container>
@@ -321,7 +321,7 @@
                                 mat-cell
                                 *matCellDef="let rfqItem">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/rfqs/details/{{rfqItem.rfq.id}}"> {{rfqItem.rfq.rfqNumber}}</a>
+                                    <a routerLink="/rfqs/details/{{rfqItem.rfq.id}}" class="hover:text-primary"> {{rfqItem.rfq.rfqNumber}}</a>
                                 </span>
                             </td>
                         </ng-container>

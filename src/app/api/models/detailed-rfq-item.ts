@@ -7,7 +7,7 @@ export class DetailedRfqItem {
   created?: string;
   expectedArrivalDate?: string;
   id: number;
-  Rfq: Rfq;
+  rfq: Rfq;
   priceQuoted?: number;
   quantity?: number;
   status?: null | string;

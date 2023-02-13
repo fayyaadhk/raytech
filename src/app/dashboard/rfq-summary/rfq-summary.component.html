@@ -108,7 +108,7 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/rfqs/details/{{transaction.id}}"> {{transaction.rfqNumber}}</a>
+                                    <a routerLink="/rfqs/details/{{transaction.id}}" class="hover:text-primary"> {{transaction.rfqNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>
@@ -254,7 +254,7 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    {{transaction.rfqNumber}}
+                                    <a routerLink="/rfqs/details/{{transaction.id}}" class="hover:text-primary">{{transaction.rfqNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>
