@@ -24,11 +24,12 @@
                                            matInput
                                            class=""
                                            [formControlName]="'itemId'"
+                                           (input)="onSearchChange($event.target.value)"
                                            autoActiveFirstOption
                                            [matAutocomplete]="auto">
-                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedItem($event)" [displayWith]="displayItem.bind(this)">
-                                        <mat-option *ngFor="let item of filteredItems | async; let i = index" [value]="item.id">
-                                            {{item.name}}
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="getSelectedItem($event)" [displayWith]="displayItem.bind(this)">
+                                        <mat-option *ngFor="let item of filteredItems; let i = index" [value]="item.id">
+                                            {{item.name}} <span *ngIf="item.sku"> | {{item.sku}}</span>
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

@@ -1,11 +1,13 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {map, Observable, startWith, Subject, takeUntil} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {ItemService} from "../../item/item.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SupplierService} from "../../suppliers/suppliers.service";
 import {POItemStatus} from "../../data/purchase-order-item-status";
 import {POStatus} from "../../data/purchase-order-status";
+import {Supplier} from "../../api/models/supplier";
+import {DetailedItem} from "../../api/models/detailed-item";
 
 @Component({
     selector: 'app-purchase-orders-item',
@@ -33,8 +35,10 @@ export class PurchaseOrdersItemComponent {
     keys = Object.keys;
     poItemStatus = POItemStatus;
     public itemFilter: FormControl = new FormControl();
-    filteredItems: Observable<any[]>;
     formFieldHelpers: string[] = [''];
+    filteredItems: Array<any> = [];
+    itemLoading: boolean = false;
+    selectedItem: DetailedItem = null;
 
     ngOnInit() {
         this._getItems();
@@ -64,13 +68,45 @@ export class PurchaseOrdersItemComponent {
         return this.items.filter(option => option.name.toLowerCase().includes(filterValue));
     }
 
-    selectedItem(event) {
-        console.log(event.option.value);
+    getSelectedItem(event) {
+        this.itemLoading = true;
+        this.itemService
+            .getItemWithAllDetails(this.form.get('itemId').value)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((item) => {
+                this.selectedItem = item;
+                console.log(">>> this.selectedItem", this.selectedItem);
+                let itemSuppliers: Supplier[] = [];
+                if (this.selectedItem && this.selectedItem.itemSuppliers) {
+                    this.selectedItem.itemSuppliers.forEach(supplier =>
+                        itemSuppliers.push(supplier.supplier)
+                    );
+                }
+                this.suppliers = itemSuppliers;
+
+                this.itemLoading = false;
+            });
     }
 
     displayItem(itemId: any) {
-        // return item ? item.name : '';
-        return this.items.find(item => item.id === itemId)?.name;
+        return this.items?.find(item => item.id === itemId)?.name;
+    }
+
+    onSearchChange(searchValue: string): void {
+        this.filteredItems = null;
+        this.isLoading = true;
+        if(searchValue){
+            this.itemService
+                .getItemSearch(searchValue)
+                .pipe(takeUntil(this.endsubs$),
+                    filter(_ => searchValue.length >= 3),
+                    debounceTime(500),
+                    distinctUntilChanged())
+                .subscribe((items) => {
+                    this.filteredItems = items;
+                    console.log(this.filteredItems);
+                });
+        }
     }
 
     private _initForm() {
@@ -91,10 +127,6 @@ export class PurchaseOrdersItemComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items;
-                this.filteredItems = this.itemForm.itemId.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this._filter(value || '')),
-                );
                 this.isLoading = false;
             });
     }

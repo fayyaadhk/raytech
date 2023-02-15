@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {ClientService} from "../client/client.service";
 import {Router} from "@angular/router";
@@ -8,6 +8,8 @@ import {ItemClass} from './item.model';
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {CategoryService} from "../category/category.service";
 import {BrandService} from "../brand/brand.service";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
     selector: 'app-item',
@@ -32,7 +34,7 @@ import {BrandService} from "../brand/brand.service";
         `
     ],
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent implements OnInit, AfterViewInit {
     items: any = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
@@ -41,6 +43,9 @@ export class ItemComponent implements OnInit {
 
     categories: any = [];
     brands: any = [];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private itemService: ItemService,
                 private cateogryService: CategoryService,
@@ -107,6 +112,8 @@ export class ItemComponent implements OnInit {
                 console.log(">>> this.items", this.items);
                 this.dataSource = new MatTableDataSource(this.items);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 
@@ -132,5 +139,9 @@ export class ItemComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(this.brands);
                 this.isLoading = false;
             });
+    }
+
+    ngAfterViewInit() {
+
     }
 }
