@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Subject, takeUntil} from "rxjs";
+import {debounceTime, distinctUntilChanged, filter, map, Observable, startWith, Subject, takeUntil} from "rxjs";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -20,9 +20,9 @@ import {UpdatePurchaseOrderItemRequest} from "../../api/models/update-purchase-o
 import {CreatePurchaseOrderItemRequest} from "../../api/models/create-purchase-order-item-request";
 
 @Component({
-  selector: 'app-add-purchase-orders',
-  templateUrl: './add-purchase-orders.component.html',
-  styleUrls: ['./add-purchase-orders.component.scss']
+    selector: 'app-add-purchase-orders',
+    templateUrl: './add-purchase-orders.component.html',
+    styleUrls: ['./add-purchase-orders.component.scss']
 })
 export class AddPurchaseOrdersComponent {
     editmode = false;
@@ -34,7 +34,7 @@ export class AddPurchaseOrdersComponent {
     currentPurchaseOrderId: number;
     imageDisplay: string | ArrayBuffer;
     isLoading: boolean = false;
-    purchaseOrder: any ;
+    purchaseOrder: any;
     clients: any = null;
     buyers: any = null;
     purchaseOrders: any = null;
@@ -50,6 +50,7 @@ export class AddPurchaseOrdersComponent {
     poDocumentPreview: string;
     formFieldHelpers: string[] = [''];
     poItems: any = [];
+    filteredRfqs: Observable<any[]>;
 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private clientService: ClientService,
@@ -59,8 +60,40 @@ export class AddPurchaseOrdersComponent {
                 private location: Location,
                 private route: ActivatedRoute,
                 private router: Router,
-                private dialog: MatDialog,)
-    {
+                private dialog: MatDialog,) {
+    }
+
+    selectedRfq(event) {
+        console.log(this.rfqs);
+        this.purchaseOrderItems = [];
+        let selectedRfq: any;
+        this.rfqService
+            .getRfqDetails(this.form.get('rfq').value)
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((rfq) => {
+                selectedRfq = rfq;
+                this.purchaseOrderForm.client.setValue(selectedRfq.clientId);
+                console.log(selectedRfq);
+                selectedRfq.items.forEach(items => {
+                    this.purchaseOrderItems.push({
+                        itemId: items.item.id,
+                        name: items.item.name,
+                        supplierName: items.supplier.name,
+                        quantity: items.quantity,
+                        status: items.status,
+                        priceQuoted: items.priceQuoted,
+                        expectedArrivalDate: items.expectedArrivalDate
+                    });
+                });
+                console.log(this.purchaseOrderItems);
+                this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
+            });
+
+    }
+
+    displayRfq(rfqId: any) {
+        // return item ? item.name : '';
+        return this.rfqs.find(rfq => rfq.id === rfqId)?.rfqNumber;
     }
 
     openDialog() {
@@ -80,6 +113,23 @@ export class AddPurchaseOrdersComponent {
             }
         })
     }
+
+    // onSearchChange(searchValue: string): void {
+    //     this.filteredItems = null;
+    //     this.isLoading = true;
+    //     if(searchValue){
+    //         this.itemService
+    //             .getItemSearch(searchValue)
+    //             .pipe(takeUntil(this.endsubs$),
+    //                 filter(_ => searchValue.length >= 3),
+    //                 debounceTime(500),
+    //                 distinctUntilChanged())
+    //             .subscribe((items) => {
+    //                 this.filteredItems = items;
+    //                 console.log(this.filteredItems);
+    //             });
+    //     }
+    // }
 
     updatePurchaseOrderItem(poItemId: number, itemId: number, supplierId: number, quantity: string, price: number, expectedArrivalDate: string, status: string) {
         console.log(supplierId, status);
@@ -114,12 +164,11 @@ export class AddPurchaseOrdersComponent {
 
     removePurchaseOrderItem(purchaseOrderId: number, poItemId: number) {
         console.log(poItemId);
-        if(purchaseOrderId){
+        if (purchaseOrderId) {
             console.log('here 1');
             this.purchaseOrderItems.splice(purchaseOrderId, 1);
             this.dataSource = new MatTableDataSource(this.purchaseOrderItems);
-        }
-        else if (poItemId){
+        } else if (poItemId) {
             console.log('here 2');
             this.purchaseOrderService.deletePoItem(poItemId)
                 .pipe(takeUntil(this.endsubs$))
@@ -160,7 +209,7 @@ export class AddPurchaseOrdersComponent {
         });
     }
 
-    private _getClients(){
+    private _getClients() {
         this.clientService
             .getClients()
             .pipe(takeUntil(this.endsubs$))
@@ -170,12 +219,22 @@ export class AddPurchaseOrdersComponent {
             });
     }
 
-    private _getRfqs(){
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.rfqs.filter(option => option.rfqNumber.toLowerCase().includes(filterValue));
+    }
+
+    private _getRfqs() {
         this.rfqService
             .getRfqs()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((rfqs) => {
                 this.rfqs = rfqs;
+                this.filteredRfqs = this.purchaseOrderForm.rfq.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }
@@ -184,7 +243,9 @@ export class AddPurchaseOrdersComponent {
         this.isSubmitted = true;
         this.isLoading = true;
 
-        if (this.form.invalid) {return;}
+        if (this.form.invalid) {
+            return;
+        }
         if (this.editmode) {
             console.log(this.purchaseOrderItems);
 
@@ -204,7 +265,7 @@ export class AddPurchaseOrdersComponent {
             console.log('RFQS >>> ', this.purchaseOrders);
             for (let r = 0; r < this.purchaseOrderItems.length; r++) {
                 console.log(this.purchaseOrderItems);
-                console.log('edit mode ',this.purchaseOrderItems[r].editMode);
+                console.log('edit mode ', this.purchaseOrderItems[r].editMode);
                 if (this.purchaseOrderItems[r].editMode === true) {
                     const updatePoItem: UpdatePurchaseOrderItemRequest = {
                         purchaseOrderId: this.currentPurchaseOrderId,
@@ -230,7 +291,7 @@ export class AddPurchaseOrdersComponent {
                                 this.updateSuccess = false;
                             }
                         );
-                } else if(this.purchaseOrderItems[r].editMode === false){
+                } else if (this.purchaseOrderItems[r].editMode === false) {
                     const addPoItem: CreatePurchaseOrderItemRequest = {
                         purchaseOrderId: this.currentPurchaseOrderId,
                         itemId: this.purchaseOrderItems[r].itemId,
@@ -275,7 +336,7 @@ export class AddPurchaseOrdersComponent {
     onImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
-            this.form.patchValue({ image: file });
+            this.form.patchValue({image: file});
             this.form.get('image').updateValueAndValidity();
             const fileReader = new FileReader();
             fileReader.onload = () => {

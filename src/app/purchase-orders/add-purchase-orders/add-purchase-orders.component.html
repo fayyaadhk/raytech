@@ -109,6 +109,24 @@
                                     </div>
                                     <div class="flex">
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
+                                            <mat-label>Rfq</mat-label>
+                                            <input type="text"
+                                                   placeholder="Search Rfqs"
+                                                   aria-label="Number"
+                                                   matInput
+                                                   class=""
+                                                   [formControlName]="'rfq'"
+                                                   autoActiveFirstOption
+                                                   [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedRfq($event)" [displayWith]="displayRfq.bind(this)">
+                                                <mat-option *ngFor="let rfq of filteredRfqs | async; let i = index" [value]="rfq.id">
+                                                    {{rfq.rfqNumber}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="flex">
+                                        <mat-form-field class="flex-auto gt-xs:pr-3">
                                             <mat-label>Buyer</mat-label>
                                             <mat-select
                                                 name="buyer" formControlName="buyer">
@@ -129,20 +147,6 @@
                                                 name="client" formControlName="client">
                                                 <mat-option *ngFor="let client of clients"
                                                             [value]="client.id">{{client.name}}</mat-option>
-                                            </mat-select>
-                                            <mat-icon
-                                                class="icon-size-5"
-                                                matPrefix
-                                                [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-form-field class="flex-auto gt-xs:pr-3">
-                                            <mat-label>RFQ</mat-label>
-                                            <mat-select
-                                                name="rfq" formControlName="rfq">
-                                                <mat-option *ngFor="let rfq of rfqs"
-                                                            [value]="rfq.id">{{rfq.rfqNumber}}</mat-option>
                                             </mat-select>
                                             <mat-icon
                                                 class="icon-size-5"
