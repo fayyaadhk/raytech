@@ -1,20 +1,14 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Subject, takeUntil} from "rxjs";
+import {Observable, Subject, takeUntil, startWith, map} from "rxjs";
 import {CategoryService} from "../../category/category.service";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
 import {Location} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Category} from "../../api/models/category";
 import {ItemService} from "../item.service";
 import {ItemClass} from '../item.model';
-import {CreateClientRequest} from "../../api/models/create-client-request";
-import {MatTableDataSource} from "@angular/material/table";
 import {BrandService} from "../../brand/brand.service";
-import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
-import {AddCategoryComponent} from "../../category/add-category/add-category.component";
 import {MatDialog} from "@angular/material/dialog";
-import {AddBrandComponent} from "../../brand/add-brand/add-brand.component";
 import {AddItemBrandComponent} from "./add-item-brand/add-item-brand.component";
 import {AddItemCategoryComponent} from "./add-item-category/add-item-category.component";
 
@@ -54,6 +48,7 @@ export class AddItemComponent {
     item: [] = null;
     categories: any = null;
     brands: any = null;
+    filteredCategories: Observable<any[]>;
 
     constructor(private itemService: ItemService,
                 private brandService: BrandService,
@@ -64,6 +59,18 @@ export class AddItemComponent {
                 private dialog: MatDialog,
                 private router: Router,
                 private categoryService: CategoryService) {
+    }
+
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+        return this.categories.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+    selectedCategory(event) {
+        console.log(event.option.value);
+    }
+    displayCategory(categoryId: any) {
+        // return item ? item.name : '';
+        return this.categories?.find(category => category.id === categoryId)?.name;
     }
 
     ngOnInit() {
@@ -129,6 +136,10 @@ export class AddItemComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((categories) => {
                 this.categories = categories;
+                this.filteredCategories = this.itemForm.category.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
                 this.isLoading = false;
             });
     }

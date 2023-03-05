@@ -66,7 +66,7 @@
             </ng-container>
 
             <ng-container matColumnDef="editDelete">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
                 <mat-cell *matCellDef="let rfqs">
                     <div class="truncate">
                         <button
@@ -86,5 +86,6 @@
 
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
+        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
     </div>
 </div>

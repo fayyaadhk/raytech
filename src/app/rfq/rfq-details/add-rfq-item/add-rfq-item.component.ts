@@ -25,6 +25,7 @@ export class AddRfqItemComponent implements OnInit {
     openCreateNewItemDialog() {
         const dialogRef = this.dialog.open(AddNewItemComponent, {
             width: '600px',
+            height: '900px',
             data: this.data.id,
         });
 
