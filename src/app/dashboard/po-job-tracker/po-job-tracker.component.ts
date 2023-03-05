@@ -145,7 +145,6 @@ export class PoJobTrackerComponent implements OnInit {
     }
 
     getCountIncompleteRfqItems(po: PurchaseOrder): number {
-        console.log(">>> rfq.po.filter(y => y.status != \"QUOTE RECEIVED\")", po.items.filter(y => y.status != "QUOTE RECEIVED"))
         return po.items.filter(y => y.status === "QUOTATION RECEIVED").length;
     }
 }

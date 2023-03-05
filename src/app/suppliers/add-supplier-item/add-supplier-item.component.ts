@@ -63,6 +63,8 @@ export class AddSupplierItemComponent implements OnInit {
             itemId: ['', Validators.required],
             price: [null, Validators.required],
             priceDate: [''],
+            supplierItemCode: [''],
+            supplierDescription: [''],
         });
 
         this._getItems();
@@ -83,8 +85,16 @@ export class AddSupplierItemComponent implements OnInit {
         const request: any = {
             supplierId: this.data.id,
             itemId: itemId,
-            price: this.form.get('price').value,
+            price: this.form.get('price').value
         };
+
+        if (this.form.get('supplierDescription').value !== "") {
+            request.supplierDescription = this.form.get('supplierDescription').value;
+        }
+
+        if (this.form.get('supplierItemCode').value !== "") {
+            request.supplierItemCode = this.form.get('supplierItemCode').value;
+        }
 
         if (this.form.get('priceDate').value !== "") {
             request.priceDate = this.form.get('priceDate').value;

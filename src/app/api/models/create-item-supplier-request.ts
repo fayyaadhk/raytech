@@ -7,4 +7,6 @@ export class CreateItemSupplierRequest {
   itemId: number;
   price?: number;
   priceDate?: null | string;
+  supplierItemCode?: null | string;
+  supplierDescription?: null | string;
 }
