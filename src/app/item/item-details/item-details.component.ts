@@ -39,7 +39,7 @@ export class ItemDetailsComponent {
     poItemsTableColumns: string[] = ['poId', 'poNumber', 'poDate', 'quantity', 'priceQuoted', 'supplier', 'status'];
 
     itemSuppliersDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    itemSuppliersTableColumns: string[] = ['supplierName', 'price', 'dateQuoted', 'actions'];
+    itemSuppliersTableColumns: string[] = ['supplierName', 'price', 'dateQuoted', 'supplierItemCode', 'supplierDescription', 'actions'];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 

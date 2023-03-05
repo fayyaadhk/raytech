@@ -8,4 +8,6 @@ export interface SupplierItem {
   supplier: Supplier;
   supplierPrice?: number;
   supplierPriceDate?: string;
+  supplierDescription?: string;
+  supplierItemCode?: string;
 }

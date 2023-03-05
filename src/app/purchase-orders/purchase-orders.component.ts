@@ -1,12 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {PurchaseOrderService} from "./purchase-order.service";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {Rfq} from "../api/models/rfq";
 
 @Component({
     selector: 'app-purchase-orders',
@@ -32,6 +33,7 @@ import {MatPaginator} from "@angular/material/paginator";
     ]
 })
 export class PurchaseOrdersComponent {
+    poStatus: string;
 
     purchaseOrders: any = [];
     endsubs$: Subject<any> = new Subject<any>();
@@ -42,14 +44,20 @@ export class PurchaseOrdersComponent {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private purchaseOrderService: PurchaseOrderService,
+    constructor(private route: ActivatedRoute,
+                private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
     }
 
     ngOnInit() {
         this.isLoading = true;
-        this._getPurchaseOrders();
+        this.route.queryParams
+            .subscribe(params => {
+                    this.poStatus = params.status;
+                }
+            );
+        this._getPurchaseOrders(this.poStatus);
     }
 
     createPurchaseOrders() {
@@ -76,7 +84,7 @@ export class PurchaseOrdersComponent {
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 this.purchaseOrderService.deletePurchaseOrder(itemId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-                    this._getPurchaseOrders();
+                    this._getPurchaseOrders(this.poStatus);
                 });
             }
         });
@@ -88,16 +96,34 @@ export class PurchaseOrdersComponent {
         this.dataSource.filter = filterValue;
     }
 
-    private _getPurchaseOrders() {
-        this.purchaseOrderService
-            .getPurchaseOrders()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((purchaseOrders) => {
-                this.purchaseOrders = purchaseOrders;
-                this.dataSource = new MatTableDataSource(this.purchaseOrders);
-                this.isLoading = false;
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-            });
+    private _getPurchaseOrders(status: string) {
+        if (status != null) {
+            this.purchaseOrderService
+                .getPurchaseOrdersByStatus(status)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((purchaseOrders) => {
+                    this.purchaseOrders = purchaseOrders;
+                    this.dataSource = new MatTableDataSource(this.purchaseOrders);
+                    this.isLoading = false;
+                });
+        } else {
+            this.purchaseOrderService
+                .getPurchaseOrders()
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((purchaseOrders) => {
+                    this.purchaseOrders = purchaseOrders;
+                    this.dataSource = new MatTableDataSource(this.purchaseOrders);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                    this.isLoading = false;
+                });
+        }
+    }
+    getItemsSummaryForPO(po: PurchaseOrder){
+        let itemString: string[] = [];
+        po.items.forEach(item =>{
+            itemString.push(item.quantity + " x " + item.item.name);
+        });
+        return itemString.join(', ');
     }
 }

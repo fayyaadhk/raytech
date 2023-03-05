@@ -10,7 +10,8 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">RFQs</div>
+        <div *ngIf="!rfqStatus" class="text-4xl font-extrabold tracking-tight">All RFQs</div>
+        <div *ngIf="rfqStatus" class="text-4xl font-extrabold tracking-tight">{{this.rfqStatus}} RFQs</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -41,6 +42,12 @@
             <ng-container matColumnDef="id">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                 <mat-cell *matCellDef="let rfqs"> {{rfqs.id}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="rfqNo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs"><a routerLink="details/{{rfqs.id}}" class="hover:text-primary"
+                            [matTooltip]="getItemsSummaryForRfq(rfqs)" matTooltipPosition="right"> {{rfqs.rfqNumber}} </a></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="rfqNumber">

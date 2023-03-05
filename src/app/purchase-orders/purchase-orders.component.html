@@ -10,7 +10,8 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Purchase Orders</div>
+        <div *ngIf="!poStatus" class="text-4xl font-extrabold tracking-tight">All Purchase Orders</div>
+        <div *ngIf="poStatus" class="text-4xl font-extrabold tracking-tight">{{poStatus}} Purchase Orders</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -46,7 +47,8 @@
             <ng-container matColumnDef="poNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"><a
-                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary">{{purchaseOrder.poNumber}}</a>
+                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary"
+                    [matTooltip]="getItemsSummaryForPO(purchaseOrder)" matTooltipPosition="right">{{purchaseOrder.poNumber}}</a>
                 </mat-cell>
             </ng-container>
 

@@ -32,9 +32,11 @@ export class SuppliersDetailsComponent {
         'itemId',
         'supplierId',
         'itemName',
+        'supplierItemCode',
+        'supplierDescription',
         'supplierPrice',
-        'itemPriceDate',
-        'rrsp'
+        'rrsp',
+        'itemPriceDate'
     ];
     items = [];
     supplierItems: any;
@@ -58,25 +60,20 @@ export class SuppliersDetailsComponent {
     // }
 
     private _getSupplierDetails() {
-        console.log("HERE");
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
-            console.log(params);
+
             if (params.id) {
                 this.currentSupplierId = params.id;
-                console.log('>>>>>>', this.currentSupplierId)
                 this.supplierService
                     .getSupplierDetails(this.currentSupplierId)
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((supplier) => {
                         this.suppliers = supplier;
-                        console.log(this.suppliers);
-                        console.log(this.suppliers.supplierItems);
 
                         this.supplierService.getSupplierItems(this.currentSupplierId)
                             .pipe(takeUntil(this.endsubs$))
                             .subscribe((supplierItems) => {
                                 this.supplierItems = supplierItems;
-                                console.log(this.supplierItems);
                                 for (let i = 0; i < this.supplierItems.length; i++) {
                                     this.items.push({
                                         itemId: this.supplierItems[i].item.id,
@@ -85,12 +82,14 @@ export class SuppliersDetailsComponent {
                                         supplierId: this.supplierItems[i].supplier.id,
                                         price: this.supplierItems[i].supplierPrice,
                                         priceDate: this.supplierItems[i].supplierPriceDate,
+                                        supplierItemCode: this.supplierItems[i].supplierItemCode,
+                                        supplierDescription: this.supplierItems[i].supplierDescription,
                                     });
                                 }
+                                console.log(">>> this.supplierItems", this.supplierItems);
+
                                 this.dataSource = new MatTableDataSource(this.supplierItems);
                             });
-
-                        console.log('THIS.ITEMS ', this.items);
 
                         this.isLoading = false;
                         //this.clientForm.contactInformation.setValue(this.contactInfo);
@@ -119,11 +118,9 @@ export class SuppliersDetailsComponent {
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            console.log(">>> res", res);
             // received data from dialog-component
             if (res && res.added) {
                 this._getItemSuppliers();
-                console.log(this.supplierItems);
             }
         })
     }

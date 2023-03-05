@@ -19,6 +19,10 @@ export class RfqService {
     constructor(private http: HttpClient, private router: Router) {
     }
 
+    getRfqsByStatus(status: string): Observable<Rfq[]> {
+        return this.http.get<Rfq[]>(`${apiURLRfqs}?status=${status}`);
+    }
+
     getRfqs(): Observable<Rfq[]> {
         return this.http.get<Rfq[]>(apiURLRfqs);
     }

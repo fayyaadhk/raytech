@@ -41,12 +41,13 @@ export class AddItemSupplierComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(">>> init this.data", this.data);
         this.itemId = this.data;
         this.itemSupplierForm = this.formBuilder.group({
             supplierId: ['', Validators.required],
             price: ['', Validators.required],
-            priceDate: ['']
+            priceDate: [''],
+            supplierItemCode: [''],
+            supplierDescription: ['']
         });
 
         this._getSuppliers();
@@ -62,7 +63,6 @@ export class AddItemSupplierComponent implements OnInit {
 
     onSubmit() {
         this._addItemSupplier();
-        console.log(">>> addsuccess", this.addSuccess);
         this.dialogRef.close(
             {
                 added: this.addSuccess
@@ -92,12 +92,14 @@ export class AddItemSupplierComponent implements OnInit {
     }
 
     private _addItemSupplier() {
-        console.log(">>> this.data", this.data);
+        console.log(">>> this.itemSupplierForm", this.itemSupplierForm);
         const request: CreateItemSupplierRequest = {
             supplierId: this.itemSupplierForm.get('supplierId').value,
             itemId: this.itemId,
             priceDate: this.itemSupplierForm.get('priceDate').value,
-            price: this.itemSupplierForm.get('price').value
+            price: this.itemSupplierForm.get('price').value,
+            supplierItemCode: this.itemSupplierForm.get('supplierItemCode').value,
+            supplierDescription: this.itemSupplierForm.get('supplierDescription').value,
         }
 
         this.itemService
@@ -107,7 +109,6 @@ export class AddItemSupplierComponent implements OnInit {
                 this.isLoading = false;
             });
         this.addSuccess = true;
-
 
     }
 

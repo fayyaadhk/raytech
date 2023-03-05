@@ -42,12 +42,13 @@ export class EditItemSupplierComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(">>> init this.data", this.data);
         this.incomingItemSupplier = this.data;
 
         this.itemSupplierForm = this.formBuilder.group({
             price: ['', Validators.required],
-            priceDate: ['']
+            priceDate: [''],
+            supplierDescription: [''],
+            supplierItemCode: ['']
         });
 
         this._getItemSupplier(this.incomingItemSupplier.itemSupplierId);
@@ -56,7 +57,6 @@ export class EditItemSupplierComponent implements OnInit {
 
     onSubmit() {
         this._updateItemSupplier();
-        console.log(">>> updatesuccess", this.updateSuccess);
         this.dialogRef.close(
             {
                 updated: this.updateSuccess
@@ -68,14 +68,16 @@ export class EditItemSupplierComponent implements OnInit {
     private _initForm() {
         this.isForm.price.setValue(this.itemSupplier.price);
         this.isForm.priceDate.setValue(this.itemSupplier.priceDate);
+        this.isForm.supplierItemCode.setValue(this.itemSupplier.supplierItemCode);
+        this.isForm.supplierDescription.setValue(this.itemSupplier.supplierDescription);
     }
 
     private _updateItemSupplier() {
-        console.log(">>> this.data", this.data);
-
         const request: UpdateItemSupplierRequest = {
             priceDate: this.itemSupplierForm.get('priceDate').value,
-            price: this.itemSupplierForm.get('price').value
+            price: this.itemSupplierForm.get('price').value,
+            supplierDescription: this.itemSupplierForm.get('supplierDescription').value,
+            supplierItemCode: this.itemSupplierForm.get('supplierItemCode').value
         }
 
         this.itemService

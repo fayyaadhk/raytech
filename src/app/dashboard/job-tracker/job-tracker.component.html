@@ -76,22 +76,32 @@
 
                                         <div class="ml-1.5">{{rfqItem.quantity}}
                                             x {{rfqItem.item.name | slice:0:50}} </div>
-                                        <mat-icon *ngIf="rfqItem.status === 'SOURCING'"
-                                                  class="text-blue-800 icon-size-5 text-hint mx-2"
-                                                  [matTooltip]="rfqItem.status"
-                                                  [svgIcon]="'mat_outline:location_searching'"></mat-icon>
-                                        <mat-icon *ngIf="rfqItem.status === 'COULD NOT SOURCE'"
-                                                  [matTooltip]="rfqItem.status"
-                                                  class="text-red-800 icon-size-5 text-hint mx-2"
-                                                  [svgIcon]="'mat_outline:search_off'"></mat-icon>
-                                        <mat-icon *ngIf="rfqItem.status === 'AWAITING QUOTATION'"
-                                                  [matTooltip]="rfqItem.status"
-                                                  class="text-orange-600 icon-size-5 text-hint mx-2"
-                                                  [svgIcon]="'mat_outline:access_time'"></mat-icon>
-                                        <mat-icon *ngIf="rfqItem.status === 'QUOTATION RECEIVED'"
-                                                  [matTooltip]="rfqItem.status"
-                                                  class="text-green-800 icon-size-5 text-hint mx-2"
-                                                  [svgIcon]="'mat_outline:check_circle'"></mat-icon>
+                                        <a (click)="openStatusDialog(rfqItem.id, rfqItem.status)">
+                                            <mat-icon *ngIf="rfqItem.status === 'SOURCING'"
+                                                      class="text-blue-800 icon-size-5 text-hint mx-2"
+                                                      [matTooltip]="rfqItem.status"
+                                                      [svgIcon]="'mat_outline:location_searching'"></mat-icon>
+                                        </a>
+                                        <a (click)="openStatusDialog(rfqItem.id, rfqItem.status)">
+                                            <mat-icon *ngIf="rfqItem.status === 'COULD NOT SOURCE'"
+                                                      [matTooltip]="rfqItem.status"
+                                                      class="text-red-800 icon-size-5 text-hint mx-2"
+                                                      [svgIcon]="'mat_outline:search_off'"></mat-icon>
+                                        </a>
+                                        <a (click)="openStatusDialog(rfqItem.id, rfqItem.status)">
+
+                                            <mat-icon *ngIf="rfqItem.status === 'AWAITING QUOTATION'"
+                                                      [matTooltip]="rfqItem.status"
+                                                      class="text-orange-600 icon-size-5 text-hint mx-2"
+                                                      [svgIcon]="'mat_outline:access_time'"></mat-icon>
+                                        </a>
+                                        <a (click)="openStatusDialog(rfqItem.id, rfqItem.status)">
+
+                                            <mat-icon *ngIf="rfqItem.status === 'QUOTATION RECEIVED'"
+                                                      [matTooltip]="rfqItem.status"
+                                                      class="text-green-800 icon-size-5 text-hint mx-2"
+                                                      [svgIcon]="'mat_outline:check_circle'"></mat-icon>
+                                        </a>
                                     </div>
                                 </ng-container>
                             </div>

@@ -37,6 +37,10 @@ export class RfqItemService {
         return this.http.put<RfqItem>(`${apiURLRfqItems}/${rfqItemId}`, model);
     }
 
+    updateRfqItemStatus(status: any, rfqItemId: number): Observable<RfqItem> {
+        return this.http.put<RfqItem>(`${apiURLRfqItems}/${rfqItemId}/status`, status);
+    }
+
     deleteRfqItem(rfqItemId: string): Observable<any> {
         return this.http.delete<any>(`${apiURLRfqItems}/${rfqItemId}`);
     }

@@ -17,6 +17,10 @@ export class PurchaseOrderService {
     constructor(private http: HttpClient, private router: Router) {
     }
 
+    getPurchaseOrdersByStatus(status: string): Observable<PurchaseOrder[]> {
+        return this.http.get<PurchaseOrder[]>(`${apiURL}?status=${status}`);
+    }
+
     getPurchaseOrders(): Observable<PurchaseOrder[]> {
         return this.http.get<PurchaseOrder[]>(apiURL);
     }
