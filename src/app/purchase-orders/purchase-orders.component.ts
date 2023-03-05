@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {PurchaseOrderService} from "./purchase-order.service";
+import {Rfq} from "../api/models/rfq";
 
 @Component({
     selector: 'app-purchase-orders',
@@ -112,7 +113,12 @@ export class PurchaseOrdersComponent {
                     this.isLoading = false;
                 });
         }
-
-
+    }
+    getItemsSummaryForPO(po: PurchaseOrder){
+        let itemString: string[] = [];
+        po.items.forEach(item =>{
+            itemString.push(item.quantity + " x " + item.item.name);
+        });
+        return itemString.join(', ');
     }
 }
