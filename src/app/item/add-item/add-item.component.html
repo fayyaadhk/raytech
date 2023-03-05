@@ -126,17 +126,35 @@
                                         </mat-form-field>
                                     </div>
                                     <div class="flex">
+<!--                                        <mat-form-field class="flex-auto gt-xs:pr-3">-->
+<!--                                            <mat-label>Category</mat-label>-->
+<!--                                            <mat-select-->
+<!--                                                name="category" formControlName="category">-->
+<!--                                                <mat-option *ngFor="let category of categories"-->
+<!--                                                            [value]="category.id">{{category.name}}</mat-option>-->
+<!--                                            </mat-select>-->
+<!--                                            <mat-icon-->
+<!--                                                class="icon-size-5"-->
+<!--                                                matPrefix-->
+<!--                                                [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>-->
+<!--                                        </mat-form-field>-->
                                         <mat-form-field class="flex-auto gt-xs:pr-3">
                                             <mat-label>Category</mat-label>
-                                            <mat-select
-                                                name="category" formControlName="category">
-                                                <mat-option *ngFor="let category of categories"
-                                                            [value]="category.id">{{category.name}}</mat-option>
-                                            </mat-select>
-                                            <mat-icon
-                                                class="icon-size-5"
-                                                matPrefix
-                                                [svgIcon]="'heroicons_solid:view-grid'"></mat-icon>
+                                            <input type="text"
+                                                   placeholder="Search Categories"
+                                                   aria-label="Number"
+                                                   matInput
+                                                   class=""
+                                                   [formControlName]="'category'"
+                                                   autoActiveFirstOption
+                                                   [matAutocomplete]="auto">
+                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                                              (optionSelected)="selectedCategory($event)"
+                                                              [displayWith]="displayCategory.bind(this)">
+                                                <mat-option *ngFor="let category of filteredCategories | async; let i = index" [value]="category.id">
+                                                    {{category.name}}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
                                     <div class="flex">

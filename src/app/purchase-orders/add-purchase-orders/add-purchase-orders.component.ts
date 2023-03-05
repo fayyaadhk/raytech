@@ -78,7 +78,8 @@ export class AddPurchaseOrdersComponent {
                     this.purchaseOrderItems.push({
                         itemId: items.item.id,
                         name: items.item.name,
-                        supplierName: items.supplier.name,
+                        supplierName: items.supplier?.name,
+                        supplierId: items.supplier?.id,
                         quantity: items.quantity,
                         status: items.status,
                         priceQuoted: items.priceQuoted,
