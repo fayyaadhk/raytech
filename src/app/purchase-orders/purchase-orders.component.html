@@ -43,30 +43,31 @@
                 <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.id}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="PONumber">
+            <ng-container matColumnDef="poNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"><a
-                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary">{{purchaseOrder.poNumber}}</a></mat-cell>
+                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary">{{purchaseOrder.poNumber}}</a>
+                </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="RFQNumber">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
+            <ng-container matColumnDef="rfqId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>RFQ Number</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.rfqId}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="DateReceived">
+            <ng-container matColumnDef="dateReceived">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Date Received</mat-header-cell>
                 <mat-cell
                     *matCellDef="let purchaseOrder"> {{purchaseOrder.dateReceived  | date:'MMM dd, yyyy'}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="DateDue">
+            <ng-container matColumnDef="due">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Date Due</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.due  | date:'MMM dd, yyyy'}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="itemCount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Item Count</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>Item Count</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"> {{purchaseOrder.items.length}} </mat-cell>
             </ng-container>
 
@@ -76,7 +77,7 @@
             </ng-container>
 
             <ng-container matColumnDef="editDelete">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Actions</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder">
                     <div class="truncate">
                         <button
@@ -97,5 +98,6 @@
 
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
+        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
     </div>
 </div>

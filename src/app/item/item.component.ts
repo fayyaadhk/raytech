@@ -39,7 +39,7 @@ export class ItemComponent implements OnInit, AfterViewInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<ItemClass>;
-    displayedColumns = ['id', 'name', 'sku', 'shortDescription','brand', 'category', 'editDelete'];
+    displayedColumns = ['id', 'name', 'sku', 'shortDescription','brandId', 'categoryId', 'editDelete'];
 
     categories: any = [];
     brands: any = [];
@@ -104,6 +104,7 @@ export class ItemComponent implements OnInit, AfterViewInit {
     }
 
     private _getItems() {
+        this.isLoading = true;
         this.itemService
             .getItems()
             .pipe(takeUntil(this.endsubs$))
@@ -111,33 +112,32 @@ export class ItemComponent implements OnInit, AfterViewInit {
                 this.items = items.sort((a,b) => a.name.localeCompare(b.name));
                 console.log(">>> this.items", this.items);
                 this.dataSource = new MatTableDataSource(this.items);
-                this.isLoading = false;
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
+                this.isLoading = false;
             });
     }
 
     private _getCategories() {
+        this.isLoading = true;
         this.cateogryService
             .getCategories()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((categories) => {
                 this.categories = categories;
-                this.dataSource = new MatTableDataSource(this.categories);
                 this._getItems();
-
-                this.isLoading = false;
+                this.dataSource = new MatTableDataSource(this.categories);
             });
     }
 
     private _getBrands() {
+        this.isLoading = true;
         this.brandService
             .getBrands()
             .pipe(takeUntil(this.endsubs$))
             .subscribe((brands) => {
                 this.brands = brands;
                 this.dataSource = new MatTableDataSource(this.brands);
-                this.isLoading = false;
             });
     }
 

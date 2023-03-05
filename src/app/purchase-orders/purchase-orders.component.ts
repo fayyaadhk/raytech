@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {PurchaseOrderService} from "./purchase-order.service";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-purchase-orders',
-  templateUrl: './purchase-orders.component.html',
+    selector: 'app-purchase-orders',
+    templateUrl: './purchase-orders.component.html',
     styles: [
         /* language=SCSS */`
             .inventory-grid {
@@ -35,25 +37,26 @@ export class PurchaseOrdersComponent {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<PurchaseOrder>;
-    displayedColumns = ['id', 'PONumber', 'RFQNumber', 'DateReceived', 'DateDue', 'itemCount', 'status', 'editDelete'];
+    displayedColumns = ['id', 'poNumber', 'rfqId', 'dateReceived', 'due', 'itemCount', 'status', 'editDelete'];
 
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
-
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.isLoading = true;
         this._getPurchaseOrders();
     }
 
-    createPurchaseOrders(){
+    createPurchaseOrders() {
         this.router.navigateByUrl('purchase-orders/form');
     }
 
-    updateItem(itemId: string){
+    updateItem(itemId: string) {
         this.router.navigateByUrl(`purchase-orders/form/${itemId}`);
     }
 
@@ -85,7 +88,7 @@ export class PurchaseOrdersComponent {
         this.dataSource.filter = filterValue;
     }
 
-    private _getPurchaseOrders(){
+    private _getPurchaseOrders() {
         this.purchaseOrderService
             .getPurchaseOrders()
             .pipe(takeUntil(this.endsubs$))
@@ -93,6 +96,8 @@ export class PurchaseOrdersComponent {
                 this.purchaseOrders = purchaseOrders;
                 this.dataSource = new MatTableDataSource(this.purchaseOrders);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }
