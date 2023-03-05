@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {PurchaseOrderService} from "./purchase-order.service";
 
 @Component({
-  selector: 'app-purchase-orders',
-  templateUrl: './purchase-orders.component.html',
+    selector: 'app-purchase-orders',
+    templateUrl: './purchase-orders.component.html',
     styles: [
         /* language=SCSS */`
             .inventory-grid {
@@ -30,6 +30,7 @@ import {PurchaseOrderService} from "./purchase-order.service";
     ]
 })
 export class PurchaseOrdersComponent {
+    poStatus: string;
 
     purchaseOrders: any = [];
     endsubs$: Subject<any> = new Subject<any>();
@@ -38,22 +39,28 @@ export class PurchaseOrdersComponent {
     displayedColumns = ['id', 'PONumber', 'RFQNumber', 'DateReceived', 'DateDue', 'itemCount', 'status', 'editDelete'];
 
 
-    constructor(private purchaseOrderService: PurchaseOrderService,
+    constructor(private route: ActivatedRoute,
+                private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
 
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.isLoading = true;
-        this._getPurchaseOrders();
+        this.route.queryParams
+            .subscribe(params => {
+                    this.poStatus = params.status;
+                }
+            );
+        this._getPurchaseOrders(this.poStatus);
     }
 
-    createPurchaseOrders(){
+    createPurchaseOrders() {
         this.router.navigateByUrl('purchase-orders/form');
     }
 
-    updateItem(itemId: string){
+    updateItem(itemId: string) {
         this.router.navigateByUrl(`purchase-orders/form/${itemId}`);
     }
 
@@ -73,7 +80,7 @@ export class PurchaseOrdersComponent {
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 this.purchaseOrderService.deletePurchaseOrder(itemId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-                    this._getPurchaseOrders();
+                    this._getPurchaseOrders(this.poStatus);
                 });
             }
         });
@@ -85,14 +92,27 @@ export class PurchaseOrdersComponent {
         this.dataSource.filter = filterValue;
     }
 
-    private _getPurchaseOrders(){
-        this.purchaseOrderService
-            .getPurchaseOrders()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((purchaseOrders) => {
-                this.purchaseOrders = purchaseOrders;
-                this.dataSource = new MatTableDataSource(this.purchaseOrders);
-                this.isLoading = false;
-            });
+    private _getPurchaseOrders(status: string) {
+        if (status != null) {
+            this.purchaseOrderService
+                .getPurchaseOrdersByStatus(status)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((purchaseOrders) => {
+                    this.purchaseOrders = purchaseOrders;
+                    this.dataSource = new MatTableDataSource(this.purchaseOrders);
+                    this.isLoading = false;
+                });
+        } else {
+            this.purchaseOrderService
+                .getPurchaseOrders()
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((purchaseOrders) => {
+                    this.purchaseOrders = purchaseOrders;
+                    this.dataSource = new MatTableDataSource(this.purchaseOrders);
+                    this.isLoading = false;
+                });
+        }
+
+
     }
 }

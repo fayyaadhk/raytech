@@ -9,17 +9,20 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
     <!-- Summary -->
     <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-        <div class="flex items-start justify-between">
-            <div class="text-lg font-medium tracking-tight leading-6 truncate">Issued</div>
-        </div>
-        <div class="flex flex-col items-center mt-2">
-            <div
-                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{issuedRFQs.length}}</div>
-            <div class="text-lg font-medium text-blue-600 dark:text-blue-500">RFQ's</div>
-            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                <div class="text-md font-medium truncate">Created / Unactioned</div>
+        <a [routerLink]="'/rfqs'" [queryParams]="{status: 'ISSUED'}">
+
+            <div class="flex items-start justify-between">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">Issued</div>
             </div>
-        </div>
+            <div class="flex flex-col items-center mt-2">
+                <div
+                    class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{issuedRFQs.length}}</div>
+                <div class="text-lg font-medium text-blue-600 dark:text-blue-500">RFQ's</div>
+                <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                    <div class="text-md font-medium truncate">Created / Unactioned</div>
+                </div>
+            </div>
+        </a>
     </div>
     <!-- Overdue -->
     <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
@@ -37,32 +40,37 @@
     </div>
     <!-- Issues -->
     <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-        <div class="flex items-start justify-between">
-            <div class="text-lg font-medium tracking-tight leading-6 truncate">In Progress</div>
-        </div>
-        <div class="flex flex-col items-center mt-2">
-            <div
-                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{inProgressRFQs.length}}</div>
-            <div class="text-lg font-medium text-amber-600 dark:text-amber-500">RFQ's</div>
-            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                <div class="text-md font-medium truncate">Sourcing in progress</div>
+        <a [routerLink]="'/rfqs'" [queryParams]="{status: 'IN PROGRESS'}">
+
+            <div class="flex items-start justify-between">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">In Progress</div>
             </div>
-        </div>
+            <div class="flex flex-col items-center mt-2">
+                <div
+                    class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{inProgressRFQs.length}}</div>
+                <div class="text-lg font-medium text-amber-600 dark:text-amber-500">RFQ's</div>
+                <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                    <div class="text-md font-medium truncate">Sourcing in progress</div>
+                </div>
+            </div>
+        </a>
     </div>
 
     <!-- Features -->
     <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-        <div class="flex items-start justify-between">
-            <div class="text-lg font-medium tracking-tight leading-6 truncate">Pending Submission</div>
-        </div>
-        <div class="flex flex-col items-center mt-2">
-            <div
-                class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{pendingSubmissionRFQs.length}}</div>
-            <div class="text-lg font-medium text-green-600 dark:text-green-500">RFQ's</div>
-            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                <div class="text-md font-medium truncate">Need uploading in VCM</div>
+        <a [routerLink]="'/rfqs'" [queryParams]="{status: 'PENDING SUBMISSION'}">
+            <div class="flex items-start justify-between">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">Pending Submission</div>
             </div>
-        </div>
+            <div class="flex flex-col items-center mt-2">
+                <div
+                    class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{pendingSubmissionRFQs.length}}</div>
+                <div class="text-lg font-medium text-green-600 dark:text-green-500">RFQ's</div>
+                <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                    <div class="text-md font-medium truncate">Need uploading in VCM</div>
+                </div>
+            </div>
+        </a>
     </div>
 
     <!-- Recent transactions table -->
@@ -108,7 +116,8 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/rfqs/details/{{transaction.id}}" class="hover:text-primary"> {{transaction.rfqNumber}}</a>
+                                    <a routerLink="/rfqs/details/{{transaction.id}}"
+                                       class="hover:text-primary"> {{transaction.rfqNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>
@@ -254,7 +263,8 @@
                         mat-cell
                         *matCellDef="let transaction">
                                 <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
-                                    <a routerLink="/rfqs/details/{{transaction.id}}" class="hover:text-primary">{{transaction.rfqNumber}}</a>
+                                    <a routerLink="/rfqs/details/{{transaction.id}}"
+                                       class="hover:text-primary">{{transaction.rfqNumber}}</a>
                                 </span>
                     </td>
                 </ng-container>

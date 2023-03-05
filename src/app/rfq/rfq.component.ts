@@ -1,12 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RfqService} from './rfq.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {Rfq} from '../api/models/rfq';
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {RfqStatus} from "../data/rfq-status";
 
 @Component({
     selector: 'app-rfq',
@@ -32,6 +33,7 @@ import {MatPaginator} from "@angular/material/paginator";
     ],
 })
 export class RfqComponent implements OnInit {
+    rfqStatus: string;
     rfqs: any = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
@@ -41,7 +43,8 @@ export class RfqComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private rfqService: RfqService,
+    constructor(private route: ActivatedRoute,
+                private rfqService: RfqService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
 
@@ -49,7 +52,12 @@ export class RfqComponent implements OnInit {
 
     ngOnInit() {
         this.isLoading = true;
-        this._getRfqs();
+        this.route.queryParams
+            .subscribe(params => {
+                    this.rfqStatus = params.status;
+                }
+            );
+        this._getRfqs(this.rfqStatus);
     }
 
     createRfq() {
@@ -60,7 +68,7 @@ export class RfqComponent implements OnInit {
         this.router.navigateByUrl(`rfqs/form/${rfqId}`);
     }
 
-    viewRfq(rfqId: string){
+    viewRfq(rfqId: string) {
         this.router.navigateByUrl(`rfqs/details/${rfqId}`);
     }
 
@@ -80,7 +88,7 @@ export class RfqComponent implements OnInit {
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 this.rfqService.deleteRfq(rfqId).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-                    this._getRfqs();
+                    this._getRfqs(this.rfqs);
                 });
             }
         });
@@ -92,16 +100,29 @@ export class RfqComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    private _getRfqs() {
-        this.rfqService
-            .getRfqs()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((rfqs) => {
-                this.rfqs = rfqs;
-                this.dataSource = new MatTableDataSource(this.rfqs);
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-                this.isLoading = false;
-            });
+    private _getRfqs(status: string) {
+        if (status != null) {
+            this.rfqService
+                .getRfqsByStatus(status)
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((rfqs) => {
+                    this.rfqs = rfqs;
+                    this.dataSource = new MatTableDataSource(this.rfqs);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                    this.isLoading = false;
+                });
+        } else {
+            this.rfqService
+                .getRfqs()
+                .pipe(takeUntil(this.endsubs$))
+                .subscribe((rfqs) => {
+                    this.rfqs = rfqs;
+                    this.dataSource = new MatTableDataSource(this.rfqs);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                    this.isLoading = false;
+                });
+        }
     }
 }

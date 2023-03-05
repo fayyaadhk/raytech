@@ -7,6 +7,12 @@ import {RfqService} from "../../rfq/rfq.service";
 import {ClientService} from "../../client/client.service";
 import {MatSelectChange} from "@angular/material/select";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {RfqItemComponent} from "../../rfq-item/rfq-item.component";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatDialog} from "@angular/material/dialog";
+import {UpdateRfqItemStatusComponent} from "../../rfq/update-rfq-item-status/update-rfq-item-status.component";
+import {DataSummaryService} from "../data-summary.service";
+import {DashboardSummary} from "../../api/models/dashboard-summary";
 
 @Component({
     selector: 'app-job-tracker',
@@ -29,6 +35,10 @@ export class JobTrackerComponent {
         hideCompleted$: new BehaviorSubject(false)
     };
 
+    dashboardSummary: DashboardSummary;
+
+    isLoading = false;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -39,7 +49,9 @@ export class JobTrackerComponent {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _rfqService: RfqService,
-        private _clientService: ClientService
+        private _clientService: ClientService,
+        private dialog: MatDialog,
+        private _dataSummaryService: DataSummaryService
     ) {
     }
 
@@ -145,6 +157,38 @@ export class JobTrackerComponent {
 
     getCountIncompleteRfqItems(rfq: Rfq): number {
         return rfq.items.filter(y => y.status === "QUOTATION RECEIVED").length;
+    }
+
+    openStatusDialog(rfqItemId: number, status: string) {
+
+        const dialogRef = this.dialog.open(UpdateRfqItemStatusComponent, {
+            data: {rfqItemId: rfqItemId, status: status},
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res && res.updated) {
+                this.isLoading = true;
+
+                this._dataSummaryService.getSummary()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((data) => {
+
+                        // Store the data
+                        console.log(">>>this.data", data);
+                        this.dashboardSummary = data;
+                        console.log(">>>this.dashboardSummary", this.dashboardSummary);
+                        this.filteredRfqs = this.dashboardSummary.issuedRFQs.concat(this.dashboardSummary.inProgressRFQs);
+                        this.rfqs = this.filteredRfqs = this.rfqs;
+                        this._changeDetectorRef.markForCheck();
+                        this.isLoading = false;
+                        // Store the table data
+
+                        // Prepare the chart data
+                    });
+
+            }
+        })
     }
 
 }
