@@ -47,10 +47,9 @@
             <ng-container matColumnDef="poNumber">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> PO Number</mat-header-cell>
                 <mat-cell *matCellDef="let purchaseOrder"><a
-                    routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary">{{purchaseOrder.poNumber}}</a>
-                </mat-cell>
                     routerLink="details/{{purchaseOrder.id}}" class="hover:text-primary"
-                    [matTooltip]="getItemsSummaryForPO(purchaseOrder)" matTooltipPosition="right">{{purchaseOrder.poNumber}}</a></mat-cell>
+                    [matTooltip]="getItemsSummaryForPO(purchaseOrder)" matTooltipPosition="right">{{purchaseOrder.poNumber}}</a>
+                </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="rfqId">

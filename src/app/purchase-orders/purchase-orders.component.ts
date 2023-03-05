@@ -113,6 +113,8 @@ export class PurchaseOrdersComponent {
                 .subscribe((purchaseOrders) => {
                     this.purchaseOrders = purchaseOrders;
                     this.dataSource = new MatTableDataSource(this.purchaseOrders);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
                     this.isLoading = false;
                 });
         }
