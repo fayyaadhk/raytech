@@ -1,22 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {Supplier} from "../api/models/supplier";
 import {Router} from "@angular/router";
 import {SupplierService} from "./suppliers.service";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-suppliers',
-  templateUrl: './suppliers.component.html',
-  styleUrls: ['./suppliers.component.scss']
+    selector: 'app-suppliers',
+    templateUrl: './suppliers.component.html',
+    styleUrls: ['./suppliers.component.scss']
 })
-export class SuppliersComponent implements OnInit{
+export class SuppliersComponent implements OnInit {
     suppliers = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Supplier>;
-    displayedColumns = ['id', 'name', 'contactPerson', 'editDelete'];
+    displayedColumns = ['id', 'name', 'contactPersonId', 'editDelete'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private supplierService: SupplierService,
                 private router: Router,
@@ -24,20 +29,20 @@ export class SuppliersComponent implements OnInit{
 
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.isLoading = true;
         this._getSuppliers();
     }
 
-    createSupplier(){
+    createSupplier() {
         this.router.navigateByUrl('suppliers/form');
     }
 
-    updateSupplier(supplierId: string){
+    updateSupplier(supplierId: string) {
         this.router.navigateByUrl(`suppliers/form/${supplierId}`);
     }
 
-    deleteSupplier(supplierId: string){
+    deleteSupplier(supplierId: string) {
         const confirmation = this.fuseConfirmationService.open({
             title: 'Delete supplier',
             message: 'Are you sure you want to remove this supplier? This action cannot be undone!',
@@ -65,7 +70,7 @@ export class SuppliersComponent implements OnInit{
         this.dataSource.filter = filterValue;
     }
 
-    private _getSuppliers(){
+    private _getSuppliers() {
         this.supplierService
             .getSuppliers()
             .pipe(takeUntil(this.endsubs$))
@@ -74,6 +79,8 @@ export class SuppliersComponent implements OnInit{
                 console.log(this.suppliers);
                 this.dataSource = new MatTableDataSource(this.suppliers);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }

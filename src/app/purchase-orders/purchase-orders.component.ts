@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {PurchaseOrderService} from "./purchase-order.service";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 import {Rfq} from "../api/models/rfq";
 
 @Component({
@@ -37,14 +39,15 @@ export class PurchaseOrdersComponent {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<PurchaseOrder>;
-    displayedColumns = ['id', 'PONumber', 'RFQNumber', 'DateReceived', 'DateDue', 'itemCount', 'status', 'editDelete'];
+    displayedColumns = ['id', 'poNumber', 'rfqId', 'dateReceived', 'due', 'itemCount', 'status', 'editDelete'];
 
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private route: ActivatedRoute,
                 private purchaseOrderService: PurchaseOrderService,
                 private router: Router,
                 private fuseConfirmationService: FuseConfirmationService) {
-
     }
 
     ngOnInit() {

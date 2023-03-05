@@ -38,7 +38,7 @@ export class RfqComponent implements OnInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Rfq>;
-    displayedColumns = ['rfqId', 'rfqNo', 'status', 'due', 'itemCount', 'editDelete'];
+    displayedColumns = ['id', 'rfqNumber', 'status', 'due', 'itemCount', 'editDelete'];
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;

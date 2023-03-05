@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
 import {CategoryService} from './category.service';
 import {MatTableDataSource} from "@angular/material/table";
 import {Category} from "../api/models/category";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-category',
@@ -35,6 +37,9 @@ export class CategoryComponent implements OnInit {
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Category>;
     displayedColumns = ['id', 'name', 'actions'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private cateogryService: CategoryService,
                 private router: Router,
@@ -92,6 +97,8 @@ export class CategoryComponent implements OnInit {
                 this.categories = categories;
                 this.dataSource = new MatTableDataSource(this.categories);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }
