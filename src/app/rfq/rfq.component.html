@@ -46,7 +46,8 @@
 
             <ng-container matColumnDef="rfqNo">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> RFQ Number</mat-header-cell>
-                <mat-cell *matCellDef="let rfqs"><a routerLink="details/{{rfqs.id}}" class="hover:text-primary"> {{rfqs.rfqNumber}} </a></mat-cell>
+                <mat-cell *matCellDef="let rfqs"><a routerLink="details/{{rfqs.id}}" class="hover:text-primary"
+                                                    [matTooltip]="getItemsSummaryForRfq(rfqs)" matTooltipPosition="right"> {{rfqs.rfqNumber}} </a></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="status">

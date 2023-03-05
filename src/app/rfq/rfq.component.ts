@@ -125,4 +125,12 @@ export class RfqComponent implements OnInit {
                 });
         }
     }
+
+    getItemsSummaryForRfq(rfq: Rfq){
+        let itemString: string[] = [];
+        rfq.items.forEach(item =>{
+            itemString.push(item.quantity + " x " + item.item.name);
+        });
+        return itemString.join(', ');
+    }
 }
