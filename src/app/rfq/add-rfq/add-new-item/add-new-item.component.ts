@@ -87,7 +87,14 @@ export class AddNewItemComponent implements OnInit {
     }
 
     addItemToRfq() {
-        let sId = this.newItemForm.get('step2.supplierId').value;
+        let sId;
+        if (this.newItemForm.get('step2.supplierId').value !== "" && this.newItemForm.get('step2.supplierId').value) {
+            sId = this.newItemForm.get('step2.supplierId').value;
+        } else {
+            sId = null;
+        }
+
+        console.log(sId);
 
         if (sId) {
             this.dialogRef.close(
@@ -107,7 +114,6 @@ export class AddNewItemComponent implements OnInit {
             this.dialogRef.close(
                 {
                     itemId: this.item.id,
-                    supplierId: sId,
                     name: this.item.name,
                     supplierName: '',
                     quantity: this.newItemForm.get('step2.quantity').value,

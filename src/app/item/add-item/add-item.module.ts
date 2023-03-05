@@ -18,6 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {SharedModule} from '../../shared/shared.module';
 import {AddItemComponent} from './add-item.component';
 
@@ -51,6 +52,7 @@ const addItemRoutes: Route[] = [
         MatExpansionModule,
         MatTableModule,
         MatDividerModule,
+        MatAutocompleteModule,
         SharedModule
     ]
 })

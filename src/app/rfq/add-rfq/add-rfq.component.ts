@@ -265,13 +265,13 @@ export class AddRfqComponent implements OnInit {
             }
             this.isLoading = false;
             this.updateSuccess = true;
-            this.onCancle();
+            this.router.navigateByUrl('/rfqs');
         } else {
             this._addRfq();
             this.isLoading = false;
             this.verticalStepperForm.reset();
             this.addSuccess = true;
-            this.onCancle();
+            this.router.navigateByUrl('/rfqs');
         }
     }
 

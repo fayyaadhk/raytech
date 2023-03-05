@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
 import {RfqService} from './rfq.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {Rfq} from '../api/models/rfq';
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
     selector: 'app-rfq',
@@ -35,6 +37,9 @@ export class RfqComponent implements OnInit {
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Rfq>;
     displayedColumns = ['rfqId', 'rfqNo', 'status', 'due', 'itemCount', 'editDelete'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private rfqService: RfqService,
                 private router: Router,
@@ -94,6 +99,8 @@ export class RfqComponent implements OnInit {
             .subscribe((rfqs) => {
                 this.rfqs = rfqs;
                 this.dataSource = new MatTableDataSource(this.rfqs);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
                 this.isLoading = false;
             });
     }
