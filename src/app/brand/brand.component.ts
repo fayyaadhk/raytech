@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {Category} from "../api/models/category";
@@ -7,6 +7,8 @@ import {Router} from "@angular/router";
 import {Brand} from "../api/models/brand";
 import {BrandService} from "./brand.service";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
     selector: 'app-brand',
@@ -37,6 +39,9 @@ export class BrandComponent {
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Brand>;
     displayedColumns = ['id', 'name', 'editDelete'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private brandService: BrandService,
                 private router: Router,
@@ -94,6 +99,8 @@ export class BrandComponent {
                 this.brands = brands;
                 this.dataSource = new MatTableDataSource(this.brands);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }

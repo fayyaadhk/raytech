@@ -62,14 +62,14 @@
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="category">
+            <ng-container matColumnDef="categoryId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> Category</mat-header-cell>
                 <mat-cell *matCellDef="let item"  [ngClass]="'max-w-48'">
                     <ng-container *ngIf="item.categoryId">{{getCategoryById(item.categoryId) }} </ng-container>
                 </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="brand">
+            <ng-container matColumnDef="brandId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> Brand</mat-header-cell>
                 <mat-cell *matCellDef="let item"  [ngClass]="'max-w-48'">
                     <ng-container *ngIf="item.brandId">{{getBrandById(item.brandId) }} </ng-container>

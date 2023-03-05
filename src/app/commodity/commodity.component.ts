@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {MatTableDataSource} from '@angular/material/table';
 import {ItemClass} from "../item/item.model";
@@ -7,10 +7,12 @@ import {Router} from "@angular/router";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
 import {CommodityService} from "./commodity.service";
 import {Commodity} from "./commodity.model";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-commodity',
-  templateUrl: './commodity.component.html',
+    selector: 'app-commodity',
+    templateUrl: './commodity.component.html',
     styles: [
         /* language=SCSS */`
             .inventory-grid {
@@ -31,12 +33,15 @@ import {Commodity} from "./commodity.model";
         `
     ],
 })
-export class CommodityComponent implements OnInit{
+export class CommodityComponent implements OnInit {
     commodities: any = [];
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Commodity>;
-    displayedColumns = ['name', 'editDelete'];
+    displayedColumns = ['id', 'name', 'editDelete'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private commodityService: CommodityService,
                 private router: Router,
@@ -44,16 +49,16 @@ export class CommodityComponent implements OnInit{
 
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.isLoading = true;
         this._getCommodities();
     }
 
-    createCommodity(){
+    createCommodity() {
         this.router.navigateByUrl('commodities/form');
     }
 
-    updateCommodity(commodityId: string){
+    updateCommodity(commodityId: string) {
         this.router.navigateByUrl(`commodities/form/${commodityId}`);
     }
 
@@ -85,7 +90,7 @@ export class CommodityComponent implements OnInit{
         this.dataSource.filter = filterValue;
     }
 
-    private _getCommodities(){
+    private _getCommodities() {
         this.commodityService
             .getCommodities()
             .pipe(takeUntil(this.endsubs$))
@@ -93,6 +98,8 @@ export class CommodityComponent implements OnInit{
                 this.commodities = commodities;
                 this.dataSource = new MatTableDataSource(this.commodities);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }

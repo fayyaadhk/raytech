@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ClientService} from "./client.service";
 import {Subject, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
 import {Client} from "./client.model";
 import {FuseConfirmationService} from "../../@fuse/services/confirmation";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
     selector: 'app-client',
@@ -35,6 +37,9 @@ export class ClientComponent implements OnInit {
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Client>;
     displayedColumns = ['id', 'name', 'buyer', 'editDelete'];
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private clientService: ClientService,
                 private router: Router,
@@ -91,6 +96,8 @@ export class ClientComponent implements OnInit {
                 this.clients = clients;
                 this.dataSource = new MatTableDataSource(this.clients);
                 this.isLoading = false;
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 }
