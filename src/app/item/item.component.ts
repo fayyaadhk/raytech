@@ -39,7 +39,7 @@ export class ItemComponent implements OnInit, AfterViewInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<ItemClass>;
-    displayedColumns = ['id', 'name', 'sku', 'shortDescription','brandId', 'categoryId', 'editDelete'];
+    displayedColumns = ['id', 'name', 'sku', 'shortDescription','brandId', 'categoryId', 'rrsp', 'editDelete'];
 
     categories: any = [];
     brands: any = [];

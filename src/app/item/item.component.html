@@ -76,6 +76,14 @@
                 </mat-cell>
             </ng-container>
 
+
+            <ng-container matColumnDef="rrsp">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-48'"> RRSP</mat-header-cell>
+                <mat-cell *matCellDef="let item"  [ngClass]="'max-w-48'">
+                    <ng-container *ngIf="item.rrsp">{{item.rrsp | currency:'R'}} </ng-container>
+                </mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="editDelete">
                 <mat-header-cell *matHeaderCellDef [ngClass]="'max-w-32'"> Actions</mat-header-cell>
                 <mat-cell *matCellDef="let item" [ngClass]="'max-w-32'">
