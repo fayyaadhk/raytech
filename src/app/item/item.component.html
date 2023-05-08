@@ -39,8 +39,8 @@
     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
         <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'max-w-20'"> ID</mat-header-cell>
-                <mat-cell *matCellDef="let item" [ngClass]="'max-w-20'"> <a routerLink="details/{{item.id}}" class="hover:text-primary">{{item.id}}</a> </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header > ID</mat-header-cell>
+                <mat-cell *matCellDef="let item" [ngClass]="'max-w-28'"> <a routerLink="details/{{item.id}}" class="hover:text-primary">RAY{{item.id}}</a> </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">

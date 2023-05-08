@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {RfqService} from "../rfq.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ClientService} from "../../client/client.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
@@ -12,6 +12,7 @@ import {EditRFQItemComponent} from "../edit-rfqitem/edit-rfqitem.component";
 import {CreatePOFromRFQComponent} from "./create-pofrom-rfq/create-pofrom-rfq.component";
 import {RFQItemStatus} from "../../data/rfq-item-status";
 import {AddRfqItemComponent} from "./add-rfq-item/add-rfq-item.component";
+import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
 
 @Component({
     selector: 'app-rfq-details',
@@ -61,10 +62,12 @@ export class RfqDetailsComponent implements OnInit {
     poItemTotal: number;
 
     constructor(private rfqService: RfqService,
+                private router: Router,
                 private route: ActivatedRoute,
                 private clientService: ClientService,
                 private dialog: MatDialog,
-                private formBuilder: FormBuilder) {
+                private formBuilder: FormBuilder,
+                private fuseConfirmationService: FuseConfirmationService) {
     }
 
     ngOnInit() {
@@ -243,6 +246,27 @@ export class RfqDetailsComponent implements OnInit {
             }
         });
     }
+
+    deleteRfq(rfqId: number){
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete item',
+            message: 'Are you sure you want to delete this RFQ? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+            if (result === 'confirmed') {
+                this.rfqService.deleteRfq(rfqId.toString()).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this.router.navigate(['/', 'rfqs']);
+                });
+            }
+        });
+    }
+
 
 
 }
