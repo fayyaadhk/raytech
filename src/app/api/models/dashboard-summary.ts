@@ -12,4 +12,5 @@ export interface DashboardSummary {
     pendingDeliveryPOs: Array<PurchaseOrder>;
     invoicedPOs: Array<PurchaseOrder>;
     completedPOs: Array<PurchaseOrder>;
+    closingSoonPOs: Array<PurchaseOrder>;
 }

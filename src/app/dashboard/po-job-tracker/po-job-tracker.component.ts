@@ -8,6 +8,11 @@ import {ClientService} from "../../client/client.service";
 import {MatSelectChange} from "@angular/material/select";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 import {PurchaseOrder} from "../../api/models/purchase-order";
+import {UpdateRfqItemStatusComponent} from "../../rfq/update-rfq-item-status/update-rfq-item-status.component";
+import {MatDialog} from "@angular/material/dialog";
+import {UpdatePoItemComponent} from "../../purchase-orders/update-po-item/update-po-item.component";
+import {DataSummaryService} from "../data-summary.service";
+import {DashboardSummary} from "../../api/models/dashboard-summary";
 
 @Component({
   selector: 'app-po-job-tracker',
@@ -32,6 +37,10 @@ export class PoJobTrackerComponent implements OnInit {
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+    dashboardSummary: DashboardSummary;
+
+    isLoading = false;
+
     /**
      * Constructor
      */
@@ -40,7 +49,10 @@ export class PoJobTrackerComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _rfqService: RfqService,
-        private _clientService: ClientService
+        private dialog: MatDialog,
+        private _clientService: ClientService,
+        private _dataSummaryService: DataSummaryService
+
     ) {
     }
 
@@ -146,5 +158,37 @@ export class PoJobTrackerComponent implements OnInit {
 
     getCountIncompleteRfqItems(po: PurchaseOrder): number {
         return po.items.filter(y => y.status === "QUOTATION RECEIVED").length;
+    }
+
+    openStatusDialog(poItemId: number, status: string) {
+
+        const dialogRef = this.dialog.open(UpdatePoItemComponent, {
+            data: {rfqItemId: poItemId, status: status},
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            // received data from dialog-component
+            if (res && res.updated) {
+                this.isLoading = true;
+
+                this._dataSummaryService.getSummary()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((data) => {
+
+                        // Store the data
+                        console.log(">>>this.data", data);
+                        this.dashboardSummary = data;
+                        console.log(">>>this.dashboardSummary", this.dashboardSummary);
+                        this.filteredPurhcaseOrders = this.dashboardSummary.issuedPOs.concat(this.dashboardSummary.inProgressPOs);
+                        this.purchaseOrders = this.filteredPurhcaseOrders = this.purchaseOrders;
+                        this._changeDetectorRef.markForCheck();
+                        this.isLoading = false;
+                        // Store the table data
+
+                        // Prepare the chart data
+                    });
+
+            }
+        })
     }
 }

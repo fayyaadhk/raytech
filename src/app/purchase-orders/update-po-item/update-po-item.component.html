@@ -1,0 +1,68 @@
+<!--<mat-spinner class="flex flex-col items-center justify-center" *ngIf="itemLoading"></mat-spinner>-->
+<div class="shadow-lg overflow-hidden">
+    <div class="flex border-b">
+        <!-- Selected product form -->
+        <form
+            class="flex flex-col w-full"
+            [formGroup]="poItemStatusForm">
+            <div class="flex flex-col sm:flex-row p-8">
+
+                <div class="flex flex-auto flex-wrap">
+                    <!-- Name, SKU & etc. -->
+                    <div class="flex flex-col w-full lg:w-4/4 sm:pl-8">
+                        <p class="text-lg font-medium" mat-dialog-title>Update PO Item Status</p>
+                        <p class="text-secondary mb-6">
+                            Update the status of this PO Item
+                        </p>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <div class="flex">
+                                <mat-form-field class="flex-auto gt-xs:pr-3">
+                                    <mat-label>RFQ Status</mat-label>
+                                    <mat-select
+                                        name="status"
+                                        formControlName="itemStatus"
+                                        [placeholder]="'Status'">
+                                        <mat-option *ngFor="let status of keys(poItemStatus)"
+                                                    [value]="poItemStatus[status]">{{poItemStatus[status]}}</mat-option>
+                                    </mat-select>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        matPrefix
+                                        [svgIcon]="'heroicons_solid:document'"></mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center mr-4"
+                        *ngIf="addSuccess">
+                        <ng-container *ngIf="addSuccess === true">
+                            <mat-icon
+                                class="text-green-500"
+                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                            <span class="ml-2">Item added</span>
+                        </ng-container>
+                        <ng-container *ngIf="addSuccess === false">
+                            <mat-icon
+                                class="text-red-500"
+                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                            <span class="ml-2">An error occurred, try again!</span>
+                        </ng-container>
+                    </div>
+                    <button
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="onSubmit()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
