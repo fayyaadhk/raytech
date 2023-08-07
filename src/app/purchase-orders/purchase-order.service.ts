@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {PurchaseOrder} from "../api/models/purchase-order";
 import {CreatePurchaseOrderItemRequest} from "../api/models/create-purchase-order-item-request";
 import {UpdatePurchaseOrderItemRequest} from "../api/models/update-purchase-order-item-request";
+import {PurchaseOrderItem} from "../api/models/purchase-order-item";
 
 const apiURL = 'https://raytechholdings.com/' + 'api/purchaseOrders';
 const poItemsApiURL = 'https://raytechholdings.com/' + 'api/purchaseorderitems';
@@ -47,6 +48,10 @@ export class PurchaseOrderService {
 
     updatePoItem(model: UpdatePurchaseOrderItemRequest, poItemId: number): Observable<UpdatePurchaseOrderItemRequest> {
         return this.http.put<UpdatePurchaseOrderItemRequest>(`${poItemsApiURL}/${poItemId}`, model);
+    }
+
+    updatePoItemStatus(status: any, poItemId: number): Observable<PurchaseOrderItem> {
+        return this.http.put<PurchaseOrderItem>(`${poItemsApiURL}/${poItemId}/status`, status);
     }
 
     createPoItem(model: CreatePurchaseOrderItemRequest): Observable<CreatePurchaseOrderItemRequest> {

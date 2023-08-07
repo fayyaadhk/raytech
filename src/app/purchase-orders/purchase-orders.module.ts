@@ -26,6 +26,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {AddPurchaseOrdersComponent} from './add-purchase-orders/add-purchase-orders.component';
 import {PurchaseOrdersItemComponent} from './purchase-orders-item/purchase-orders-item.component';
 import {EditPurchaseOrderItemComponent} from './edit-purchase-order-item/edit-purchase-order-item.component';
+import { UpdatePoItemComponent } from './update-po-item/update-po-item.component';
 
 const purchaseOrderRoutes: Route[] = [
     {
@@ -53,7 +54,8 @@ const purchaseOrderRoutes: Route[] = [
         PurchaseOrderDetailComponent,
         AddPurchaseOrdersComponent,
         PurchaseOrdersItemComponent,
-        EditPurchaseOrderItemComponent
+        EditPurchaseOrderItemComponent,
+        UpdatePoItemComponent
     ],
     imports: [
         RouterModule.forChild(purchaseOrderRoutes),
