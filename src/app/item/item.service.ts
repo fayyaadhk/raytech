@@ -10,9 +10,10 @@ import {DetailedItem} from "../api/models/detailed-item";
 import {ItemSupplier} from "../api/models/item-supplier";
 import {CreateItemSupplierRequest} from "../api/models/create-item-supplier-request";
 import {UpdateItemSupplierRequest} from "../api/models/update-item-supplier-request";
+import {environment} from "../../environments/environment";
 
-const apiURLItems = 'https://raytechholdings.com/' + 'api/items';
-const apiURLItemSuppliers = 'https://raytechholdings.com/' + 'api/itemSuppliers';
+const apiURLItems = environment.msrvUrl + 'api/items';
+const apiURLItemSuppliers = environment.msrvUrl + 'api/itemSuppliers';
 
 @Injectable({ providedIn: 'root' })
 export class ItemService {

@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import {Brand} from "../api/models/brand";
+import {environment} from "../../environments/environment";
 
-const apiURLBrands = 'https://raytechholdings.com/api/' + 'brands';
+const apiURLBrands = environment.msrvUrl + 'brands';
 
 @Injectable({ providedIn: 'root' })
 export class BrandService {

@@ -7,9 +7,10 @@ import {Rfq} from '../api/models/rfq';
 import {CreateRfqRequest} from "../api/models/create-rfq-request";
 import {UpdateRfqItem} from "../api/models/update-rfq-item";
 import {CreateRfqItem} from "../api/models/create-rfq-item";
+import {environment} from "../../environments/environment";
 
-const apiURLRfqs = 'https://raytechholdings.com/' + 'api/rfqs';
-const apiURLRfqItems = 'https://raytechholdings.com/' + 'api/rfqitems';
+const apiURLRfqs = environment.msrvUrl + 'api/rfqs';
+const apiURLRfqItems = environment.msrvUrl + 'api/rfqitems';
 
 @Injectable({providedIn: 'root'})
 export class RfqService {
