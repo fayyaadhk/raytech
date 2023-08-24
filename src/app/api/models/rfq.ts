@@ -20,4 +20,5 @@ export interface Rfq {
     rfqDocumentUrl?: null | string;
     rfqNumber?: null | string;
     status?: null | string;
+    type?: null | string;
 }

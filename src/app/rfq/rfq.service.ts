@@ -8,6 +8,7 @@ import {CreateRfqRequest} from "../api/models/create-rfq-request";
 import {UpdateRfqItem} from "../api/models/update-rfq-item";
 import {CreateRfqItem} from "../api/models/create-rfq-item";
 import {environment} from "../../environments/environment";
+import {UpdateRfqDocument} from "../api/models/update-rfq-document";
 
 const apiURLRfqs = environment.msrvUrl + 'api/rfqs';
 const apiURLRfqItems = environment.msrvUrl + 'api/rfqitems';
@@ -46,6 +47,21 @@ export class RfqService {
 
     updateRfq(model: Rfq, rfqId: number): Observable<Rfq> {
         return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}`, model);
+    }
+
+    updateRfqDocument(rfqId: number, rfqDocument: UpdateRfqDocument): Observable<Rfq> {
+        return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}/rfqDocument`, rfqDocument);
+    }
+
+
+    updateQuoteDocument(rfqId: number, request: UpdateRfqDocument): Observable<Rfq> {
+        return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}/quoteDocument`, request);
+    }
+
+    updateRfqStatus(rfqId: number, status: string): Observable<Rfq> {
+        const params = new HttpParams()
+            .set('status', status)
+        return this.http.put<Rfq>(`${apiURLRfqs}/${rfqId}/status`, params);
     }
 
     updateRfqItem(model: UpdateRfqItem, rfqItemId: number): Observable<UpdateRfqItem> {

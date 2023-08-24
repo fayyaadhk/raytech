@@ -22,7 +22,7 @@
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:cog'"
-                            ></mat-icon>
+                        ></mat-icon>
                         <span class="ml-2">Delete</span>
                     </button>
                     <button
@@ -66,22 +66,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <div class="flex flex-col">
-                                <!--                            <div class="text-lg font-medium tracking-tight leading-6 truncate">RFQ Description</div>-->
-                                <div class="text-green-600 font-medium text-sm">
-                                    {{rfqs.rfqDocumentUrl}}
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                            <div class="flex flex-col mx-6 my-3">
-                                <div class="text-sm font-medium leading-none text-secondary">Date Due</div>
-                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.due | date}}</div>
-                            </div>
                             <div class="flex flex-col mx-6 my-3">
                                 <div class="text-sm font-medium leading-none text-secondary">Client</div>
                                 <div class="mt-2 font-medium text-3xl leading-none">{{client.name }}</div>
+                            </div>
+                            <div class="flex flex-col mx-6 my-3">
+                                <div class="text-sm font-medium leading-none text-secondary">Type</div>
+                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.type }}</div>
+                            </div>
+                            <div class="flex flex-col mx-6 my-3">
+                                <div class="text-sm font-medium leading-none text-secondary">Date Due</div>
+                                <div class="mt-2 font-medium text-3xl leading-none">{{rfqs.due | date}}</div>
                             </div>
                             <div class="flex flex-col mx-6 my-3">
                                 <div class="text-sm font-medium leading-none text-secondary">Status</div>
@@ -93,6 +90,41 @@
                         </div>
                     </div>
                 </div>
+
+                <ng-container *ngIf="rfqs.rfqDocumentUrl">
+                    <div>
+                        <div class="font-medium">RFQ Document</div>
+                        <div
+                            class="flex flex-wrap -m-2 mt-2">
+                            <ng-container>
+                                <a target="_blank"
+                                   class="flex flex-col w-40 h-40 m-2 p-4 shadow rounded-2xl cursor-pointer bg-card"
+                                   href="{{rfqs.rfqDocumentUrl}} ">
+                                    <div class="aspect-[9/6]">
+                                        <div class="flex items-center justify-center h-full">
+                                            <!-- Icons -->
+                                            <div class="relative">
+                                                <mat-icon
+                                                    class="icon-size-14 text-hint opacity-50"
+                                                    [svgIcon]="'heroicons_solid:document'"></mat-icon>
+                                                <div
+                                                    class="class.bg-red-600 absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                                                    [class.bg-red-600]="true">
+                                                    {{"PDF"}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col flex-auto justify-center text-center text-sm font-medium">
+                                        <div
+                                            class="truncate"
+                                            [matTooltip]="rfqs.rfqNumber">{{rfqs.rfqNumber}}</div>
+                                    </div>
+                                </a>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
 
                 <!-- Quotation Details  -->
                 <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
@@ -163,7 +195,8 @@
                                                              [alt]="form.value.quoteDocumentUrl">
                                                     </div>
                                                 </div>
-                                                <input type="file" (change)="uploadQuotation($event)">
+                                                <input type="file" formControlName="quoteDocument"
+                                                       (change)="uploadQuotation($event)">
                                             </div>
                                         </div>
                                     </div>
@@ -176,7 +209,7 @@
                                         mat-flat-button
                                         [color]="'primary'"
                                         type="reset"
-                                        (click)="onSubmitQuotation(currentRfqId)">
+                                        (click)="onSubmitQuotation()">
                                         Submit
                                     </button>
                                 </div>
@@ -373,7 +406,8 @@
                                             mat-cell
                                             *matCellDef="let items">
                                 <span class="pr-6 whitespace-nowrap">
-                                    <a routerLink="/items/details/{{items.id}}" class="hover:text-primary">{{items.name}}</a>
+                                    <a routerLink="/items/details/{{items.id}}"
+                                       class="hover:text-primary">{{items.name}}</a>
                                 </span>
                                         </td>
                                     </ng-container>

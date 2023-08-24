@@ -17,4 +17,14 @@ export class FileUploadService {
         return this.http.post<void>(`${apiURLUpload}/rfq`, model);
     }
 
+    uploadDocument(file: File, directory: string, filename: string): Observable<any> {
+        let formData: FormData = new FormData();
+        formData.append('file', file);
+        formData.append('directory', directory);
+        formData.append('filename', filename);
+        console.log(">>> File Upload Complete");
+
+        return this.http.post<any>(`${apiURLUpload}`, formData);
+    }
+
 }

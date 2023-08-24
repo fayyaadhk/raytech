@@ -156,6 +156,23 @@
                     </td>
                 </ng-container>
 
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Type
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.type}}
+                                </span>
+                    </td>
+                </ng-container>
+
                 <!-- Name -->
                 <ng-container matColumnDef="itemCount">
                     <th
@@ -299,6 +316,23 @@
                         *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
                                     {{transaction.due | date:'medium'}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Type
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.type}}
                                 </span>
                     </td>
                 </ng-container>

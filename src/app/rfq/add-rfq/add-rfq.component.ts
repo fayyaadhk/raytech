@@ -21,6 +21,9 @@ import {BrandService} from "../../brand/brand.service";
 import {RfqStatus} from "../../data/rfq-status";
 import {FileUploadService} from "../../shared/file-upload.service";
 import {AddNewItemComponent} from "./add-new-item/add-new-item.component";
+import {UpdateRfqDocument} from "../../api/models/update-rfq-document";
+import {environment} from "../../../environments/environment";
+import {RfqType} from "../../data/rfq-type";
 
 @Component({
     selector: 'app-add-rfq',
@@ -73,6 +76,7 @@ export class AddRfqComponent implements OnInit {
     displayedColumns = ['id', 'name', 'supplierName', 'quantity', 'priceQuoted', 'actions'];
     keys = Object.keys;
     rfqStatus = RfqStatus;
+    rfqType = RfqType;
 
     formData: FormData = new FormData();
     rfqDocumentFile: File;
@@ -164,12 +168,11 @@ export class AddRfqComponent implements OnInit {
     }
 
     removeRfqItem(rfqId: number, rfqItemId: number) {
-        if(rfqId){
+        if (rfqId) {
             console.log('here 1');
             this.rfqItems.splice(rfqId, 1);
             this.dataSource = new MatTableDataSource(this.rfqItems);
-        }
-        else if (rfqItemId){
+        } else if (rfqItemId) {
             console.log('here 2');
             this.rfqService.deleteRfqItem(rfqItemId)
                 .pipe(takeUntil(this.endsubs$))
@@ -212,7 +215,8 @@ export class AddRfqComponent implements OnInit {
                 buyerId: this.verticalStepperForm.get('step1.buyer').value,
                 due: this.verticalStepperForm.get('step1.dueDate').value,
                 rfqNumber: this.verticalStepperForm.get('step1.rfqNumber').value,
-                rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value
+                rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value,
+                type: this.verticalStepperForm.get('step1.type').value
             };
             this._updateRfq(updateRfq);
 
@@ -321,11 +325,12 @@ export class AddRfqComponent implements OnInit {
             step1: this.formBuilder.group({
                 rfqNumber: ['', [Validators.required]],
                 dueDate: ['', Validators.required],
+                type: [RfqType.PORTAL, Validators.required],
                 description: [''],
                 rfqDocument: [''],
                 client: [null, Validators.required],
                 buyer: [null],
-                status: ['', Validators.required],
+                status: [RfqStatus.SOURCING, Validators.required],
             }),
             step2: this.formBuilder.group({
                 quoteDocument: [''],
@@ -402,7 +407,8 @@ export class AddRfqComponent implements OnInit {
             buyerId: this.verticalStepperForm.get('step1.buyer').value,
             due: this.verticalStepperForm.get('step1.dueDate').value,
             rfqNumber: this.verticalStepperForm.get('step1.rfqNumber').value,
-            rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value
+            rfqDocumentUrl: this.verticalStepperForm.get('step1.rfqDocument').value,
+            type: this.verticalStepperForm.get('step1.type').value
         };
 
         if (newRfq) {
@@ -413,9 +419,9 @@ export class AddRfqComponent implements OnInit {
                 .subscribe(
                     (rfq) => {
                         this.addSuccess = true;
-                        console.log(rfq);
+                        console.log("Starting document Upload");
 
-                        this._uploadRfqDocument(rfq.id.toString().concat('_').concat(rfq.rfqNumber).concat('.pdf'));
+                        this._uploadRfqDocument(rfq.id, rfq.rfqNumber);
 
                         this.verticalStepperForm.reset();
                     },
@@ -443,19 +449,44 @@ export class AddRfqComponent implements OnInit {
             );
     }
 
-    private _uploadRfqDocument(filename: string) {
-        console.log(">>> this.rfqDocumentFile", this.rfqDocumentFile);
+    /* private _uploadRfqDocument(filename: string): boolean {
+         let success = false;
+         console.log(">>> this.rfqDocumentFile", this.rfqDocumentFile);
+         if (this.rfqDocumentFile) {
+
+             this.formData.append('file', this.rfqDocumentFile);
+             this.formData.append('directory', "RFQs");
+             this.formData.append('filename', filename);
+
+             this.fileUploadService
+                 .uploadRfqDocument(this.formData)
+                 .pipe(takeUntil(this.endsubs$))
+                 .subscribe(x => {
+                     this.rfqService.updateRfqDocument()
+                     success = true;
+                 });
+         }
+         return success;
+     }*/
+
+    private _uploadRfqDocument(rfqId: number, rfqNumber: string): boolean {
+        let success = false;
+        let directory = "RFQs";
+        let filename = rfqId.toString().concat('_').concat(rfqNumber).concat('.pdf');
+
         if (this.rfqDocumentFile) {
 
-            this.formData.append('file', this.rfqDocumentFile);
-            this.formData.append('directory', "RFQs");
-            this.formData.append('filename', filename);
-
             this.fileUploadService
-                .uploadRfqDocument(this.formData)
-                .pipe(takeUntil(this.endsubs$))
-                .subscribe();
+                .uploadDocument(this.rfqDocumentFile, directory, filename)
+                .subscribe({
+                    next: () => {
+                        let updateDocRequest: UpdateRfqDocument = {documentUrl: environment.sirvBaseUrl + directory + "/" + filename};
+                        this.rfqService.updateRfqDocument(rfqId, updateDocRequest).subscribe(x => success = true);
+                    }
+                });
         }
+
+        return success;
     }
 
     private _checkEditMode() {
@@ -476,7 +507,8 @@ export class AddRfqComponent implements OnInit {
                                 rfqDocument: this.rfqs.rfqDocumentUrl,
                                 client: this.rfqs.clientId,
                                 buyer: this.rfqs.buyerId,
-                                status: this.rfqs.status
+                                status: this.rfqs.status,
+                                type: this.rfqs.type,
                             };
                         }
                         console.log(this.rfqs);
@@ -499,7 +531,6 @@ export class AddRfqComponent implements OnInit {
 
                         this.rfqForm.step1.setValue(this.rfqDetails);
 
-                        console.log(">>> checkEdit - this.rfqItems", this.rfqItems);
                         this.dataSource = new MatTableDataSource(this.rfqItems);
                     });
             }

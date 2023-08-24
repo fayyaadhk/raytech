@@ -58,7 +58,7 @@
                                 <div class="mb-4" *ngIf="this.selectedItem.rrsp">
                                     <div class="flex">
                                         <div>
-                                            <p>RRSP: <span class="text-primary">{{this.selectedItem.rrsp}} </span></p>
+                                            <p>RRSP: <span class="text-primary">{{this.selectedItem.rrsp | currency:'R'}} </span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                     <div class="flex" *ngFor="let x of this.selectedItem.rfqItems">
                                         <div>
                                             <p>RFQ: <span class="text-primary">{{x.rfq.rfqNumber}} </span> |
-                                                Price Quoted: <span class="text-primary">{{x.priceQuoted}}</span> |
+                                                Price Quoted: <span class="text-primary">{{x.priceQuoted | currency:'R'}}</span> |
                                                 RFQ Result: <span class="text-primary">{{x.rfq.status}} </span></p>
                                         </div>
                                     </div>

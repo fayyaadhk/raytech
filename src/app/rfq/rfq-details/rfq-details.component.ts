@@ -13,6 +13,10 @@ import {CreatePOFromRFQComponent} from "./create-pofrom-rfq/create-pofrom-rfq.co
 import {RFQItemStatus} from "../../data/rfq-item-status";
 import {AddRfqItemComponent} from "./add-rfq-item/add-rfq-item.component";
 import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
+import {FileUploadService} from "../../shared/file-upload.service";
+import {UpdateRfqDocument} from "../../api/models/update-rfq-document";
+import {environment} from "../../../environments/environment";
+import {UpdateQuoteDocument} from "../../api/models/update-quote-document";
 
 @Component({
     selector: 'app-rfq-details',
@@ -58,6 +62,7 @@ export class RfqDetailsComponent implements OnInit {
         {id: 8, name: 'Unsuccessful'},
         {id: 9, name: 'Cancelled'},
     ];
+    quoteDocument: File;
 
     poItemTotal: number;
 
@@ -67,7 +72,8 @@ export class RfqDetailsComponent implements OnInit {
                 private clientService: ClientService,
                 private dialog: MatDialog,
                 private formBuilder: FormBuilder,
-                private fuseConfirmationService: FuseConfirmationService) {
+                private fuseConfirmationService: FuseConfirmationService,
+                private fileUploadService: FileUploadService) {
     }
 
     ngOnInit() {
@@ -80,22 +86,41 @@ export class RfqDetailsComponent implements OnInit {
 
     }
 
-    onSubmitQuotation(rfqId: string) {
+    onSubmitQuotation() {
+        let success = false;
+        let directory = "Quotations";
+        let filename = "QUOTE_" + this.rfqs.id.toString().concat('_').concat(this.rfqs.rfqNumber).concat('.pdf');
 
+        if (this.quoteDocument) {
+            console.log(">>>> Uploading QUote", this.quoteDocument);
+
+            this.fileUploadService
+                .uploadDocument(this.quoteDocument, directory, filename)
+                .subscribe({
+                    next: () => {
+                        console.log(">>>> Updating Quote Details");
+
+                        let updateDocRequest: UpdateQuoteDocument = {documentUrl: environment.sirvBaseUrl + directory + "/" + filename, quoteSentDate: ""};
+                        this.rfqService.updateQuoteDocument(this.rfqs.id, updateDocRequest).subscribe({
+                            next: () => {
+                                console.log(">>>> Refreshing page");
+
+                                this._getRfqDetails();
+                            }
+                        });
+                    }
+                });
+        }
+        return success;
     }
 
     uploadQuotation(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.form.patchValue({
-            quoteDocument: file
-        });
-        this.form.get('quoteDocumentUrl').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.quoteDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
+        if (event.target.files.length > 0) {
+
+            const file = event.target.files[0];
+            this.quoteDocument = file;
+        }
+        console.log(">>> reader", this.quoteDocument);
     }
 
     uploadPurchaseOrder(event) {
@@ -194,6 +219,36 @@ export class RfqDetailsComponent implements OnInit {
         })
     }
 
+    deleteRfq(rfqId: number) {
+        const confirmation = this.fuseConfirmationService.open({
+            title: 'Delete item',
+            message: 'Are you sure you want to delete this RFQ? This action cannot be undone!',
+            actions: {
+                confirm: {
+                    label: 'Delete'
+                }
+            }
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+            if (result === 'confirmed') {
+                this.rfqService.deleteRfq(rfqId.toString()).pipe(takeUntil(this.endsubs$)).subscribe(() => {
+                    this.router.navigate(['/', 'rfqs']);
+                });
+            }
+        });
+    }
+
+    /**
+     * Track by function for ngFor loops
+     *
+     * @param index
+     * @param item
+     */
+    trackByFn(index: number, item: any): any {
+        return item.id || index;
+    }
+
     private _initForm() {
         // Vertical stepper form
         this.form = this.formBuilder.group({
@@ -246,27 +301,6 @@ export class RfqDetailsComponent implements OnInit {
             }
         });
     }
-
-    deleteRfq(rfqId: number){
-        const confirmation = this.fuseConfirmationService.open({
-            title: 'Delete item',
-            message: 'Are you sure you want to delete this RFQ? This action cannot be undone!',
-            actions: {
-                confirm: {
-                    label: 'Delete'
-                }
-            }
-        });
-
-        confirmation.afterClosed().subscribe((result) => {
-            if (result === 'confirmed') {
-                this.rfqService.deleteRfq(rfqId.toString()).pipe(takeUntil(this.endsubs$)).subscribe(() => {
-                    this.router.navigate(['/', 'rfqs']);
-                });
-            }
-        });
-    }
-
 
 
 }

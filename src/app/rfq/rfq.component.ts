@@ -38,7 +38,7 @@ export class RfqComponent implements OnInit {
     endsubs$: Subject<any> = new Subject<any>();
     isLoading: boolean = false;
     dataSource: MatTableDataSource<Rfq>;
-    displayedColumns = ['id', 'rfqNumber', 'status', 'due', 'itemCount', 'editDelete'];
+    displayedColumns = ['id', 'rfqNumber', 'status', 'due', 'type', 'itemCount', 'editDelete'];
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -106,7 +106,7 @@ export class RfqComponent implements OnInit {
                 .getRfqsByStatus(status)
                 .pipe(takeUntil(this.endsubs$))
                 .subscribe((rfqs) => {
-                    this.rfqs = rfqs;
+                    this.rfqs = rfqs.sort((a,b) => 0 - (a.id > b.id ? 1 : -1));
                     this.dataSource = new MatTableDataSource(this.rfqs);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;
