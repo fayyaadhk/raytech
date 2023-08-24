@@ -110,7 +110,6 @@ export class ItemComponent implements OnInit, AfterViewInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((items) => {
                 this.items = items.sort((a,b) => a.name.localeCompare(b.name));
-                console.log(">>> this.items", this.items);
                 this.dataSource = new MatTableDataSource(this.items);
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;

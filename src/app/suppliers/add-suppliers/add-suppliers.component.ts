@@ -73,7 +73,6 @@ export class AddSuppliersComponent {
 
         if (this.editmode) {
             if (this.supplierContactInformation) {
-                console.log('>>> this.supplier', this.supplier.contactInformation);
                 updateSupplier.name = this.form.get('name').value;
                 updateSupplier.contactInfo = this.form.get('contactInformation').value;
                 updateSupplier.contactInfo = this.supplier.contactInfo.id;

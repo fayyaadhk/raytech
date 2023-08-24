@@ -175,9 +175,7 @@ export class JobTrackerComponent {
                     .subscribe((data) => {
 
                         // Store the data
-                        console.log(">>>this.data", data);
                         this.dashboardSummary = data;
-                        console.log(">>>this.dashboardSummary", this.dashboardSummary);
                         this.filteredRfqs = this.dashboardSummary.issuedRFQs.concat(this.dashboardSummary.inProgressRFQs);
                         this.rfqs = this.filteredRfqs = this.rfqs;
                         this._changeDetectorRef.markForCheck();

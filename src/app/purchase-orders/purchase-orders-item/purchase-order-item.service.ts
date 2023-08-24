@@ -34,7 +34,6 @@ export class PurchaseOrderItemService {
     }
 
     updatePurchaseOrderItem(model: UpdateRfqItem, poItemId: number): Observable<PurchaseOrderItem> {
-        console.log(">>> request", model);
         return this.http.put<PurchaseOrderItem>(`${apiURLPOItems}/${poItemId}`, model);
     }
 

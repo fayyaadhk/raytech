@@ -50,7 +50,6 @@ export class PurchaseOrderDetailComponent {
     ngOnInit() {
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe(params => {
             this.poId = params.id;
-            console.log(">>> init this.poId: ", this.poId);
         });
         this.isLoading = true;
         this._getPurchaseOrder();
@@ -111,11 +110,9 @@ export class PurchaseOrderDetailComponent {
         });
 
         dialogRef.afterClosed().subscribe(res => {
-            console.log(">>> res", res);
 
             // received data from dialog-component
             if (res && res.updated) {
-                console.log("calling this._getPurchaseOrder()")
                 this._getPurchaseOrder();
             }
         })

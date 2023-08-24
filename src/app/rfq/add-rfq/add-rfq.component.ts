@@ -412,7 +412,6 @@ export class AddRfqComponent implements OnInit {
         };
 
         if (newRfq) {
-            console.log(">>> Create RFQ Request: ", newRfq);
             this.rfqService
                 .createRfq(newRfq)
                 .pipe(takeUntil(this.endsubs$))
