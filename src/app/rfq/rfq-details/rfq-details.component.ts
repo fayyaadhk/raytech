@@ -92,14 +92,11 @@ export class RfqDetailsComponent implements OnInit {
         let filename = "QUOTE_" + this.rfqs.id.toString().concat('_').concat(this.rfqs.rfqNumber).concat('.pdf');
 
         if (this.quoteDocument) {
-            console.log(">>>> Uploading QUote", this.quoteDocument);
 
             this.fileUploadService
                 .uploadDocument(this.quoteDocument, directory, filename)
                 .subscribe({
                     next: () => {
-                        console.log(">>>> Updating Quote Details");
-
                         let updateDocRequest: UpdateQuoteDocument = {documentUrl: environment.sirvBaseUrl + directory + "/" + filename, quoteSentDate: ""};
                         this.rfqService.updateQuoteDocument(this.rfqs.id, updateDocRequest).subscribe({
                             next: () => {
@@ -212,7 +209,6 @@ export class RfqDetailsComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(res => {
             // received data from dialog-component
-            console.log(">>> after closed in rfqDetails", res);
             if (res && res.added) {
                 this._getRfqDetails();
             }

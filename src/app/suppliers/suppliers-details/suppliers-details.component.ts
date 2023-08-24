@@ -86,7 +86,6 @@ export class SuppliersDetailsComponent {
                                         supplierDescription: this.supplierItems[i].supplierDescription,
                                     });
                                 }
-                                console.log(">>> this.supplierItems", this.supplierItems);
 
                                 this.dataSource = new MatTableDataSource(this.supplierItems);
                             });
