@@ -42,6 +42,7 @@ export class RfqSummaryComponent {
      */
     ngOnInit(): void {
         // Get the data
+        console.log(">>> this.issuedRFQs",this.issuedRFQs);
         this.issuedRFQDataSource.data = this.issuedRFQs;
 
         this.closingSoonRFQDataSource.data = this.closingSoonRFQs;

@@ -75,6 +75,7 @@ export class PurchaseOrdersItemComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.selectedItem = item;
+                console.log(">>> this.selectedItem", this.selectedItem);
                 let itemSuppliers: Supplier[] = [];
                 if (this.selectedItem && this.selectedItem.itemSuppliers) {
                     this.selectedItem.itemSuppliers.forEach(supplier =>
@@ -207,6 +208,7 @@ export class PurchaseOrdersItemComponent {
     }
 
     private _checkEditMode() {
+        console.log(">>> HERE ", this.data);
         if (this.data.itemId) {
             this.editmode = true;
             this.currentPurchaseOrderItemId = this.data.itemId;

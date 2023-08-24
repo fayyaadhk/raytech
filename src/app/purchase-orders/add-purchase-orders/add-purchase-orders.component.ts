@@ -149,6 +149,7 @@ export class AddPurchaseOrdersComponent {
         });
 
         dialogRef.afterClosed().subscribe(res => {
+            console.log(">>> res", res);
             if (res.editMode) {
 
                 this.purchaseOrderItems[res.poItemId] = res;
@@ -262,6 +263,7 @@ export class AddPurchaseOrdersComponent {
                 purchaseOrderDocumentUrl: this.form.get('purchaseOrderDocumentUrl').value
             };
 
+            console.log('RFQS >>> ', this.purchaseOrders);
             for (let r = 0; r < this.purchaseOrderItems.length; r++) {
                 console.log(this.purchaseOrderItems);
                 console.log('edit mode ', this.purchaseOrderItems[r].editMode);
@@ -346,6 +348,7 @@ export class AddPurchaseOrdersComponent {
     }
 
     private _addPurchaseOrder() {
+        console.log('>>> GOT INTO ADD');
         const newPurchaseOrder: PurchaseOrder = {
             items: this.purchaseOrderItems,
             rfqId: this.form.get('rfq').value,
@@ -358,7 +361,9 @@ export class AddPurchaseOrdersComponent {
             poNumber: this.form.get('poNumber').value,
             purchaseOrderDocumentUrl: this.form.get('purchaseOrderDocumentUrl').value,
         };
+        console.log('>>> initialised ');
 
+        console.log('>>> get values from controller', newPurchaseOrder);
         this.purchaseOrderService
             .createPurchaseOrder(newPurchaseOrder)
             .pipe(takeUntil(this.endsubs$))
@@ -400,7 +405,9 @@ export class AddPurchaseOrdersComponent {
                     .subscribe((purchaseOrders) => {
                         this.purchaseOrders = purchaseOrders;
                         this.poItems = purchaseOrders.items;
+                        console.log("--- purchase orders ", this.purchaseOrders);
                         for (let r = 0; r < this.purchaseOrders.items.length; r++) {
+                            console.log(">>>this.purchase.items", this.purchaseOrders.items);
                             this.purchaseOrderItemDetails.push({
                                 poItemId: this.purchaseOrders.items[r].id,
                                 itemId: this.purchaseOrders.items[r].item?.id,

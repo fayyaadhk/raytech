@@ -45,6 +45,7 @@ export class PurchaseOrderSummaryComponent implements OnInit {
      */
     ngOnInit(): void {
         // Get the data
+        console.log(">>> this.issuedPOs",this.issuedPOs);
         this.issuedPODataSource.data = this.issuedPOs;
         this.dueSoonPODataSource.data = this.closingSoonPOs;
     }

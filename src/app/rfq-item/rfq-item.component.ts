@@ -75,6 +75,7 @@ export class RfqItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.selectedItem = item;
+                console.log(">>> this.selectedItem", this.selectedItem);
                 let itemSuppliers: Supplier[] = [];
                 if (this.selectedItem && this.selectedItem.itemSuppliers) {
                     this.selectedItem.itemSuppliers.forEach(supplier =>

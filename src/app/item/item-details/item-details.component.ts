@@ -53,6 +53,7 @@ export class ItemDetailsComponent {
     ngOnInit() {
         this.route.params.pipe(takeUntil(this.endsubs$)).subscribe(params => {
             this.itemId = params.id;
+            console.log(">>> init this.itemId: ", this.itemId);
         });
         this.isLoading = true;
         this._getItem();
@@ -98,6 +99,7 @@ export class ItemDetailsComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.item = item;
+                console.log(">>> this.item.rfqItems", this.item.rfqItems);
                 this.rfqItemsDataSource = new MatTableDataSource(this.item.rfqItems);
                 this.poItemsDataSource = new MatTableDataSource(this.item.purchaseOrderItems);
                 this.isLoading = false;
@@ -110,6 +112,7 @@ export class ItemDetailsComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((itemSuppliers) => {
                 this.itemSuppliers = itemSuppliers;
+                console.log(">>> this.itemSuppliers", this.itemSuppliers);
                 this.itemSuppliersDataSource = new MatTableDataSource(this.itemSuppliers);
                 this.isLoading = false;
             });
@@ -124,6 +127,7 @@ export class ItemDetailsComponent {
 
         dialogRef.afterClosed().subscribe(res => {
             // received data from dialog-component
+            console.log(">>> res", res)
             if (res && res.added) {
                 this._getItemSuppliers();
             }
@@ -132,6 +136,8 @@ export class ItemDetailsComponent {
 
     openUpdateSupplierDialog(itemSupplier: any) {
 
+        console.log(">>> opening passing itemSupplier", itemSupplier);
+
         const dialogRef = this.dialog.open(EditItemSupplierComponent, {
             width: '600px',
             data: itemSupplier,
@@ -139,6 +145,7 @@ export class ItemDetailsComponent {
 
         dialogRef.afterClosed().subscribe(res => {
             // received data from dialog-component
+            console.log(">>> res", res)
             if (res && res.updated) {
                 this._getItemSuppliers();
             }

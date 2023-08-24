@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor
         // catch and delete the access token from the local storage while logging
         // the user out from the app.
         if ( this._authService.accessToken && !AuthUtils.isTokenExpired(this._authService.accessToken) )
-        {
+        {console.log(">>> GOT INTO HEREEE");
             newReq = req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + this._authService.accessToken)
             });
@@ -44,6 +44,7 @@ export class AuthInterceptor implements HttpInterceptor
         return next.handle(newReq).pipe(
             catchError((error) => {
 
+                console.log(">>> error", error.error);
                 // Catch "401 Unauthorized" responses
                 if ( error instanceof HttpErrorResponse && error.status === 401 && error.error["errorMessage"] !== "Invalid Authentication")
                 {

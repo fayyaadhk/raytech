@@ -39,7 +39,10 @@ export class PurchaseOrderDashboardComponent implements OnInit {
             .subscribe((data) => {
 
                 // Store the data
+                console.log(">>>this.data", data);
                 this.dashboardSummary = data;
+                console.log(">>>this.dashboardSummary", this.dashboardSummary);
+
                 this.isLoading = false;
                 // Store the table data
 

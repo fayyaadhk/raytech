@@ -92,6 +92,7 @@ export class AddItemSupplierComponent implements OnInit {
     }
 
     private _addItemSupplier() {
+        console.log(">>> this.itemSupplierForm", this.itemSupplierForm);
         const request: CreateItemSupplierRequest = {
             supplierId: this.itemSupplierForm.get('supplierId').value,
             itemId: this.itemId,

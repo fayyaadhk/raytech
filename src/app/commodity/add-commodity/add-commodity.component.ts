@@ -85,8 +85,12 @@ export class AddCommodityComponent {
     }
 
     private _addCommodity() {
+        console.log('>>> GOT INTO ADD');
         const newCommodity: Commodity = new Commodity();
+        console.log('>>> initialised ');
         newCommodity.name = this.form.get('name').value;
+        console.log('>>> get value name from controller', this.form.get('name').value);
+        console.log('>>> get values from controller', newCommodity);
         this.commodityService
             .addItem(newCommodity)
             .pipe(takeUntil(this.endsubs$))

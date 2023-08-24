@@ -41,6 +41,7 @@ export class AddRfqItemComponent implements OnInit {
                     expectedArrivalDate: res.expectedArrivalDate,
                     status: res.status
                 };
+                console.log(">>> Making service call", newRfqItem);
 
                 this.rfqItemService.createRfqItem(newRfqItem).subscribe(res =>{
                     this.dialogRef.close({added: true});
@@ -67,6 +68,7 @@ export class AddRfqItemComponent implements OnInit {
                 expectedArrivalDate: res.expectedArrivalDate,
                 status: res.status
             };
+            console.log(">>> Making service call", newRfqItem);
 
             this.rfqItemService.createRfqItem(newRfqItem).subscribe(res =>{
                 this.dialogRef.close({added: true});

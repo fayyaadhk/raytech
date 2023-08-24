@@ -79,6 +79,10 @@ export class ClientDetailsComponent implements OnInit{
                     .pipe(takeUntil(this.endsubs$))
                     .subscribe((client) => {
                         this.clients = client;
+                        console.log(this.clients);
+                        console.log(">>> RFQs", this.clients.rfQs);
+                        console.log(">>> RFQs", this.clients.purchaseOrders);
+
                         this.RFQDataSource.data = this.clients.rfQs;
                         this.PODataSource.data = this.clients.purchaseOrders;
 

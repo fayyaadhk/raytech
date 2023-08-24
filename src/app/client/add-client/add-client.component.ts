@@ -89,6 +89,7 @@ export class AddClientComponent implements OnInit, OnDestroy {
         const updateClient: CreateClientRequest = new CreateClientRequest();
         if (this.editmode) {
             if (this.clientContactInformation) {
+                console.log('>>> this.client', this.client.contactInformation);
                 updateClient.name = this.form.get('name').value;
                 updateClient.vatNumber = this.form.get('vatNumber').value.toString();
                 updateClient.buyers = this.form.get('buyer').value;

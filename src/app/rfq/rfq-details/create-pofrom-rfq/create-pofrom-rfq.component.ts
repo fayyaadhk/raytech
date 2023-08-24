@@ -46,6 +46,7 @@ export class CreatePOFromRFQComponent implements OnInit {
             dateReceived: ['', Validators.required],
             due: ['', Validators.required]
         });
+        console.log(">>> this.rfq", this.rfq);
     }
 
 
@@ -91,6 +92,9 @@ export class CreatePOFromRFQComponent implements OnInit {
             items: poItems,
             dateReceived: this.poForm.get('dateReceived').value
         };
+
+        console.log(">>> request", request);
+
 
         this.purchaseOrderService.createPurchaseOrder(request)
             .pipe(takeUntil(this.endsubs$))

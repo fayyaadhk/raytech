@@ -149,6 +149,8 @@ export class EditPurchaseOrderItemComponent implements OnInit {
             .getPurchaseOrderItem(this.data.id)
             .pipe(takeUntil(this.endsubs$))
             .subscribe((rfqItem) => {
+                console.log(">>> getItemRespose",rfqItem)
+                console.log(">>> GetRFQItem reponse", rfqItem);
                 this.poItem = rfqItem;
                 this._initForm();
                 this.isLoading = false;
