@@ -4,6 +4,7 @@ import {PurchaseOrder} from "./purchase-order";
 
 export interface DashboardSummary {
     issuedRFQs: Array<Rfq>;
+    sourcingRFQs: Array<Rfq>;
     inProgressRFQs: Array<Rfq>;
     pendingSubmissionRFQs: Array<Rfq>;
     closingSoonRFQs: Array<Rfq>;
