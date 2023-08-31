@@ -22,7 +22,6 @@ export class FileUploadService {
         formData.append('file', file);
         formData.append('directory', directory);
         formData.append('filename', filename);
-        console.log(">>> File Upload Complete");
 
         return this.http.post<any>(`${apiURLUpload}`, formData);
     }

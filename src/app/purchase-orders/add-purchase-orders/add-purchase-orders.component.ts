@@ -60,7 +60,11 @@ export class AddPurchaseOrdersComponent {
                 private location: Location,
                 private route: ActivatedRoute,
                 private router: Router,
-                private dialog: MatDialog,) {
+                private dialog: MatDialog) {
+    }
+
+    get purchaseOrderForm() {
+        return this.form.controls;
     }
 
     selectedRfq(event) {
@@ -97,6 +101,23 @@ export class AddPurchaseOrdersComponent {
         return this.rfqs.find(rfq => rfq.id === rfqId)?.rfqNumber;
     }
 
+    // onSearchChange(searchValue: string): void {
+    //     this.filteredItems = null;
+    //     this.isLoading = true;
+    //     if(searchValue){
+    //         this.itemService
+    //             .getItemSearch(searchValue)
+    //             .pipe(takeUntil(this.endsubs$),
+    //                 filter(_ => searchValue.length >= 3),
+    //                 debounceTime(500),
+    //                 distinctUntilChanged())
+    //             .subscribe((items) => {
+    //                 this.filteredItems = items;
+    //                 console.log(this.filteredItems);
+    //             });
+    //     }
+    // }
+
     openDialog() {
 
         const dialogRef = this.dialog.open(PurchaseOrdersItemComponent, {
@@ -114,23 +135,6 @@ export class AddPurchaseOrdersComponent {
             }
         })
     }
-
-    // onSearchChange(searchValue: string): void {
-    //     this.filteredItems = null;
-    //     this.isLoading = true;
-    //     if(searchValue){
-    //         this.itemService
-    //             .getItemSearch(searchValue)
-    //             .pipe(takeUntil(this.endsubs$),
-    //                 filter(_ => searchValue.length >= 3),
-    //                 debounceTime(500),
-    //                 distinctUntilChanged())
-    //             .subscribe((items) => {
-    //                 this.filteredItems = items;
-    //                 console.log(this.filteredItems);
-    //             });
-    //     }
-    // }
 
     updatePurchaseOrderItem(poItemId: number, itemId: number, supplierId: number, quantity: string, price: number, expectedArrivalDate: string, status: string) {
         console.log(supplierId, status);
@@ -191,52 +195,6 @@ export class AddPurchaseOrdersComponent {
     ngOnDestroy() {
         //this.endsubs$.next(null);
         this.endsubs$.complete();
-    }
-
-    private _initForm() {
-        this.form = this.formBuilder.group({
-            poNumber: ['', Validators.required],
-            dateReceived: [''],
-            due: [''],
-            description: [''],
-            buyer: [null],
-            client: [null],
-            rfq: [null],
-            purchaseOrderDocumentUrl: [''],
-            purchaseOrderDocument: [''],
-            status: [''],
-            items: new FormArray([]),
-        });
-    }
-
-    private _getClients() {
-        this.clientService
-            .getClients()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((clients) => {
-                this.clients = clients;
-                this.isLoading = false;
-            });
-    }
-
-    private _filter(value: string): any[] {
-        const filterValue = value.toString().toLowerCase();
-
-        return this.rfqs.filter(option => option.rfqNumber.toLowerCase().includes(filterValue));
-    }
-
-    private _getRfqs() {
-        this.rfqService
-            .getRfqs()
-            .pipe(takeUntil(this.endsubs$))
-            .subscribe((rfqs) => {
-                this.rfqs = rfqs;
-                this.filteredRfqs = this.purchaseOrderForm.rfq.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this._filter(value || '')),
-                );
-                this.isLoading = false;
-            });
     }
 
     onSubmit() {
@@ -345,6 +303,95 @@ export class AddPurchaseOrdersComponent {
         }
     }
 
+    // Image Preview
+    uploadPODocument(event) {
+        const file = (event.target as HTMLInputElement).files[0];
+        this.form.patchValue({
+            poDocument: file
+        });
+        this.form.get('poDocument').updateValueAndValidity();
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.poDocumentPreview = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    displayError(error?: string) {
+        const confirmation = this._fuseConfirmationService.open({
+            "title": "Error",
+            "message": "Something went wrong. Please tell Zayd exactly what you did to get this error." + error,
+            "icon": {
+                "show": true,
+                "name": "heroicons_outline:exclamation",
+                "color": "warn"
+            },
+            "actions": {
+                "confirm": {
+                    "show": false,
+                    "label": "Remove",
+                    "color": "warn"
+                },
+                "cancel": {
+                    "show": false,
+                    "label": "Cancel"
+                }
+            },
+            "dismissible": true
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+        });
+    }
+
+    private _initForm() {
+        this.form = this.formBuilder.group({
+            poNumber: ['', Validators.required],
+            dateReceived: [''],
+            due: [''],
+            description: [''],
+            buyer: [null],
+            client: [null],
+            rfq: [null],
+            purchaseOrderDocumentUrl: [''],
+            purchaseOrderDocument: [''],
+            status: [''],
+            items: new FormArray([]),
+        });
+    }
+
+    private _getClients() {
+        this.clientService
+            .getClients()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((clients) => {
+                this.clients = clients;
+                this.isLoading = false;
+            });
+    }
+
+    private _filter(value: string): any[] {
+        const filterValue = value.toString().toLowerCase();
+
+        return this.rfqs.filter(option => option.rfqNumber.toLowerCase().includes(filterValue));
+    }
+
+    private _getRfqs() {
+        this.rfqService
+            .getRfqs()
+            .pipe(takeUntil(this.endsubs$))
+            .subscribe((rfqs) => {
+                this.rfqs = rfqs;
+                this.filteredRfqs = this.purchaseOrderForm.rfq.valueChanges.pipe(
+                    startWith(''),
+                    map(value => this._filter(value || '')),
+                );
+                this.isLoading = false;
+            });
+    }
+
     private _addPurchaseOrder() {
         const newPurchaseOrder: PurchaseOrder = {
             items: this.purchaseOrderItems,
@@ -369,8 +416,8 @@ export class AddPurchaseOrdersComponent {
                     this.form.reset();
                 },
                 (error) => {
+                    this.displayError(error);
                     this.addSuccess = false;
-                    console.log(error);
                 }
             );
     }
@@ -430,24 +477,5 @@ export class AddPurchaseOrdersComponent {
                     });
             }
         });
-    }
-
-    get purchaseOrderForm() {
-        return this.form.controls;
-    }
-
-    // Image Preview
-    uploadPODocument(event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        this.form.patchValue({
-            poDocument: file
-        });
-        this.form.get('poDocument').updateValueAndValidity();
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
-            this.poDocumentPreview = reader.result as string;
-        };
-        reader.readAsDataURL(file);
     }
 }

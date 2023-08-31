@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import {Brand} from "../api/models/brand";
 import {environment} from "../../environments/environment";
 
-const apiURLBrands = environment.msrvUrl + 'brands';
+const apiURLBrands = environment.msrvUrl + 'api/brands';
 
 @Injectable({ providedIn: 'root' })
 export class BrandService {

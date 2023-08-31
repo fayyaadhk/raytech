@@ -148,9 +148,10 @@ export class PurchaseOrderDetailComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((purchaseOrder) => {
                 this.purchaseOrder = purchaseOrder;
-                console.log("this.purchaseOrder", this.purchaseOrder)
                 this.purchaseOrderItemsDataSource = new MatTableDataSource(this.purchaseOrder.items);
-                this._getRfq();
+                if(purchaseOrder.rfqId){
+                    this._getRfq();
+                }
 
                 this.isLoading = false;
             });
@@ -162,7 +163,6 @@ export class PurchaseOrderDetailComponent {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((rfq) => {
                 this.rfq = rfq;
-                console.log("this.rfq", this.rfq)
                 this.isLoading = false;
             });
     }

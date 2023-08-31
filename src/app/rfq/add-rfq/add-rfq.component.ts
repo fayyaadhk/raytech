@@ -24,6 +24,7 @@ import {AddNewItemComponent} from "./add-new-item/add-new-item.component";
 import {UpdateRfqDocument} from "../../api/models/update-rfq-document";
 import {environment} from "../../../environments/environment";
 import {RfqType} from "../../data/rfq-type";
+import {FuseConfirmationService} from "../../../@fuse/services/confirmation";
 
 @Component({
     selector: 'app-add-rfq',
@@ -91,6 +92,7 @@ export class AddRfqComponent implements OnInit {
                 private dialog: MatDialog,
                 private router: Router,
                 private categoryService: CategoryService,
+                private _fuseConfirmationService: FuseConfirmationService,
                 private brandService: BrandService) {
     }
 
@@ -510,7 +512,6 @@ export class AddRfqComponent implements OnInit {
                                 type: this.rfqs.type,
                             };
                         }
-                        console.log(this.rfqs);
 
                         for (let r = 0; r < this.rfqs.items.length; r++) {
                             this.rfqItemDetails.push({
@@ -533,6 +534,37 @@ export class AddRfqComponent implements OnInit {
                         this.dataSource = new MatTableDataSource(this.rfqItems);
                     });
             }
+        }, error => {
+            this.displayError(error);
+        });
+    }
+
+
+    displayError(error?: string){
+        const confirmation = this._fuseConfirmationService.open({
+            "title": "Error",
+            "message": "Something went wrong. Please tell Zayd exactly what you did to get this error." + error,
+            "icon": {
+                "show": true,
+                "name": "heroicons_outline:exclamation",
+                "color": "warn"
+            },
+            "actions": {
+                "confirm": {
+                    "show": false,
+                    "label": "Remove",
+                    "color": "warn"
+                },
+                "cancel": {
+                    "show": false,
+                    "label": "Cancel"
+                }
+            },
+            "dismissible": true
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+
         });
     }
 
