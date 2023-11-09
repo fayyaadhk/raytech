@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import {Category} from '../api/models/category';
+import {environment} from "../../environments/environment";
 
-const apiURLCategories = 'https://raytechholdings.com/api/' + 'categories';
+const apiURLCategories = environment.msrvUrl + 'api/categories';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {

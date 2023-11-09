@@ -199,26 +199,15 @@ export class AddItemComponent {
     }
 
     private _addItem() {
-        console.log('>>> GOT INTO ADD');
         const newItem: ItemClass = new ItemClass();
-        console.log('>>> initialised ');
         newItem.name = this.form.get('name').value;
-        console.log('>>> get value name from controller', this.form.get('name').value);
         newItem.shortDescription = this.form.get(['shortDescription']).value;
-        console.log('>>> get value short description from controller', this.form.get(['shortDescription']).value);
         newItem.description = this.form.get(['description']).value;
-        console.log('>>> get value description from controller', this.form.get(['description']).value);
         newItem.sku = this.form.get(['sku']).value;
-        console.log('>>> get value sku from controller', this.form.get(['sku']).value);
         newItem.rrsp = this.form.get(['rrsp']).value;
-        console.log('>>> get value rrsp from controller', this.form.get(['rrsp']).value);
         newItem.thumbnail = this.form.get(['thumbnail']).value;
-        console.log('>>> get value thumbnail from controller', this.form.get(['thumbnail']).value);
         newItem.categoryId = this.form.get(['category']).value;
-        console.log('>>> get value category from controller', this.form.get(['category']).value);
         newItem.brandId = this.form.get(['brand']).value;
-        console.log('>>> get value brand from controller', this.form.get(['brand']).value);
-        console.log('>>> get values from controller', newItem);
         this.itemService
             .addItem(newItem)
             .pipe(takeUntil(this.endsubs$))

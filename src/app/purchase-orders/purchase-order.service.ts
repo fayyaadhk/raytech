@@ -6,9 +6,10 @@ import {PurchaseOrder} from "../api/models/purchase-order";
 import {CreatePurchaseOrderItemRequest} from "../api/models/create-purchase-order-item-request";
 import {UpdatePurchaseOrderItemRequest} from "../api/models/update-purchase-order-item-request";
 import {PurchaseOrderItem} from "../api/models/purchase-order-item";
+import {environment} from "../../environments/environment";
 
-const apiURL = 'https://raytechholdings.com/' + 'api/purchaseOrders';
-const poItemsApiURL = 'https://raytechholdings.com/' + 'api/purchaseorderitems';
+const apiURL = environment.msrvUrl + 'api/purchaseOrders';
+const poItemsApiURL = environment.msrvUrl + 'api/purchaseorderitems';
 
 @Injectable({providedIn: 'root'})
 export class PurchaseOrderService {

@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 
 import {Client} from '../api/models/client';
 import { CreateClientRequest } from '../api/models/create-client-request';
+import {environment} from "../../environments/environment";
 
-const apiURLClients = 'https://raytechholdings.com/' + 'api/clients';
+const apiURLClients = environment.msrvUrl + 'api/clients';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {

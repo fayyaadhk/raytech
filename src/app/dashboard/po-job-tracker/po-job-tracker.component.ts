@@ -176,9 +176,7 @@ export class PoJobTrackerComponent implements OnInit {
                     .subscribe((data) => {
 
                         // Store the data
-                        console.log(">>>this.data", data);
                         this.dashboardSummary = data;
-                        console.log(">>>this.dashboardSummary", this.dashboardSummary);
                         this.filteredPurhcaseOrders = this.dashboardSummary.issuedPOs.concat(this.dashboardSummary.inProgressPOs);
                         this.purchaseOrders = this.filteredPurhcaseOrders = this.purchaseOrders;
                         this._changeDetectorRef.markForCheck();

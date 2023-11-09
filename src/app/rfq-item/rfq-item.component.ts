@@ -3,11 +3,8 @@ import {Observable, Subject, takeUntil, startWith, map, distinctUntilChanged, fi
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ItemService} from "../item/item.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ItemClass} from "../item/item.model";
-import {RfqStatus} from "../data/rfq-status";
 import {RFQItemStatus} from "../data/rfq-item-status";
 import {SupplierService} from "../suppliers/suppliers.service";
-import {Item} from "../api/models/item";
 import {DetailedItem} from "../api/models/detailed-item";
 import {Supplier} from "../api/models/supplier";
 
@@ -78,7 +75,6 @@ export class RfqItemComponent implements OnInit {
             .pipe(takeUntil(this.endsubs$))
             .subscribe((item) => {
                 this.selectedItem = item;
-                console.log(">>> this.selectedItem", this.selectedItem);
                 let itemSuppliers: Supplier[] = [];
                 if (this.selectedItem && this.selectedItem.itemSuppliers) {
                     this.selectedItem.itemSuppliers.forEach(supplier =>

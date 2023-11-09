@@ -4,6 +4,7 @@ import {AddNewItemComponent} from "../../add-rfq/add-new-item/add-new-item.compo
 import {RfqItemService} from "../../../rfq-item/rfq-item.service";
 import {CreateRfqItem} from "../../../api/models/create-rfq-item";
 import {RfqItemComponent} from "../../../rfq-item/rfq-item.component";
+import {FuseConfirmationService} from "../../../../@fuse/services/confirmation";
 
 @Component({
     selector: 'app-add-rfq-item',
@@ -15,6 +16,7 @@ export class AddRfqItemComponent implements OnInit {
     constructor(@Inject(MAT_DIALOG_DATA) public data,
                 private dialogRef: MatDialogRef<AddRfqItemComponent>,
                 private dialog: MatDialog,
+                private _fuseConfirmationService: FuseConfirmationService,
                 private rfqItemService: RfqItemService) {
     }
 
@@ -41,7 +43,6 @@ export class AddRfqItemComponent implements OnInit {
                     expectedArrivalDate: res.expectedArrivalDate,
                     status: res.status
                 };
-                console.log(">>> Making service call", newRfqItem);
 
                 this.rfqItemService.createRfqItem(newRfqItem).subscribe(res =>{
                     this.dialogRef.close({added: true});
@@ -53,6 +54,7 @@ export class AddRfqItemComponent implements OnInit {
     openAttachExistingItemDialog() {
         const dialogRef = this.dialog.open(RfqItemComponent, {
             width: '600px',
+            height: '800px',
             data: this.data.id,
         });
 
@@ -67,12 +69,41 @@ export class AddRfqItemComponent implements OnInit {
                 expectedArrivalDate: res.expectedArrivalDate,
                 status: res.status
             };
-            console.log(">>> Making service call", newRfqItem);
 
             this.rfqItemService.createRfqItem(newRfqItem).subscribe(res =>{
                 this.dialogRef.close({added: true});
             });
+        }, error => {
+            this.displayError();
         })
+    }
+
+    displayError(){
+        const confirmation = this._fuseConfirmationService.open({
+            "title": "Error",
+            "message": "Something went wrong. Please tell Zayd exactly what you did to get this error.",
+            "icon": {
+                "show": true,
+                "name": "heroicons_outline:exclamation",
+                "color": "warn"
+            },
+            "actions": {
+                "confirm": {
+                    "show": false,
+                    "label": "Remove",
+                    "color": "warn"
+                },
+                "cancel": {
+                    "show": false,
+                    "label": "Cancel"
+                }
+            },
+            "dismissible": true
+        });
+
+        confirmation.afterClosed().subscribe((result) => {
+
+        });
     }
 
 

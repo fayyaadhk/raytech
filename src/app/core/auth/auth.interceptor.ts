@@ -45,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor
             catchError((error) => {
 
                 // Catch "401 Unauthorized" responses
-                if ( error instanceof HttpErrorResponse && error.status === 401 )
+                if ( error instanceof HttpErrorResponse && error.status === 401 && error.error["errorMessage"] !== "Invalid Authentication")
                 {
                     // Sign out
                     this._authService.signOut();

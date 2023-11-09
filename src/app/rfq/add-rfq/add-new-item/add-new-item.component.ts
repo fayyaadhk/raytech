@@ -75,7 +75,6 @@ export class AddNewItemComponent implements OnInit {
             .subscribe(
                 (item) => {
                     this.item = item;
-                    console.log(">>> Created item - Stored in this.item", this.item);
                     this.addSuccess = true;
                     this.newItemForm.reset();
                 },

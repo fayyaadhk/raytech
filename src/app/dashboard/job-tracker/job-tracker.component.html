@@ -61,6 +61,13 @@
                                             [svgIcon]="'heroicons_solid:badge-check'"
                                             [matTooltip]="'You completed this course at least once'"></mat-icon>
                                     </ng-container>
+
+                                    <ng-container *ngIf="rfq.type === 'Direct'">
+                                        <mat-icon
+                                            class="icon-size-6 text-blue-600"
+                                            [svgIcon]="'mat_solid:notification_important'"
+                                            [matTooltip]="'Direct RFQ'"></mat-icon>
+                                    </ng-container>
                                 </div>
                             </div>
                             <!-- Course title & description -->

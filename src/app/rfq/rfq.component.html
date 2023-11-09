@@ -65,6 +65,11 @@
                 <mat-cell *matCellDef="let rfqs">{{rfqs.due | date: 'medium'}}</mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>RFQ Type</mat-header-cell>
+                <mat-cell *matCellDef="let rfqs">{{rfqs.type}}</mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="itemCount">
                 <mat-header-cell *matHeaderCellDef>Item Count</mat-header-cell>
                 <mat-cell *matCellDef="let rfqs">

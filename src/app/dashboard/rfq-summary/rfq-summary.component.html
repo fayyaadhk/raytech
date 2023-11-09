@@ -156,6 +156,23 @@
                     </td>
                 </ng-container>
 
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Type
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.type}}
+                                </span>
+                    </td>
+                </ng-container>
+
                 <!-- Name -->
                 <ng-container matColumnDef="itemCount">
                     <th
@@ -211,6 +228,169 @@
                     class="order-row h-16"
                     mat-row
                     *matRowDef="let row; columns: issuedRFQTableColumns;"></tr>
+                <tr
+                    class="h-16 border-0"
+                    mat-footer-row
+                    *matFooterRowDef="['recentOrdersTableFooter']"></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent transactions table -->
+    <div class="xl:col-span-4 sm:col-span-4 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+        <div class="p-6">
+            <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Sourcing RFQ's</div>
+        </div>
+        <div class="overflow-x-auto mx-6">
+            <table
+                class="w-full bg-transparent"
+                mat-table
+                matSort
+                [dataSource]="sourcingRFQDataSource"
+                [trackBy]="trackByFn"
+                #sourcingRFQsTable>
+
+                <!-- Transaction ID -->
+                <ng-container matColumnDef="rfqId">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        RFQ ID
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                    {{transaction.id}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Transaction ID -->
+                <ng-container matColumnDef="rfqNo">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        RFQ Number
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                    <a routerLink="/rfqs/details/{{transaction.id}}"
+                                       class="hover:text-primary"> {{transaction.rfqNumber}}</a>
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Date -->
+                <ng-container matColumnDef="created">
+                    <th
+                        mat-header-cell
+                        mat-sort-header-
+                        *matHeaderCellDef>
+                        Date Created
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.dateCreated | date:'medium'}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Date -->
+                <ng-container matColumnDef="due">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Date Due
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.due | date:'medium'}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Type
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.type}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Name -->
+                <ng-container matColumnDef="itemCount">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Item Count
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.items.length}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Status
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="{'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50': transaction.status === 'pending',
+                                                'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50': transaction.status === 'completed'}">
+                                    <span class="leading-relaxed whitespace-nowrap">{{transaction.status}}</span>
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Footer -->
+                <ng-container matColumnDef="recentOrdersTableFooter">
+                    <td
+                        class="py-6 px-0 border-0"
+                        mat-footer-cell
+                        *matFooterCellDef
+                        colspan="6">
+                        <button routerLink="/rfqs" mat-stroked-button>See all RFQ's</button>
+                    </td>
+                </ng-container>
+
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="sourcingRFQTableColumns"></tr>
+                <tr
+                    class="order-row h-16"
+                    mat-row
+                    *matRowDef="let row; columns: sourcingRFQTableColumns;"></tr>
                 <tr
                     class="h-16 border-0"
                     mat-footer-row
@@ -299,6 +479,23 @@
                         *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
                                     {{transaction.due | date:'medium'}}
+                                </span>
+                    </td>
+                </ng-container>
+
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        *matHeaderCellDef>
+                        Type
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{transaction.type}}
                                 </span>
                     </td>
                 </ng-container>

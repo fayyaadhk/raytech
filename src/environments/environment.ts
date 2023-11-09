@@ -4,7 +4,8 @@
 
 export const environment = {
     production: false,
-    msrvUrl: "https://raytechholdings.com/"
+    msrvUrl: "https://localhost:7234/",
+    sirvBaseUrl: "https://uenicate.sirv.com/"
 };
 
 /*

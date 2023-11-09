@@ -6,8 +6,9 @@ import {Router} from '@angular/router';
 
 import {PurchaseOrderItem} from "../../api/models/purchase-order-item";
 import {UpdateRfqItem} from "../../api/models/update-rfq-item";
+import {environment} from "../../../environments/environment";
 
-const apiURLPOItems = 'https://raytechholdings.com/' + 'api/purchaseorderitems';
+const apiURLPOItems = environment.msrvUrl + 'api/purchaseorderitems';
 
 @Injectable({providedIn: 'root'})
 export class PurchaseOrderItemService {
@@ -33,7 +34,6 @@ export class PurchaseOrderItemService {
     }
 
     updatePurchaseOrderItem(model: UpdateRfqItem, poItemId: number): Observable<PurchaseOrderItem> {
-        console.log(">>> request", model);
         return this.http.put<PurchaseOrderItem>(`${apiURLPOItems}/${poItemId}`, model);
     }
 

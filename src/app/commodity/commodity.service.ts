@@ -4,8 +4,9 @@ import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 
 import {Commodity} from './commodity.model';
+import {environment} from "../../environments/environment";
 
-const apiURLCommodities = 'https://raytechholdings.com/' + 'api/commodities';
+const apiURLCommodities = environment.msrvUrl + 'api/commodities';
 
 @Injectable({providedIn: 'root'})
 export class CommodityService {

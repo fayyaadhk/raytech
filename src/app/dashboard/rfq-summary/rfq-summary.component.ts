@@ -13,6 +13,7 @@ import {Rfq} from "../../rfq/rfq.model";
 export class RfqSummaryComponent {
 
     @Input() issuedRFQs: Rfq[] = [];
+    @Input() sourcingRFQs: Rfq[] = [];
     @Input() closingSoonRFQs: Rfq[] = [];
     @Input() inProgressRFQs: Rfq[] = [];
     @Input() pendingSubmissionRFQs: Rfq[] = [];
@@ -20,12 +21,17 @@ export class RfqSummaryComponent {
     @ViewChild('issuedRFQTable', {read: MatSort}) issuedRFQTableMatSort: MatSort;
 
     issuedRFQDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    issuedRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status'];
+    issuedRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'type', 'itemCount', 'status'];
+
+    @ViewChild('sourcingRFQTable', {read: MatSort}) sourcingRFQTableMatSort: MatSort;
+
+    sourcingRFQDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+    sourcingRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'type', 'itemCount', 'status'];
 
     @ViewChild('closingSoonRFQTable', {read: MatSort}) closingSoonRFQTableMatSort: MatSort;
 
     closingSoonRFQDataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-    closingSoonRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'itemCount', 'status'];
+    closingSoonRFQTableColumns: string[] = ['rfqId', 'rfqNo', 'created', 'due', 'type', 'itemCount', 'status'];
 
     /**
      * After view init
@@ -34,6 +40,7 @@ export class RfqSummaryComponent {
         // Make the data source sortable
         this.issuedRFQDataSource.sort = this.issuedRFQTableMatSort;
         this.closingSoonRFQDataSource.sort = this.closingSoonRFQTableMatSort;
+        this.sourcingRFQDataSource.sort = this.sourcingRFQTableMatSort;
     }
 
 
@@ -42,10 +49,10 @@ export class RfqSummaryComponent {
      */
     ngOnInit(): void {
         // Get the data
-        console.log(">>> this.issuedRFQs",this.issuedRFQs);
         this.issuedRFQDataSource.data = this.issuedRFQs;
 
         this.closingSoonRFQDataSource.data = this.closingSoonRFQs;
+        this.sourcingRFQDataSource.data = this.sourcingRFQs;
     }
 
 

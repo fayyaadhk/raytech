@@ -12,6 +12,7 @@
 
         <div *ngIf="!this.isLoading">
             <app-rfq-summary [issuedRFQs]="dashboardSummary.issuedRFQs"
+                             [sourcingRFQs]="dashboardSummary.sourcingRFQs"
                              [closingSoonRFQs]="dashboardSummary.closingSoonRFQs"
                              [inProgressRFQs]="dashboardSummary.inProgressRFQs"
                              [pendingSubmissionRFQs]="dashboardSummary.pendingSubmissionRFQs">
@@ -19,7 +20,7 @@
         </div>
 
         <div *ngIf="!this.isLoading">
-            <app-job-tracker [rfqs]="dashboardSummary.issuedRFQs.concat(dashboardSummary.inProgressRFQs)"></app-job-tracker>
+            <app-job-tracker [rfqs]="dashboardSummary.issuedRFQs.concat(dashboardSummary.inProgressRFQs).concat(dashboardSummary.sourcingRFQs)"></app-job-tracker>
         </div>
 
     </div>

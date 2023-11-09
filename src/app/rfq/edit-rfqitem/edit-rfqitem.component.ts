@@ -51,7 +51,6 @@ export class EditRFQItemComponent implements OnInit {
     }
 
     selectedItem(event) {
-        console.log(event.option.value);
     }
 
     displayItem(itemId: any) {
@@ -91,7 +90,6 @@ export class EditRFQItemComponent implements OnInit {
                 distinctUntilChanged())
             .subscribe((items) => {
                 this.filteredItems = items;
-                console.log(this.filteredItems);
             });
     }
 

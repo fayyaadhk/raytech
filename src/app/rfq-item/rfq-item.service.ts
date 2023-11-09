@@ -6,8 +6,9 @@ import {Router} from '@angular/router';
 import {RfqItem} from '../api/models/rfq-item';
 import {UpdateRfqItem} from "../api/models/update-rfq-item";
 import {CreateRfqItem} from "../api/models/create-rfq-item";
+import {environment} from "../../environments/environment";
 
-const apiURLRfqItems = 'https://raytechholdings.com/' + 'api/rfqitems';
+const apiURLRfqItems = environment.msrvUrl + 'api/rfqitems';
 
 @Injectable({providedIn: 'root'})
 export class RfqItemService {

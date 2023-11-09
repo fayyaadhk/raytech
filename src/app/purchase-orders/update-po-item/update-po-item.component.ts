@@ -37,7 +37,6 @@ export class UpdatePoItemComponent implements OnInit {
 
     ngOnInit(): void {
         this._initForm();
-        console.log(">>> data", this.data);
     }
 
     onSubmit() {

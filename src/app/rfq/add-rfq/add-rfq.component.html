@@ -122,6 +122,20 @@
                                             matPrefix
                                             [svgIcon]="'heroicons_solid:user'"></mat-icon>
                                     </mat-form-field>
+                                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                                        <mat-label>RFQ Type</mat-label>
+                                        <mat-select
+                                            name="type"
+                                            formControlName="type"
+                                            [placeholder]="'RFQ Type'">
+                                            <mat-option *ngFor="let type of keys(rfqType)"
+                                                        [value]="rfqType[type]">{{rfqType[type]}}</mat-option>
+                                        </mat-select>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            matPrefix
+                                            [svgIcon]="'heroicons_solid:document'"></mat-icon>
+                                    </mat-form-field>
 <!--                                    <mat-form-field class="flex-auto gt-xs:pl-3">-->
 <!--                                        <mat-label>Buyer</mat-label>-->
 <!--                                        <mat-select-->

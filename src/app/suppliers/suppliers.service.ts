@@ -9,10 +9,11 @@ import {CreateSupplierRequest} from "../api/models/create-supplier-request";
 import {UpdateSupplierRequest} from "../api/models/update-supplier-request";
 import {SupplierItem} from "../api/models/supplier-item";
 import {ItemSupplier} from "../api/models/item-supplier";
+import {environment} from "../../environments/environment";
 
-const apiURLSuppliers = 'https://raytechholdings.com/' + 'api/suppliers';
-const apiURLSupplierItems = 'https://raytechholdings.com/' + 'api/items';
-const apiURLItemSuppliers = 'https://raytechholdings.com/' + 'api/itemSuppliers';
+const apiURLSuppliers = environment.msrvUrl + 'api/suppliers';
+const apiURLSupplierItems = environment.msrvUrl + 'api/items';
+const apiURLItemSuppliers = environment.msrvUrl + 'api/itemSuppliers';
 
 @Injectable({ providedIn: 'root' })
 export class SupplierService {
